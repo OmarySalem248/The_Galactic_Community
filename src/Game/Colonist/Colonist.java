@@ -8,14 +8,19 @@ public abstract class Colonist {
     protected int energy;
     protected int baseproductivity;
     protected Building assignedBuilding;
-
+    protected int age;
+    protected int agemonths;
+    protected int hp;
     protected String type;
 
 
 
-    public Colonist(String name,String type,int energy,int baseproductivity) {
+    public Colonist(String name,String type,int age,int energy,int baseproductivity) {
         this.name = name;
         this.energy = energy;
+        this.age = age;
+        this.agemonths= 0;
+        this.hp =100;
         this.type = type;
         this.baseproductivity = baseproductivity;
     }
@@ -25,10 +30,16 @@ public abstract class Colonist {
     public int getEnergy() { return energy; }
     public void setEnergy(int energy) { this.energy = Math.max(0, Math.min(energy, 100)); }
 
-    public int getProductivity() {
-        return (baseproductivity * energy);
+    public int getProductivity(int usedenergy) {
+        return (baseproductivity * usedenergy);
     }
-
+    public boolean isAlive() {
+        return hp > 0;
+    }
+    public void takeDamage(int dmg) {
+        hp -= dmg;
+        if (hp < 0) hp = 0;
+    }
     public int getFoodConsumption() { return energy; }
 
     /**
@@ -40,7 +51,7 @@ public abstract class Colonist {
         setEnergy(energy + energyGain);
     }
 
-    public abstract Resources work();
+    public abstract Resources work(int usedenergy);
     public abstract String getOccupation();
 
     @Override
@@ -64,5 +75,12 @@ public abstract class Colonist {
 
     public Building getAssignedBuilding() {
         return assignedBuilding;
+    }
+
+    public int getAge() {
+        return age;
+    }
+    public int getHealth(){
+        return hp;
     }
 }

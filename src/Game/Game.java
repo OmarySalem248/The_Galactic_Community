@@ -6,7 +6,7 @@ public class Game {
 
     public Game() {
         this.turn = 1;
-        this.colony = new Colony(5, new Resources(20, 15, 10));
+        this.colony = new Colony(7, new Resources(20, 15, 10));
     }
 
     public int getTurn() {

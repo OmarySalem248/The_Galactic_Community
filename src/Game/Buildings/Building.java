@@ -47,4 +47,6 @@ public abstract class Building {
     public String toString() {
         return name+colonists.size();
     }
+
+
 }

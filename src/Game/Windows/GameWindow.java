@@ -15,9 +15,10 @@ public class GameWindow {
 
     private JComboBox<Colonist> colonistDropdown;
     private JLabel energyLabel;
-    private JLabel productivityLabel;
+    private JLabel hpLabel;
     private JLabel occupationLabel;
     private JButton feedButton;
+    private JButton reduceFeedButton;
 
     private JComboBox<String> buildingDropdown; // NEW
     private JButton nextTurnBtn;
@@ -42,7 +43,13 @@ public class GameWindow {
         frame.add(infoPanel, BorderLayout.NORTH);
 
         // Center panel: Colonist selection and stats
-        JPanel centerPanel = new JPanel(new GridLayout(6, 2, 5, 5));
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+        int row = 0;
         colonistDropdown = new JComboBox<>();
         for (Colonist c : game.getColony().getColonists()) {
             colonistDropdown.addItem(c);
@@ -51,9 +58,10 @@ public class GameWindow {
 
         occupationLabel = new JLabel();
         energyLabel = new JLabel();
-        productivityLabel = new JLabel();
+        hpLabel = new JLabel();
 
         feedButton = new JButton("Feed 1 Extra Food");
+        reduceFeedButton = new JButton("Deallocate 1 Food");
         feedButton.addActionListener(e -> {
             Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
             if (selected != null) {
@@ -67,23 +75,58 @@ public class GameWindow {
                 }
             }
         });
+        reduceFeedButton.addActionListener(e -> {
+            Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
+            if (selected != null ) {
+                if (selected.getEnergy() > 1) {
+                    boolean success = game.getColony().feedColonist(selected, -1);
+                    if (success) {
+                        updateColonistStats();
+                        updateGameStats();
+                    }
+                }
+                    else{JOptionPane.showMessageDialog(frame, "Can't reduce feed any further for " + selected.getName(),
+                            "MINUMUM FEED REACHED", JOptionPane.WARNING_MESSAGE);
+
+                }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Not enough food to feed " + selected.getName(),
+                            "Insufficient Food", JOptionPane.WARNING_MESSAGE);
+                }
+
+
+        });
 
         // NEW: Building assignment dropdown
         buildingDropdown = new JComboBox<>();
         buildingDropdown.addActionListener(e -> assignColonistToBuilding());
 
-        centerPanel.add(new JLabel("Select Colonist:"));
-        centerPanel.add(colonistDropdown);
-        centerPanel.add(new JLabel("Occupation:"));
-        centerPanel.add(occupationLabel);
-        centerPanel.add(new JLabel("Energy:"));
-        centerPanel.add(energyLabel);
-        centerPanel.add(new JLabel("Productivity:"));
-        centerPanel.add(productivityLabel);
-        centerPanel.add(new JLabel("Assigned Building:"));
-        centerPanel.add(buildingDropdown);
-        centerPanel.add(new JLabel("")); // placeholder
-        centerPanel.add(feedButton);
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Select Colonist:"), gbc);
+        gbc.gridx = 1; centerPanel.add(colonistDropdown, gbc);
+        row++;
+
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Occupation:"), gbc);
+        gbc.gridx = 1; centerPanel.add(occupationLabel, gbc);
+        row++;
+
+
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Energy:"), gbc);
+        gbc.gridx = 1; centerPanel.add(energyLabel, gbc);
+        row++;
+
+
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("HP:"), gbc);
+        gbc.gridx = 1; centerPanel.add(hpLabel, gbc);
+        row++;
+
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Assigned Building:"), gbc);
+        gbc.gridx = 1; centerPanel.add(buildingDropdown, gbc);
+        row++;
+
+
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(feedButton, gbc);
+
+        gbc.gridx = 1; centerPanel.add(reduceFeedButton, gbc);
 
         frame.add(centerPanel, BorderLayout.CENTER);
 
@@ -111,7 +154,7 @@ public class GameWindow {
         if (selected != null) {
             occupationLabel.setText(selected.getOccupation());
             energyLabel.setText(String.valueOf(selected.getEnergy()));
-            productivityLabel.setText(String.valueOf(selected.getProductivity()));
+            hpLabel.setText(String.valueOf(selected.getHealth()));
 
             // Update building dropdown
             buildingDropdown.removeAllItems();
