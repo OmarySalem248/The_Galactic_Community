@@ -24,7 +24,7 @@ public class AssignAction extends Action{
 
         // Only allow assignment if occupation matches
         boolean valid = false;
-        if (colonist.getType() == building.getCompatible()) valid = true;
+        if (building.getCompatible().isInstance(colonist.getProfession())) valid = true;
         if (building.getColonists().size()>=building.getColonlimit()) valid = false;
         if (valid) {
             colonist.unassignBuilding(); // remove from previous

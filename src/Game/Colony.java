@@ -2,14 +2,11 @@ package Game;
 
 import Game.Actions.Action;
 import Game.Buildings.Building;
-import Game.Colonist.Colonist;
-import Game.Colonist.Farmer;
-import Game.Colonist.Miner;
-import Game.Colonist.WoodCutter;
+import Game.Colonist.*;
+import Game.Relationships.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -25,14 +22,15 @@ public class Colony {
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
         this.buildings = new ArrayList<>();
-        colonists.add(new Farmer("Jeff",35));
-        colonists.add(new WoodCutter("Britta",28));
-        colonists.add(new Farmer("Troy", 19));
-        colonists.add(new Miner("Abed",20));
-        colonists.add(new Miner("Annie",19));
-        colonists.add(new WoodCutter("Shirley",43));
-        colonists.add(new Farmer("Pierce",75));
+        colonists.add(new Colonist("Jeff", new Farmer(),35,1,1));
+        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1));
+        colonists.add(new Colonist("Troy",new Farmer(), 19,1,1));
+        colonists.add(new Colonist("Abed",new Miner(),20,1,1));
+        colonists.add(new Colonist("Annie",new Miner(),19,1,1));
+        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1));
+        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1));
         this.unassignedColonists = colonists;
+        this.initializeRelationships();
     }
 
     public List<Colonist> getColonists() {
@@ -47,13 +45,21 @@ public class Colony {
         return colonists.size();
     }
 
-    public int getFoodNeeded(){
-        int demand = 0;
-        for(Colonist c : colonists){
-            demand += c.getFoodConsumption();
+    public void initializeRelationships() {
+        for (Colonist c1 : colonists) {
+            for (Colonist c2 : colonists) {
+                if (c1 != c2) {
+                    if (!c1.getRelationships().hasRelationshipWith(c2.getName())) {
+                        c1.getRelationships().addRelationship(
+                                new Relationship(c2, "None")
+                        );
+                    }
+                }
+            }
         }
-        return  demand;
     }
+
+
 
     public void consumeAndProduce() {
         List<Colonist> farmColonists = new ArrayList<>();
@@ -107,6 +113,11 @@ public class Colony {
         }
 
         removeDeadColonists();
+    }
+    public void ageColonists(){
+        for(Colonist c : colonists){
+            c.age();
+        }
     }
     private void produce(Colonist c,int usedenergy){
         Resources produced = c.work(usedenergy);

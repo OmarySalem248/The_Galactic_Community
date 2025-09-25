@@ -1,20 +1,11 @@
 package Game.Colonist;
+
+import Game.Colonist.Colonist;
 import Game.Resources;
-public class Farmer extends Colonist {
 
-    public Farmer(String name,int age) {
-        super(name,"farmer",age,1,1);
+public class Farmer implements Profession {
+    public Resources work(Colonist colonist, int usedEnergy) {
+        return new Resources(usedEnergy * 2, 0, 0);
     }
-
-
-    @Override
-    public Resources work(int usedenergy) {
-        int foodProduced = getProductivity(usedenergy);
-        return new Resources(2*foodProduced, 0, 0);
-    }
-
-    @Override
-    public String getOccupation() {
-        return "Farmer";
-    }
+    public String getName() { return "Farmer"; }
 }

@@ -1,18 +1,11 @@
 package Game.Colonist;
+
+import Game.Colonist.Colonist;
 import Game.Resources;
-public class Miner extends Colonist {
-    public Miner(String name,int age) {
-        super(name,"miner",age,1,1);
-    }
 
-    @Override
-    public Resources work(int usedenergy) {
-        int stoneProduced = getProductivity(usedenergy);
-        return new Resources(0, 0, stoneProduced);
+public class Miner implements Profession {
+    public Resources work(Colonist colonist, int usedEnergy) {
+        return new Resources(0, 0,usedEnergy );
     }
-
-    @Override
-    public String getOccupation() {
-        return "Miner";
-    }
+    public String getName() { return "Miner"; }
 }
