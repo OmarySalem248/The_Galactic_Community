@@ -123,5 +123,9 @@ public class Colonist {
     public Profession getProfession() {
         return  profession;
     }
+
+    public void setProfession(Profession profession) {
+        this.profession = profession;
+    }
 }
 

@@ -54,5 +54,7 @@ public abstract class Building {
     }
 
 
-
+    public boolean isCompatible(Colonist selected) {
+        return getCompatible().isInstance(selected.getProfession());
+    }
 }

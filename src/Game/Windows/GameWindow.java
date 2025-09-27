@@ -2,7 +2,7 @@ package Game.Windows;
 
 import Game.Actions.AssignAction;
 import Game.Buildings.Building;
-import Game.Colonist.Colonist;
+import Game.Colonist.*;
 import Game.Game;
 
 import javax.swing.*;
@@ -25,9 +25,12 @@ public class GameWindow {
     private JButton reduceFeedButton;
 
     private JComboBox<String> buildingDropdown;
+    private JComboBox<String> professionDropdown;
+
     private JButton nextTurnBtn;
     private JButton buildBtn;
     private boolean updatingDropdown = false;
+    private boolean updatingProfessionDropdown = false;
 
     public GameWindow(Game game) {
         this.game = game;
@@ -121,8 +124,16 @@ public class GameWindow {
         // Building assignment dropdown
         buildingDropdown = new JComboBox<>();
         buildingDropdown.addActionListener(e -> assignColonistToBuilding());
+        professionDropdown = new JComboBox<>();
+        for (String profName : ProfessionRegistry.getAllNames()) {
+            professionDropdown.addItem(profName);
+        }
+        professionDropdown.addActionListener(e -> {
+            if (updatingProfessionDropdown) return;
+            changeColonistProfession();
+        });
 
-        // ----- Adding components in two-column layout -----
+
         gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Select Colonist:"), gbc);
         gbc.gridx = 1; centerPanel.add(colonistDropdown, gbc);
         row++;
@@ -149,6 +160,9 @@ public class GameWindow {
 
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
         centerPanel.add(colonistUpdate, gbc);
+        row++;
+        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Profession:"), gbc);
+        gbc.gridx = 1; centerPanel.add(professionDropdown, gbc);
         row++;
 
         gbc.gridwidth = 1;
@@ -184,6 +198,10 @@ public class GameWindow {
             hpLabel.setText(String.valueOf(selected.getHealth()));
             ageLabel.setText(selected.getAge()+" Years "+selected.getAgeMonths()+" Months");
             colonistUpdate.setText(selected.getStatus());
+            professionDropdown.setSelectedItem(selected.getProfession().getName());
+            updatingProfessionDropdown = true;
+            professionDropdown.setSelectedItem(selected.getProfession().getName());
+            updatingProfessionDropdown = false;
 
             // Update building dropdown
             buildingDropdown.removeAllItems();
@@ -200,6 +218,29 @@ public class GameWindow {
         }
         updatingDropdown = false;
     }
+    private void changeColonistProfession() {
+        Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
+        if (selected == null) return;
+
+        String newProfessionName = (String) professionDropdown.getSelectedItem();
+        if (newProfessionName == null) return;
+
+        if (newProfessionName.equals(selected.getProfession().getName())) return;
+
+
+        selected.setProfession(ProfessionRegistry.create(newProfessionName));
+
+
+        if (selected.getAssignedBuilding() != null &&
+                !selected.getAssignedBuilding().isCompatible(selected)) {
+            selected.unassignBuilding();
+        }
+
+        updateColonistStats();
+        updateGameStats();
+    }
+
+
 
     private void assignColonistToBuilding() {
         if (updatingDropdown) return;
