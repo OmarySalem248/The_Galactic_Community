@@ -1,6 +1,10 @@
 package Game.Colonist;
 
 import Game.Buildings.Building;
+import Game.Colonist.Personality.Personality;
+import Game.Colonist.Personality.PersonalityFactory;
+import Game.Colonist.Profession.Profession;
+import Game.Colonist.Profession.Unemployed;
 import Game.Relationships.RelationshipSet;
 import Game.Resources;
 
@@ -21,16 +25,20 @@ public class Colonist {
     private String status;
     private RelationshipSet relationships;
 
-    private int influence;
+    private PersonalityFactory personalityFactory;
+
+    private int favourability;
 
     private char sex;
+
+    private Personality personality;
 
     private char sexuality;
 
     // ----- Composition: profession object -----
     private Profession profession;
 
-    public Colonist(String name, Profession profession, int age, int energy, int baseProductivity,char sex) {
+    public Colonist(String name, Profession profession, int age, int energy, int baseProductivity,char sex,Personality personality) {
         this.name = name;
         this.profession = profession;
         this.age = age;
@@ -43,7 +51,23 @@ public class Colonist {
         this.status = "Where am I?";
         this.sex = sex;
         this.sexuality ='S';
-        this.influence =0;
+        this.personality = personality;
+        this.favourability = 0;
+    }
+    public Colonist(String name,char sex) {
+        this.name = name;
+        this.profession = new Unemployed();
+        this.age = 0;
+        this.ageMonths = 0;
+        this.energy = 1;
+        this.baseProductivity = 1;
+        this.hp = 100;
+        this.children = new ArrayList<>();
+        this.relationships = new RelationshipSet(this);
+        this.status = " ";
+        this.sex = sex;
+        personalityFactory = new PersonalityFactory();
+        this.personality = personalityFactory.randomPersonality();
     }
 
     // ----- Basic getters and setters -----
@@ -53,7 +77,10 @@ public class Colonist {
     public int getAge() { return age; }
     public int getAgeMonths() { return ageMonths; }
     public int getHealth() { return hp; }
+    public Personality getPersonality(){return personality;}
     public Profession getProfession;
+    public int getFavourability(){return favourability;}
+    public void modFavourability(int change){ favourability += change;}
 
     public void togglesexuality(char sexuality){
         this.sexuality = sexuality;
@@ -78,9 +105,7 @@ public class Colonist {
         if (hp < 0) hp = 0;
     }
 
-    public int getInfluence(){
-        return influence;
-    }
+
 
     public int getFoodConsumption() {
         return energy; // or you can tweak this later

@@ -1,7 +1,6 @@
 package Game.Buildings;
 
-import Game.Colonist.Farmer;
-import Game.Colonist.Profession;
+import Game.Colonist.Profession.Farmer;
 
 public class Farm extends Building {
 

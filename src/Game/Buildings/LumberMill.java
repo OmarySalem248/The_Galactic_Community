@@ -1,6 +1,6 @@
 package Game.Buildings;
 
-import Game.Colonist.Woodcutter;
+import Game.Colonist.Profession.Woodcutter;
 
 public class LumberMill extends Building{
     public LumberMill() {

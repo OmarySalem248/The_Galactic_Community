@@ -1,18 +1,19 @@
 package Game;
 
 import Game.Actions.Action;
-import Game.Actions.Interactions.FlirtAction;
-import Game.Actions.Interactions.InteractAction;
 import Game.Buildings.Building;
 import Game.Colonist.*;
+import Game.Colonist.Personality.Personality;
+import Game.Colonist.Personality.PersonalityFactory;
+import Game.Colonist.Profession.Farmer;
+import Game.Colonist.Profession.Miner;
+import Game.Colonist.Profession.Unemployed;
+import Game.Colonist.Profession.Woodcutter;
 import Game.Relationships.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
-
-import static Game.Relationships.RelationshipType.*;
 
 
 public class Colony {
@@ -20,6 +21,7 @@ public class Colony {
 
     private List<Building> buildings;
     private RelationshipManager relman;
+    private PersonalityFactory persfact;
 
 
     private Resources resources;
@@ -28,13 +30,14 @@ public class Colony {
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
         this.buildings = new ArrayList<>();
-        colonists.add(new Colonist("Jeff", new Farmer(),35,1,1,'M'));
-        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1,'F'));
-        colonists.add(new Colonist("Troy",new Farmer(), 19,1,1,'M'));
-        colonists.add(new Colonist("Abed",new Miner(),20,1,1,'M'));
-        colonists.add(new Colonist("Annie",new Miner(),19,1,1,'F'));
-        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1,'F'));
-        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1,'M'));
+        this.persfact = new PersonalityFactory();
+        colonists.add(new Colonist("Jeff", new Farmer(),35,1,1,'M',persfact.futureDictator()));
+        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1,'F',persfact.randomPersonality()));
+        colonists.add(new Colonist("Troy",new Farmer(), 19,1,1,'M',persfact.funGuy()));
+        colonists.add(new Colonist("Abed",new Miner(),20,1,1,'M',persfact.randomPersonality()));
+        colonists.add(new Colonist("Annie",new Miner(),19,1,1,'F',persfact.randomPersonality()));
+        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1,'F',persfact.randomPersonality()));
+        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1,'M',persfact.randomPersonality()));
         this.initializeRelationships();
         relman = new RelationshipManager(this);
     }

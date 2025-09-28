@@ -7,10 +7,9 @@ import Game.Actions.Interactions.InteractAction;
 import Game.Colonist.Colonist;
 import Game.Colony;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
+import static Game.Relationships.RelationshipType.ADMIRATION;
 import static Game.Relationships.RelationshipType.PLATONIC;
 
 public class RelationshipManager {
@@ -31,16 +30,21 @@ public class RelationshipManager {
 
     }
     public void developRelationships() {
-        ArrayList<RelationshipType> rtypes = new ArrayList<>();
-        for (RelationshipType rtype : RelationshipType.values()) {
-            rtypes.add(rtype);
-        }
         Random rand = new Random();
 
         for (Colonist c1 : colonists) {
-            for (Colonist c2 : colonists) {
-                if (c1 == c2) continue;
+            if (!c1.isAlive()) continue;
+            List<Colonist> candidates;
+            if (colony.getColonists().size()>20) {
+                candidates = selectCandidates(c1);
+            }
+            else{
+                candidates = colonists;
+            }
 
+
+            for (Colonist c2 : candidates) {
+                if (c1 == c2) continue;
 
                 Relationship rel1 = c1.getRelationships().get(c2.getName());
                 Relationship rel2 = c2.getRelationships().get(c1.getName());
@@ -53,28 +57,68 @@ public class RelationshipManager {
                     rel1.setValue(rtype, val);
                 }
 
-                if(areCompatible(c1,c2)){
-                    flirt.execute(c1,c2,rel1,rel2);
+
+                if (areCompatible(c1, c2)) {
+                    flirt.execute(c1, c2, rel1, rel2);
                 }
-
-
                 if (c1.getAssignedBuilding() != null &&
                         c2.getAssignedBuilding() != null &&
                         c1.getAssignedBuilding() == c2.getAssignedBuilding()) {
-                    coworkerInteract.execute(c1,c2,rel1,rel2);
+                    coworkerInteract.execute(c1, c2, rel1, rel2);
                 }
-
-
-                if (c1.getBiofather() != null &&
-                        c1.getBiomother() != null &&
-                        c1.getBiofather() == c2 || c1.getBiomother() == c2) {
-                        famillyaction.execute(c1,c2,rel1,rel2);
-
+                if ((c1.getBiofather() == c2) || (c1.getBiomother() == c2)) {
+                    famillyaction.execute(c1, c2, rel1, rel2);
                 }
             }
         }
     }
 
+    private List<Colonist> selectCandidates(Colonist c1){
+        Random rand = new Random();
+        List<Colonist> candidates = new ArrayList<>();
+        if (c1.getAssignedBuilding() != null) {
+            candidates.addAll(c1.getAssignedBuilding().getColonists());
+        }
+
+
+        if (c1.getBiofather() != null) candidates.add(c1.getBiofather());
+        if (c1.getBiomother() != null) candidates.add(c1.getBiomother());
+        candidates.addAll(c1.getChildren());
+
+
+        for (Map.Entry<String, Relationship> entry : c1.getRelationships().entrySet()) {
+            Relationship rel = entry.getValue();
+            int relsum = 0;
+
+            for (RelationshipType rtype : RelationshipType.values()) {
+                relsum += Math.abs(rel.getValue(rtype));
+            }
+
+            if (relsum > 20) {
+                Colonist strongBond = findColonistByName(entry.getKey());
+                if (strongBond != null && strongBond.isAlive()) {
+                    candidates.add(strongBond);
+                }
+            }
+
+
+            if (rand.nextDouble() < 0.1) {
+                Colonist random = colonists.get(rand.nextInt(colonists.size()));
+                if (random != c1 && random.isAlive() && !candidates.contains(c1)) {
+                    candidates.add(random);
+                }
+            }
+        }
+        return candidates;
+    }
+
+
+    private Colonist findColonistByName(String name) {
+        for (Colonist c : colonists) {
+            if (c.getName() == name) return c;
+        }
+        return null;
+    }
     public boolean areCompatible(Colonist c1, Colonist c2) {
 
         boolean sexuallyAttracted = c1.isAttractedTo(c2) && c2.isAttractedTo(c1);

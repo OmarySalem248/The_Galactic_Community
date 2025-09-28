@@ -1,4 +1,4 @@
-package Game.Colonist;
+package Game.Colonist.Profession;
 
 import Game.Colonist.*;
 import Game.Resources;

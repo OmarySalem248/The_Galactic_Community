@@ -1,6 +1,6 @@
 package Game.Buildings;
 import Game.Colonist.Colonist;
-import Game.Colonist.Profession;
+import Game.Colonist.Profession.Profession;
 
 import java.util.ArrayList;
 

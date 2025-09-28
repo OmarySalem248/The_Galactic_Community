@@ -3,6 +3,7 @@ package Game.Windows;
 import Game.Actions.AssignAction;
 import Game.Buildings.Building;
 import Game.Colonist.*;
+import Game.Colonist.Profession.ProfessionRegistry;
 import Game.Game;
 
 import javax.swing.*;
@@ -296,6 +297,7 @@ public class GameWindow {
             feedButton.setEnabled(false);
             colonistDropdown.setEnabled(false);
             buildingDropdown.setEnabled(false);
+            reduceFeedButton.setEnabled(false);
         }
     }
     public static void startGame(Game game) { SwingUtilities.invokeLater(() -> new GameWindow(game)); }

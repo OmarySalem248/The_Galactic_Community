@@ -1,6 +1,7 @@
 package Game.Actions.Interactions;
 
 import Game.Colonist.Colonist;
+import Game.Colonist.Personality.PersonalityTraits;
 import Game.Relationships.Relationship;
 
 import static Game.Relationships.RelationshipType.ROMANTIC;
@@ -15,21 +16,23 @@ public class FlirtAction extends InteractAction {
         double randflirt = Math.random()*100;
         randflirt += c1.getRelationships().get(c2.getName()).getValue(ROMANTIC);
         randflirt += c2.getRelationships().get(c1.getName()).getValue(ROMANTIC);
+        randflirt += (double) c1.getPersonality().getTrait(PersonalityTraits.ROMANCE)/10;
         if (randflirt > 80 && randflirt < 90) {
-            rel1.adjustValue(ROMANTIC,5);
-            rel2.adjustValue(ROMANTIC,-10);
+            rel1.adjustValue(ROMANTIC,1);
+            rel2.adjustValue(ROMANTIC,-1);
             rel2.adjustValue(SEXUAL,-1);
             c1.setStatus("Just blew it with "+c2.getName()+" :((((((((((((");
             c2.setStatus(c1.getName()+" is such a creep");
         } else if (randflirt > 90) {
-            rel1.adjustValue(ROMANTIC,10);
-            rel2.adjustValue(ROMANTIC,10);
+            rel1.adjustValue(ROMANTIC,1);
+            rel2.adjustValue(ROMANTIC,1);
             c1.setStatus(c2.getName()+" seemed really into me!!!");
             c2.setStatus(c1.getName()+" is such a flirt ;)");
             if(rel1.getValue(ROMANTIC)>50 && rel2.getValue(ROMANTIC)>50){
-                rel1.adjustValue(SEXUAL,5);
-                rel2.adjustValue(SEXUAL,5);
+                rel1.adjustValue(SEXUAL,1);
+                rel2.adjustValue(SEXUAL,1);
             }
+            c1.getPersonality().modTrait(PersonalityTraits.ROMANCE,5);
         }
 
     }

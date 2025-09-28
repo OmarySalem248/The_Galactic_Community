@@ -1,6 +1,6 @@
 package Game.Buildings;
 
-import Game.Colonist.Miner;
+import Game.Colonist.Profession.Miner;
 
 public class Mine extends Building{
     public Mine() {

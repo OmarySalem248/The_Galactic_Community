@@ -1,5 +1,6 @@
-package Game.Colonist;
+package Game.Colonist.Profession;
 
+import Game.Colonist.Colonist;
 import Game.Resources;
 
 public class Unemployed implements Profession{

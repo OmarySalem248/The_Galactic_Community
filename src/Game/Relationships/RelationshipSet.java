@@ -15,7 +15,9 @@ public class RelationshipSet {
         this.owner = owner;
         this.relationships = new HashMap<>();
     }
-
+    public Set<Map.Entry<String, Relationship>> entrySet() {
+        return relationships.entrySet();
+    }
     public void addRelationship(Relationship relationship) {
         relationships.put(relationship.getOtherName(), relationship);
     }

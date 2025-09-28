@@ -1,4 +1,4 @@
-package Game.Colonist;
+package Game.Colonist.Profession;
 
 import java.util.HashMap;
 import java.util.Map;

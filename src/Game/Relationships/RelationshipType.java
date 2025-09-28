@@ -4,5 +4,6 @@ public enum RelationshipType {
     PLATONIC,
     FAMILIAL,
     ROMANTIC,
-    SEXUAL
+    SEXUAL,
+    ADMIRATION
 }
