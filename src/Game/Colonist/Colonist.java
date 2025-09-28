@@ -21,10 +21,16 @@ public class Colonist {
     private String status;
     private RelationshipSet relationships;
 
+    private int influence;
+
+    private char sex;
+
+    private char sexuality;
+
     // ----- Composition: profession object -----
     private Profession profession;
 
-    public Colonist(String name, Profession profession, int age, int energy, int baseProductivity) {
+    public Colonist(String name, Profession profession, int age, int energy, int baseProductivity,char sex) {
         this.name = name;
         this.profession = profession;
         this.age = age;
@@ -35,6 +41,9 @@ public class Colonist {
         this.children = new ArrayList<>();
         this.relationships = new RelationshipSet(this);
         this.status = "Where am I?";
+        this.sex = sex;
+        this.sexuality ='S';
+        this.influence =0;
     }
 
     // ----- Basic getters and setters -----
@@ -45,6 +54,16 @@ public class Colonist {
     public int getAgeMonths() { return ageMonths; }
     public int getHealth() { return hp; }
     public Profession getProfession;
+
+    public void togglesexuality(char sexuality){
+        this.sexuality = sexuality;
+    }
+    public char getSex(){
+        return sex;
+    }
+    public char  getSexuality(){
+        return sexuality;
+    }
     public RelationshipSet getRelationships() { return relationships; }
 
     public void setParents(Colonist mom, Colonist dad) {
@@ -57,6 +76,10 @@ public class Colonist {
     public void takeDamage(int dmg) {
         hp -= dmg;
         if (hp < 0) hp = 0;
+    }
+
+    public int getInfluence(){
+        return influence;
     }
 
     public int getFoodConsumption() {
@@ -126,6 +149,26 @@ public class Colonist {
 
     public void setProfession(Profession profession) {
         this.profession = profession;
+    }
+
+    public Colonist getBiofather() {
+        return bioFather;
+    }
+    public Colonist getBiomother() {
+        return bioMother;
+    }
+
+    public boolean isAttractedTo(Colonist c2) {
+        switch (this.getSexuality()) {
+            case 'S':
+                return this.getSex() != c2.getSex();
+            case 'G':
+                return this.getSex() == c2.getSex();
+            case 'B':
+                return true;
+            default:
+                return false;
+        }
     }
 }
 

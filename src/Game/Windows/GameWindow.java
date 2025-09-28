@@ -31,6 +31,7 @@ public class GameWindow {
     private JButton buildBtn;
     private boolean updatingDropdown = false;
     private boolean updatingProfessionDropdown = false;
+    private RelationshipPanel relPanel;
 
     public GameWindow(Game game) {
         this.game = game;
@@ -53,6 +54,8 @@ public class GameWindow {
 
         gameUpdate = new JLabel(game.getStatus(), SwingConstants.CENTER);
         gameUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
+        relPanel = new RelationshipPanel(game);
+        frame.add(relPanel, BorderLayout.EAST);
 
         infoPanel.add(Box.createVerticalStrut(5));
         infoPanel.add(turnLabel);
@@ -202,6 +205,7 @@ public class GameWindow {
             updatingProfessionDropdown = true;
             professionDropdown.setSelectedItem(selected.getProfession().getName());
             updatingProfessionDropdown = false;
+            this.relPanel.updateTable(selected);
 
             // Update building dropdown
             buildingDropdown.removeAllItems();
@@ -272,6 +276,9 @@ public class GameWindow {
     public void updateGameStats() {
         turnLabel.setText("Turn: " + game.getTurn());
         resLabel.setText(game.getColony().getResources().toString());
+
+
+
     }
 
     private void nextTurn() {

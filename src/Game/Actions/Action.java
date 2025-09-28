@@ -17,5 +17,5 @@ public abstract class Action {
      * Executes the action in the context of the colony.
      * Returns true if successful.
      */
-    public abstract boolean execute(Colony colony);
+    public abstract boolean  execute(Colony colony);
 }

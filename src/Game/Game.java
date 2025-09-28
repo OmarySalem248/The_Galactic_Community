@@ -28,5 +28,6 @@ public class Game {
         turn++;
         colony.consumeAndProduce();
         colony.ageColonists();
+        colony.developRelationships();
     }
 }

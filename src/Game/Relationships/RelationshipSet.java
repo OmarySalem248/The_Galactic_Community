@@ -5,10 +5,11 @@ import Game.Colonist.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class RelationshipSet {
     private Colonist owner;
-    private Map<String, Relationship> relationships; // keyed by other colonist's name
+    private Map<String, Relationship> relationships;
 
     public RelationshipSet(Colonist owner) {
         this.owner = owner;
@@ -21,6 +22,9 @@ public class RelationshipSet {
 
     public void removeRelationshipWith(String otherName) {
         relationships.remove(otherName);
+    }
+    public Map<String, Relationship> getRelationships(){
+        return relationships;
     }
 
     public Relationship getRelationshipWith(String otherName) {
@@ -50,6 +54,24 @@ public class RelationshipSet {
         if (r != null) {
             r.adjustValue(type, delta);
         }
+    }
+
+    public Relationship getOrCreate(Colonist other) {
+        if (this.hasRelationshipWith(other.getName())){
+            return  this.getRelationshipWith(other.getName());
+        }
+        addRelationship(new Relationship(owner,other,"Neutral"));
+        return this.getRelationshipWith(other.getName());
+    }
+
+
+
+    public Set<String> getKeys() {
+        return relationships.keySet();
+    }
+
+    public Relationship get(String otherName) {
+        return relationships.get(otherName);
     }
 }
 

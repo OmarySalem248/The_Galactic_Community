@@ -1,6 +1,8 @@
 package Game;
 
 import Game.Actions.Action;
+import Game.Actions.Interactions.FlirtAction;
+import Game.Actions.Interactions.InteractAction;
 import Game.Buildings.Building;
 import Game.Colonist.*;
 import Game.Relationships.*;
@@ -8,29 +10,33 @@ import Game.Relationships.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+
+import static Game.Relationships.RelationshipType.*;
 
 
 public class Colony {
     private List<Colonist> colonists;
 
     private List<Building> buildings;
+    private RelationshipManager relman;
 
-    private  List<Colonist> unassignedColonists;
+
     private Resources resources;
 
     public Colony(int startingPopulation, Resources startingResources) {
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
         this.buildings = new ArrayList<>();
-        colonists.add(new Colonist("Jeff", new Farmer(),35,1,1));
-        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1));
-        colonists.add(new Colonist("Troy",new Farmer(), 19,1,1));
-        colonists.add(new Colonist("Abed",new Miner(),20,1,1));
-        colonists.add(new Colonist("Annie",new Miner(),19,1,1));
-        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1));
-        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1));
-        this.unassignedColonists = colonists;
+        colonists.add(new Colonist("Jeff", new Farmer(),35,1,1,'M'));
+        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1,'F'));
+        colonists.add(new Colonist("Troy",new Farmer(), 19,1,1,'M'));
+        colonists.add(new Colonist("Abed",new Miner(),20,1,1,'M'));
+        colonists.add(new Colonist("Annie",new Miner(),19,1,1,'F'));
+        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1,'F'));
+        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1,'M'));
         this.initializeRelationships();
+        relman = new RelationshipManager(this);
     }
 
     public List<Colonist> getColonists() {
@@ -51,13 +57,17 @@ public class Colony {
                 if (c1 != c2) {
                     if (!c1.getRelationships().hasRelationshipWith(c2.getName())) {
                         c1.getRelationships().addRelationship(
-                                new Relationship(c2, "None")
+                                new Relationship(c1,c2, "None")
                         );
                     }
                 }
             }
         }
     }
+    public void developRelationships() {
+        relman.developRelationships();
+    }
+
 
 
 
