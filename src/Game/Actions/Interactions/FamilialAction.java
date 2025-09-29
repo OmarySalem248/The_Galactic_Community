@@ -10,8 +10,8 @@ public class FamilialAction extends InteractAction{
     }
     @Override
     public void execute(Colonist c1, Colonist c2, Relationship rel1, Relationship rel2) {
-        rel1.adjustValue(RelationshipType.FAMILIAL,1);
-        rel2.adjustValue(RelationshipType.FAMILIAL,1);
+        rel1.adjustValue(RelationshipType.FAMILIAL,2);
+        rel2.adjustValue(RelationshipType.FAMILIAL,2);
 
     }
 }

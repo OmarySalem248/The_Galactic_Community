@@ -1,7 +1,12 @@
 package Game;
 
 import Game.Actions.Action;
+import Game.Actions.AssignAction;
+import Game.Actions.BuildAction;
 import Game.Buildings.Building;
+import Game.Buildings.Farm;
+import Game.Buildings.LumberMill;
+import Game.Buildings.Mine;
 import Game.Colonist.*;
 import Game.Colonist.Personality.Personality;
 import Game.Colonist.Personality.PersonalityFactory;
@@ -32,14 +37,32 @@ public class Colony {
         this.buildings = new ArrayList<>();
         this.persfact = new PersonalityFactory();
         colonists.add(new Colonist("Jeff", new Farmer(),35,1,1,'M',persfact.futureDictator()));
-        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1,'F',persfact.randomPersonality()));
+        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1,'F',persfact.comedian()));
         colonists.add(new Colonist("Troy",new Farmer(), 19,1,1,'M',persfact.funGuy()));
-        colonists.add(new Colonist("Abed",new Miner(),20,1,1,'M',persfact.randomPersonality()));
-        colonists.add(new Colonist("Annie",new Miner(),19,1,1,'F',persfact.randomPersonality()));
-        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1,'F',persfact.randomPersonality()));
-        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1,'M',persfact.randomPersonality()));
+        colonists.add(new Colonist("Abed",new Miner(),20,1,1,'M',persfact.awkwardDude()));
+        colonists.add(new Colonist("Annie",new Miner(),19,1,1,'F',persfact.perfectionist()));
+        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1,'F',persfact.caring()));
+        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1,'M',persfact.turd()));
         this.initializeRelationships();
         relman = new RelationshipManager(this);
+
+
+
+        buildings.add(new Farm());
+        buildings.add(new Farm());
+        buildings.add(new LumberMill());
+        buildings.add(new Mine());
+
+        for (Colonist c : colonists) {
+            for(Building b :buildings) {
+                if (b.isCompatible(c) && b.getColonists().size() < b.getColonlimit()) {
+                    AssignAction assign = new AssignAction(c,b);
+                    assign.execute(this);
+
+                }
+            }
+
+        }
     }
 
     public List<Colonist> getColonists() {

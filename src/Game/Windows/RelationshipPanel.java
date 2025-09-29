@@ -20,7 +20,7 @@ public class RelationshipPanel extends JPanel {
         this.game = game;
         setLayout(new BorderLayout(5,5));
 
-        String[] columns = {"Colonist", "Platonic", "Familial", "Romantic", "Sexual","Loyalty"};
+        String[] columns = {"Colonist", "Platonic", "Familial", "Romantic", "Sexual","Admiration","Proximity"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -48,7 +48,8 @@ public class RelationshipPanel extends JPanel {
                     rel.getValue(RelationshipType.FAMILIAL),
                     rel.getValue(RelationshipType.ROMANTIC),
                     rel.getValue(RelationshipType.SEXUAL),
-                    rel.getValue(RelationshipType.ADMIRATION)
+                    rel.getValue(RelationshipType.ADMIRATION),
+                    rel.getValue(RelationshipType.PROXIMITY)
             };
             tableModel.addRow(row);
         }

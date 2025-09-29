@@ -4,30 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="changed how interactions and relationships work so that there are automated interations and relationship development inbetween turns">
-      <change afterPath="$PROJECT_DIR$/src/Game/Colonist/Personality/Personality.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Colonist/Personality/PersonalityFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Colonist/Personality/PersonalityTraits.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Colonist/Skills/SkillSet.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="fleahed out interactions and how personalities affect them">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Actions/AssignAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/AssignAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/CoworkerInteract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/CoworkerInteract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/FamilialAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/FamilialAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/FlirtAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/FlirtAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Buildings/Building.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Buildings/Farm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/LumberMill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Buildings/LumberMill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Mine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Buildings/Mine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Farmer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Miner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Miner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Profession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/ProfessionRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/ProfessionRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Unemployed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Unemployed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Woodcutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Woodcutter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Personality/Personality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Personality/Personality.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Personality/PersonalityFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Personality/PersonalityFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colony.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/RelationshipSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/RelationshipType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -128,7 +117,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759040279586</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fleahed out interactions and how personalities affect them">
+      <option name="closed" value="true" />
+      <created>1759051286279</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1759051286279</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -137,7 +134,8 @@
     <MESSAGE value="added relationships between colonists, doesnt work and isnt applied yet, changed how proffessions are applied to colonists" />
     <MESSAGE value="made it possible to change a colonists profession" />
     <MESSAGE value="changed how interactions and relationships work so that there are automated interations and relationship development inbetween turns" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed how interactions and relationships work so that there are automated interations and relationship development inbetween turns" />
+    <MESSAGE value="fleahed out interactions and how personalities affect them" />
+    <option name="LAST_COMMIT_MESSAGE" value="fleahed out interactions and how personalities affect them" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

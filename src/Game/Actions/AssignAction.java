@@ -27,7 +27,7 @@ public class AssignAction extends Action{
         if (building.getCompatible().isInstance(colonist.getProfession())) valid = true;
         if (building.getColonists().size()>=building.getColonlimit()) valid = false;
         if (valid) {
-            colonist.unassignBuilding(); // remove from previous
+            colonist.unassignBuilding();
             colonist.assignBuilding(building);
             return true;
         }

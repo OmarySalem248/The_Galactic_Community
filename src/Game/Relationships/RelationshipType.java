@@ -5,5 +5,8 @@ public enum RelationshipType {
     FAMILIAL,
     ROMANTIC,
     SEXUAL,
-    ADMIRATION
+    ADMIRATION,
+    PROXIMITY
+
+
 }

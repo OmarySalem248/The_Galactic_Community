@@ -35,6 +35,8 @@ public class Colonist {
 
     private char sexuality;
 
+    private boolean taken;
+
     // ----- Composition: profession object -----
     private Profession profession;
 
@@ -53,6 +55,7 @@ public class Colonist {
         this.sexuality ='S';
         this.personality = personality;
         this.favourability = 0;
+        this.taken = false;
     }
     public Colonist(String name,char sex) {
         this.name = name;
@@ -68,6 +71,7 @@ public class Colonist {
         this.sex = sex;
         personalityFactory = new PersonalityFactory();
         this.personality = personalityFactory.randomPersonality();
+        this.taken = false;
     }
 
     // ----- Basic getters and setters -----
@@ -82,6 +86,9 @@ public class Colonist {
     public int getFavourability(){return favourability;}
     public void modFavourability(int change){ favourability += change;}
 
+    public boolean getTaken(){return taken;}
+
+    public void setTaken(Boolean taken){this.taken = taken;}
     public void togglesexuality(char sexuality){
         this.sexuality = sexuality;
     }

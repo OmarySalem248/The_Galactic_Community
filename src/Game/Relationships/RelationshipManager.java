@@ -9,8 +9,7 @@ import Game.Colony;
 
 import java.util.*;
 
-import static Game.Relationships.RelationshipType.ADMIRATION;
-import static Game.Relationships.RelationshipType.PLATONIC;
+import static Game.Relationships.RelationshipType.*;
 
 public class RelationshipManager {
     private FlirtAction flirt;
@@ -35,12 +34,12 @@ public class RelationshipManager {
         for (Colonist c1 : colonists) {
             if (!c1.isAlive()) continue;
             List<Colonist> candidates;
-            if (colony.getColonists().size()>20) {
-                candidates = selectCandidates(c1);
-            }
-            else{
-                candidates = colonists;
-            }
+
+
+            candidates = selectCandidates(c1);
+            System.out.print(c1);
+            System.out.print(candidates);
+
 
 
             for (Colonist c2 : candidates) {
@@ -58,7 +57,7 @@ public class RelationshipManager {
                 }
 
 
-                if (areCompatible(c1, c2)) {
+                if (areCompatible(c1, c2) && rel1.getValue(ROMANTIC)<50&& !c1.getTaken() && !c2.getTaken()) {
                     flirt.execute(c1, c2, rel1, rel2);
                 }
                 if (c1.getAssignedBuilding() != null &&
@@ -91,7 +90,9 @@ public class RelationshipManager {
             int relsum = 0;
 
             for (RelationshipType rtype : RelationshipType.values()) {
-                relsum += Math.abs(rel.getValue(rtype));
+                if (rtype != PROXIMITY) {
+                    relsum += Math.abs(rel.getValue(rtype));
+                }
             }
 
             if (relsum > 20) {
@@ -101,14 +102,17 @@ public class RelationshipManager {
                 }
             }
 
-
-            if (rand.nextDouble() < 0.1) {
-                Colonist random = colonists.get(rand.nextInt(colonists.size()));
-                if (random != c1 && random.isAlive() && !candidates.contains(c1)) {
-                    candidates.add(random);
+            if(candidates.size()<colonists.size()-1) {
+                while (true) {
+                    Colonist random = colonists.get(rand.nextInt(colonists.size()));
+                    if (random != c1 && random.isAlive() && !candidates.contains(random)) {
+                        candidates.add(random);
+                        break;
+                    }
                 }
             }
         }
+
         return candidates;
     }
 

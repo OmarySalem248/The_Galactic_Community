@@ -24,15 +24,21 @@ public class FlirtAction extends InteractAction {
             c1.setStatus("Just blew it with "+c2.getName()+" :((((((((((((");
             c2.setStatus(c1.getName()+" is such a creep");
         } else if (randflirt > 90) {
-            rel1.adjustValue(ROMANTIC,1);
-            rel2.adjustValue(ROMANTIC,1);
+            if(rel1.getValue(ROMANTIC)<= 10 && rel2.getValue(ROMANTIC)<= 10) {
+                rel1.adjustValue(ROMANTIC, 10);
+                rel2.adjustValue(ROMANTIC, 10);
+            }
+            else{
+                rel1.adjustValue(ROMANTIC, 2);
+                rel2.adjustValue(ROMANTIC, 2);
+            }
             c1.setStatus(c2.getName()+" seemed really into me!!!");
             c2.setStatus(c1.getName()+" is such a flirt ;)");
             if(rel1.getValue(ROMANTIC)>50 && rel2.getValue(ROMANTIC)>50){
-                rel1.adjustValue(SEXUAL,1);
-                rel2.adjustValue(SEXUAL,1);
+                rel1.adjustValue(SEXUAL,2);
+                rel2.adjustValue(SEXUAL,2);
             }
-            c1.getPersonality().modTrait(PersonalityTraits.ROMANCE,5);
+            c1.getPersonality().modTrait(PersonalityTraits.ROMANCE,1);
         }
 
     }

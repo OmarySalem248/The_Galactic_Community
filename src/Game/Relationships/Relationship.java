@@ -74,9 +74,20 @@ public class Relationship {
                 if (feelingdifference < -10) setType("Stalker");
                 if(Math.abs(feelingdifference)<10) {
                     setType("None");
-                    if (current >= 50 && !marriagestatus) setType("Lover");
-                    else if (current >= 80 && !marriagestatus) setType("Engaged");
+                    if(current>=50 && owner.getPersonality().getMono() && other.getPersonality().getMono()){
+                            owner.setTaken(true);
+                            other.setTaken(true);
+                    }
+                    if (current >= 50 && !marriagestatus){
+                        setType("Lover");
+                    }
+                    if (current >= 80 && !marriagestatus) setType("Engaged");
                 }
+                if(current < 45){
+                    owner.setTaken(false);
+                    other.setTaken(false);
+                }
+
                 break;
 
             case SEXUAL:
