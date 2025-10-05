@@ -14,6 +14,7 @@ import Game.Colonist.Profession.Farmer;
 import Game.Colonist.Profession.Miner;
 import Game.Colonist.Profession.Unemployed;
 import Game.Colonist.Profession.Woodcutter;
+import Game.Government.ColonyLeadership;
 import Game.Relationships.*;
 
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class Colony {
     private RelationshipManager relman;
     private PersonalityFactory persfact;
 
+    private ColonyLeadership leadership;
+
+    private String status;
 
     private Resources resources;
 
@@ -36,17 +40,17 @@ public class Colony {
         this.colonists = new ArrayList<>();
         this.buildings = new ArrayList<>();
         this.persfact = new PersonalityFactory();
-        colonists.add(new Colonist("Jeff", new Farmer(),35,1,1,'M',persfact.futureDictator()));
-        colonists.add(new Colonist("Britta",new Woodcutter(),28,1,1,'F',persfact.comedian()));
-        colonists.add(new Colonist("Troy",new Farmer(), 19,1,1,'M',persfact.funGuy()));
-        colonists.add(new Colonist("Abed",new Miner(),20,1,1,'M',persfact.awkwardDude()));
-        colonists.add(new Colonist("Annie",new Miner(),19,1,1,'F',persfact.perfectionist()));
-        colonists.add(new Colonist("Shirley",new Woodcutter(),43,1,1,'F',persfact.caring()));
-        colonists.add(new Colonist("Pierce",new Unemployed(),75,1,1,'M',persfact.turd()));
+        colonists.add(new Colonist(this,"Jeff", new Farmer(),35,1,1,'M',persfact.futureDictator()));
+        colonists.add(new Colonist(this,"Britta",new Woodcutter(),28,1,1,'F',persfact.comedian()));
+        colonists.add(new Colonist(this,"Troy",new Farmer(), 19,1,1,'M',persfact.funGuy()));
+        colonists.add(new Colonist(this,"Abed",new Miner(),20,1,1,'M',persfact.awkwardDude()));
+        colonists.add(new Colonist(this,"Annie",new Miner(),19,1,1,'F',persfact.perfectionist()));
+        colonists.add(new Colonist(this,"Shirley",new Woodcutter(),43,1,1,'F',persfact.caring()));
+        colonists.add(new Colonist(this,"Pierce",new Unemployed(),75,1,1,'M',persfact.turd()));
         this.initializeRelationships();
         relman = new RelationshipManager(this);
-
-
+        this.leadership = new ColonyLeadership();
+        this.status ="The crew are lost!";
 
         buildings.add(new Farm());
         buildings.add(new Farm());
@@ -64,6 +68,9 @@ public class Colony {
 
         }
     }
+    public void addColonist(Colonist colonist){
+        colonists.add(colonist);
+    }
 
     public List<Colonist> getColonists() {
         return colonists;
@@ -73,6 +80,12 @@ public class Colony {
         return resources;
     }
 
+    public String getStatus(){
+        return status;
+    }
+    public void setStatus(String status){
+        this.status = status;
+    }
     public int getPopulation() {
         return colonists.size();
     }
@@ -93,6 +106,8 @@ public class Colony {
     public void developRelationships() {
         relman.developRelationships();
     }
+
+    public ColonyLeadership getLeadership(){return  leadership;}
 
 
 
@@ -150,11 +165,27 @@ public class Colony {
 
         removeDeadColonists();
     }
-    public void ageColonists(){
-        for(Colonist c : colonists){
+    public void ageColonists() {
+        List<Pregnancy> newBirths = new ArrayList<>();
+
+        for (Colonist c : colonists) {
             c.age();
+
+
+            if (c.getPregnancy() != null) {
+                Pregnancy due = c.getPregnancy().progress();
+                if(due != null){
+                    newBirths.add(due);
+                }
+            }
+        }
+
+
+        for(Pregnancy due: newBirths){
+            due.birth();
         }
     }
+
     private void produce(Colonist c,int usedenergy){
         Resources produced = c.work(usedenergy);
         resources.addFood(produced.getFood());

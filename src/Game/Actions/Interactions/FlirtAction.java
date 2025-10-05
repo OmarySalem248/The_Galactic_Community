@@ -4,8 +4,7 @@ import Game.Colonist.Colonist;
 import Game.Colonist.Personality.PersonalityTraits;
 import Game.Relationships.Relationship;
 
-import static Game.Relationships.RelationshipType.ROMANTIC;
-import static Game.Relationships.RelationshipType.SEXUAL;
+import static Game.Relationships.RelationshipType.*;
 
 public class FlirtAction extends InteractAction {
     public FlirtAction() {
@@ -27,10 +26,12 @@ public class FlirtAction extends InteractAction {
             if(rel1.getValue(ROMANTIC)<= 10 && rel2.getValue(ROMANTIC)<= 10) {
                 rel1.adjustValue(ROMANTIC, 10);
                 rel2.adjustValue(ROMANTIC, 10);
+                rel1.adjustValue(PLATONIC, 1);
+                rel1.adjustValue(PLATONIC, 1);
             }
             else{
-                rel1.adjustValue(ROMANTIC, 2);
-                rel2.adjustValue(ROMANTIC, 2);
+                rel1.adjustValue(ROMANTIC, 5);
+                rel2.adjustValue(ROMANTIC, 5);
             }
             c1.setStatus(c2.getName()+" seemed really into me!!!");
             c2.setStatus(c1.getName()+" is such a flirt ;)");

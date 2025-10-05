@@ -9,7 +9,7 @@ public class Game {
     public Game() {
         this.turn = 1;
         this.colony = new Colony(7, new Resources(20, 15, 10));
-        this.status = "The crew are lost!";
+        this.status = this.colony.getStatus();
     }
 
     public int getTurn() {
@@ -17,7 +17,7 @@ public class Game {
     }
 
     public String getStatus(){
-        return this.status;
+        return this.colony.getStatus();
     }
 
     public Colony getColony() {
@@ -29,5 +29,8 @@ public class Game {
         colony.consumeAndProduce();
         colony.ageColonists();
         colony.developRelationships();
+        if (this.turn ==12){
+            colony.getLeadership().setLeadership(colony);
+        }
     }
 }

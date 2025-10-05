@@ -5,6 +5,7 @@ import Game.Buildings.Building;
 import Game.Colonist.*;
 import Game.Colonist.Profession.ProfessionRegistry;
 import Game.Game;
+import Game.Government.ColonyLeadership;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,13 +30,17 @@ public class GameWindow {
     private JComboBox<String> professionDropdown;
 
     private JButton nextTurnBtn;
+    private final java.util.Set<Colonist> knownColonists = new java.util.HashSet<>();
     private JButton buildBtn;
     private boolean updatingDropdown = false;
     private boolean updatingProfessionDropdown = false;
+    private ColonyLeadership leadership;
     private RelationshipPanel relPanel;
 
     public GameWindow(Game game) {
         this.game = game;
+        this.leadership = game.getColony().getLeadership();
+
 
         JFrame frame = new JFrame("Colony Builder - Micromanagement");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,6 +82,7 @@ public class GameWindow {
         colonistDropdown = new JComboBox<>();
         for (Colonist c : game.getColony().getColonists()) {
             colonistDropdown.addItem(c);
+            knownColonists.add(c);
         }
         colonistDropdown.addActionListener(e -> updateColonistStats());
 
@@ -125,7 +131,7 @@ public class GameWindow {
             }
         });
 
-        // Building assignment dropdown
+
         buildingDropdown = new JComboBox<>();
         buildingDropdown.addActionListener(e -> assignColonistToBuilding());
         professionDropdown = new JComboBox<>();
@@ -192,20 +198,34 @@ public class GameWindow {
 
         frame.setVisible(true);
     }
+    public void updateColonistDropdown() {
+        for (Colonist c : game.getColony().getColonists()) {
+            if (!knownColonists.contains(c)) {
+                colonistDropdown.addItem(c);
+                knownColonists.add(c);
+            }
+        }
+    }
 
     public void updateColonistStats() {
         updatingDropdown = true;
         Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
         if (selected != null) {
-            occupationLabel.setText(selected.getOccupation());
+            if (leadership.getCurrentLeader() == selected) {
+                occupationLabel.setText("Tribe Leader");
+                professionDropdown.setEnabled(false); // disable changing
+            } else {
+                occupationLabel.setText(selected.getOccupation());
+                professionDropdown.setEnabled(true); // allow changing
+                updatingProfessionDropdown = true;
+                professionDropdown.setSelectedItem(selected.getProfession().getName());
+                updatingProfessionDropdown = false;
+            }
+
             energyLabel.setText(String.valueOf(selected.getEnergy()));
             hpLabel.setText(String.valueOf(selected.getHealth()));
             ageLabel.setText(selected.getAge()+" Years "+selected.getAgeMonths()+" Months");
             colonistUpdate.setText(selected.getStatus());
-            professionDropdown.setSelectedItem(selected.getProfession().getName());
-            updatingProfessionDropdown = true;
-            professionDropdown.setSelectedItem(selected.getProfession().getName());
-            updatingProfessionDropdown = false;
             this.relPanel.updateTable(selected);
 
             // Update building dropdown
@@ -221,11 +241,26 @@ public class GameWindow {
                 buildingDropdown.setSelectedItem("Unassigned");
             }
         }
+
         updatingDropdown = false;
     }
     private void changeColonistProfession() {
         Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
         if (selected == null) return;
+        if (leadership.getCurrentLeader() == selected) {
+            JOptionPane.showMessageDialog(null,
+                    "The Tribe Leader's role cannot be changed!",
+                    "Leader Protected",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (selected.getAge()<16) {
+            JOptionPane.showMessageDialog(null,
+                    "Child Labour Laws bro",
+                    "Too young",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         String newProfessionName = (String) professionDropdown.getSelectedItem();
         if (newProfessionName == null) return;
@@ -277,6 +312,8 @@ public class GameWindow {
     public void updateGameStats() {
         turnLabel.setText("Turn: " + game.getTurn());
         resLabel.setText(game.getColony().getResources().toString());
+        updateColonistDropdown();
+        gameUpdate.setText(game.getStatus());
 
 
 
@@ -298,6 +335,7 @@ public class GameWindow {
             colonistDropdown.setEnabled(false);
             buildingDropdown.setEnabled(false);
             reduceFeedButton.setEnabled(false);
+
         }
     }
     public static void startGame(Game game) { SwingUtilities.invokeLater(() -> new GameWindow(game)); }

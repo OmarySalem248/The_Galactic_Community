@@ -5,7 +5,11 @@ import Game.Colonist.Personality.Personality;
 import Game.Colonist.Personality.PersonalityFactory;
 import Game.Colonist.Profession.Profession;
 import Game.Colonist.Profession.Unemployed;
+import Game.Colony;
+import Game.Relationships.Relationship;
+import Game.Relationships.RelationshipManager;
 import Game.Relationships.RelationshipSet;
+import Game.Relationships.RelationshipType;
 import Game.Resources;
 
 
@@ -32,15 +36,21 @@ public class Colonist {
     private char sex;
 
     private Personality personality;
+    private boolean isMarried;
 
     private char sexuality;
 
     private boolean taken;
+    private Colony colony;
+
+    private Pregnancy pregnancy;
+    protected int postpartumTimer = 0;
 
     // ----- Composition: profession object -----
     private Profession profession;
+    private Colonist partner;
 
-    public Colonist(String name, Profession profession, int age, int energy, int baseProductivity,char sex,Personality personality) {
+    public Colonist(Colony colony, String name, Profession profession, int age, int energy, int baseProductivity, char sex, Personality personality) {
         this.name = name;
         this.profession = profession;
         this.age = age;
@@ -56,8 +66,10 @@ public class Colonist {
         this.personality = personality;
         this.favourability = 0;
         this.taken = false;
+        this.colony = colony;
+        this.isMarried = false;
     }
-    public Colonist(String name,char sex) {
+    public Colonist(Colony colony,String name,char sex) {
         this.name = name;
         this.profession = new Unemployed();
         this.age = 0;
@@ -72,6 +84,8 @@ public class Colonist {
         personalityFactory = new PersonalityFactory();
         this.personality = personalityFactory.randomPersonality();
         this.taken = false;
+        this.colony = colony;
+        this.isMarried = false;
     }
 
     // ----- Basic getters and setters -----
@@ -103,6 +117,12 @@ public class Colonist {
     public void setParents(Colonist mom, Colonist dad) {
         this.bioMother = mom;
         this.bioFather = dad;
+        Relationship maternal = new Relationship(this,bioMother,"Mother");
+        maternal.adjustValue(RelationshipType.FAMILIAL,10);
+        Relationship paternal = new Relationship(this,bioFather,"Father");
+        paternal.adjustValue(RelationshipType.FAMILIAL,10);
+        this.relationships.addRelationship(maternal);
+        this.relationships.addRelationship(paternal);
     }
 
     public boolean isAlive() { return hp > 0; }
@@ -145,6 +165,13 @@ public class Colonist {
             ageMonths = 0;
             age += 1;
         }
+
+        if (postpartumTimer > 0) {
+            postpartumTimer--;
+        }
+    }
+    public void setPregnancy(Pregnancy pregnancy){
+        this.pregnancy = pregnancy;
     }
 
 
@@ -180,7 +207,12 @@ public class Colonist {
     }
 
     public void setProfession(Profession profession) {
+
         this.profession = profession;
+        if (this.getAssignedBuilding() != null &&
+                !this.getAssignedBuilding().isCompatible(this)) {
+           this.unassignBuilding();
+        }
     }
 
     public Colonist getBiofather() {
@@ -201,6 +233,28 @@ public class Colonist {
             default:
                 return false;
         }
+    }
+
+
+    public Colony getColony() {
+        return colony;
+    }
+
+    public Pregnancy getPregnancy() {
+        return pregnancy;
+    }
+
+    public boolean isMarried() {
+
+        return isMarried;
+    }
+
+    public boolean isEngagedTo(Colonist c2) {
+        return (this.partner == c2);
+    }
+
+    public void setEngagedTo(Colonist c2) {
+        this.partner = c2;
     }
 }
 

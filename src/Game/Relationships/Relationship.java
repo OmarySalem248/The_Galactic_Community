@@ -32,7 +32,8 @@ public class Relationship {
 
     }
     public  EnumMap<RelationshipType, Integer> getValues(){
-        return values;
+        if(this != null){return values;}
+        return null;
     }
 
     public String getOtherName() {
@@ -64,35 +65,50 @@ public class Relationship {
 
             case FAMILIAL:
                 if (current < 0) setType("Poor Family Relationship");
-                if (current >= 0) setType("Family");
+                if (current > 0) setType("Family");
                 if (current >= 70) setType("Strong Family Bond");
                 break;
 
             case ROMANTIC:
-                int feelingdifference = current - other.getRelationships().get(owner.getName()).getValue(RelationshipType.ROMANTIC);
-                if (feelingdifference > 10) setType("Unrequited Love");
-                if (feelingdifference < -10) setType("Stalker");
-                if(Math.abs(feelingdifference)<10) {
-                    setType("None");
-                    if(current>=50 && owner.getPersonality().getMono() && other.getPersonality().getMono()){
+                int otherVal = other.getRelationships()
+                        .get(owner.getName())
+                        .getValue(RelationshipType.ROMANTIC);
+                int feelingDiff = current - otherVal;
+
+
+                if (feelingDiff > 20) {
+                    setType("Unrequited Love");
+                } else if (feelingDiff < -20) {
+                    setType("Stalker");
+                } else {
+
+                    if (current >= 80 && !marriagestatus) {
+                        owner.setTaken(true);
+                        other.setTaken(true);
+                    } else if (current >= 50) {
+
+                        setType("Lover");
+                        if (owner.getPersonality().getMono() && other.getPersonality().getMono()) {
                             owner.setTaken(true);
                             other.setTaken(true);
+                        }
                     }
-                    if (current >= 50 && !marriagestatus){
-                        setType("Lover");
-                    }
-                    if (current >= 80 && !marriagestatus) setType("Engaged");
-                }
-                if(current < 45){
-                    owner.setTaken(false);
-                    other.setTaken(false);
                 }
 
+
+                if (current < 35) {
+                    if (marriagestatus || getType().equals("Lover") || getType().equals("Engaged")) {
+                        owner.setTaken(false);
+                        other.setTaken(false);
+                        setType("Broken Up");
+                    };
+                }
                 break;
 
+
             case SEXUAL:
-                if (current >= -50) setType("Disgusted");
-                if (current >= 50) setType("Attracted");
+                if (current <= -20) setType("Disgusted");
+                if (current >= 20) setType("Attracted");
                 break;
         }
     }
@@ -104,7 +120,17 @@ public class Relationship {
         return type + " with " + other.getName();
     }
 
+    public void setMarriagestatus(Boolean mstatus){
+        marriagestatus =mstatus;
+    }
+
+    public boolean isMarriagestatus() {
+        return marriagestatus;
+    }
+
     public int getValue(RelationshipType relationshipType) {
         return values.getOrDefault(relationshipType,0);
     }
+
+
 }
