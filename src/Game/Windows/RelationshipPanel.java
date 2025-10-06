@@ -18,7 +18,7 @@ public class RelationshipPanel extends JPanel {
 
     public RelationshipPanel(Game game) {
         this.game = game;
-        setLayout(new BorderLayout(5,8));
+        setLayout(new BorderLayout(8,8));
 
         String[] columns = {"Colonist", "Platonic", "Familial", "Romantic", "Sexual","Admiration","Proximity"};
         tableModel = new DefaultTableModel(columns, 0) {
@@ -30,6 +30,7 @@ public class RelationshipPanel extends JPanel {
 
         relationshipTable = new JTable(tableModel);
         relationshipTable.setFillsViewportHeight(true);
+        relationshipTable.getColumnModel().getColumn(0).setPreferredWidth(200);
         add(new JScrollPane(relationshipTable), BorderLayout.CENTER);
 
 

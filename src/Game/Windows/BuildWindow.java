@@ -1,10 +1,7 @@
 package Game.Windows;
 
 import Game.Actions.BuildAction;
-import Game.Buildings.Building;
-import Game.Buildings.Farm;
-import Game.Buildings.LumberMill;
-import Game.Buildings.Mine;
+import Game.Buildings.*;
 import Game.Colony;
 import Game.Game;
 
@@ -40,6 +37,10 @@ public class BuildWindow {
         JButton mineBtn = new JButton("Build Mine");
         mineBtn.addActionListener(e -> build(new Mine()));
         frame.add(mineBtn);
+
+        JButton tcentreBtn = new JButton("Build Tribe Centre");
+        tcentreBtn.addActionListener(e -> build(new TribeCentre()));
+        frame.add(tcentreBtn);
 
         frame.setVisible(true);
     }

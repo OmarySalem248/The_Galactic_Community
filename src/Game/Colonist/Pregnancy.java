@@ -1,5 +1,7 @@
 package Game.Colonist;
 
+import Game.Relationships.Relationship;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -47,6 +49,12 @@ public class Pregnancy {
             sex='F';
         }
         Colonist baby = new Colonist(this.father.getColony(),name,sex);
+        for(Colonist sib : mother.getChildren()){
+            Relationship sibling = new Relationship(baby,sib,"Sibling");
+            baby.getRelationships().addRelationship(sibling);
+            Relationship sibling2 = new Relationship(sib,baby,"Sibling");
+            sib.getRelationships().addRelationship(sibling2);
+        }
         baby.setParents(mother, father);
         this.father.getColony().addColonist(baby);
         this.mother.setPregnancy(null);

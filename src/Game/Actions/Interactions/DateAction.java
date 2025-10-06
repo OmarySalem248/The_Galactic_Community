@@ -7,9 +7,9 @@ import Game.Relationships.RelationshipType;
 import java.util.Random;
 
 public class DateAction extends InteractAction {
-    private static final double SUCCESS_CHANCE = 0.75; // 75% base chance
-    private static final int SUCCESS_BONUS = 10;       // Romantic relationship boost
-    private static final int FAILURE_PENALTY = -5;     // Penalty if date fails
+    private static final double SUCCESS_CHANCE = 0.75;
+    private static final int SUCCESS_BONUS = 2;
+    private static final int FAILURE_PENALTY = -2;
 
     private Random rand = new Random();
 
@@ -48,8 +48,8 @@ public class DateAction extends InteractAction {
         }
 
 
-        if (rel1.getValue(RelationshipType.SEXUAL) > 70) {
-            if (rand.nextDouble() < 0.15) {
+        if (rel1.getValue(RelationshipType.SEXUAL) > 50) {
+            if (rand.nextDouble() < 0.05) {
                 IntercourseAction intercourse = new IntercourseAction();
                 intercourse.execute(c1, c2, rel1, rel2);
             }

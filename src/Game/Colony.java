@@ -28,6 +28,9 @@ public class Colony {
     private List<Building> buildings;
     private RelationshipManager relman;
     private PersonalityFactory persfact;
+    private int netfoodprod;
+
+    private int fooddemand;
 
     private ColonyLeadership leadership;
 
@@ -47,9 +50,10 @@ public class Colony {
         colonists.add(new Colonist(this,"Annie",new Miner(),19,1,1,'F',persfact.perfectionist()));
         colonists.add(new Colonist(this,"Shirley",new Woodcutter(),43,1,1,'F',persfact.caring()));
         colonists.add(new Colonist(this,"Pierce",new Unemployed(),75,1,1,'M',persfact.turd()));
+        fooddemand = colonists.size();
         this.initializeRelationships();
         relman = new RelationshipManager(this);
-        this.leadership = new ColonyLeadership();
+        this.leadership = new ColonyLeadership(this);
         this.status ="The crew are lost!";
 
         buildings.add(new Farm());
@@ -113,6 +117,7 @@ public class Colony {
 
 
     public void consumeAndProduce() {
+        netfoodprod = 0;
         List<Colonist> farmColonists = new ArrayList<>();
         List<Colonist> otherColonists = new ArrayList<>();
         List<Colonist> unassignedColonists = new ArrayList<>();
@@ -123,7 +128,7 @@ public class Colony {
                 unassignedColonists.add(c);
             } else if (c.getAssignedBuilding().getName().equalsIgnoreCase("Farm")) {
                 farmColonists.add(c);
-            } else {
+            } else if(c != getLeadership().getCurrentLeader() ) {
                 otherColonists.add(c);
             }
         }
@@ -132,11 +137,15 @@ public class Colony {
         otherColonists.sort(Comparator.comparingInt(Colonist::getAge));
         unassignedColonists.sort(Comparator.comparingInt(Colonist::getAge));
 
-        // Process order: farms first → others → unassigned
+
         List<Colonist> ordered = new ArrayList<>();
+        if(getLeadership().getCurrentLeader() != null){
+            ordered.add(getLeadership().getCurrentLeader());
+        }
         ordered.addAll(farmColonists);
         ordered.addAll(otherColonists);
         ordered.addAll(unassignedColonists);
+        int foodAvailable1 = resources.getFood();
 
         int foodAvailable = resources.getFood();
 
@@ -161,10 +170,13 @@ public class Colony {
             }
 
             resources.setFood(foodAvailable);
+
         }
+        netfoodprod = foodAvailable -foodAvailable1;
 
         removeDeadColonists();
     }
+    public int getNetfoodprod(){return netfoodprod;}
     public void ageColonists() {
         List<Pregnancy> newBirths = new ArrayList<>();
 
@@ -188,13 +200,17 @@ public class Colony {
 
     private void produce(Colonist c,int usedenergy){
         Resources produced = c.work(usedenergy);
-        resources.addFood(produced.getFood());
-        resources.addWood(produced.getWood());
-        resources.addStone(produced.getStone());
+        if(produced != null) {
+            resources.addFood(produced.getFood());
+            resources.addWood(produced.getWood());
+            resources.addStone(produced.getStone());
+        }
     }
 
     private void removeDeadColonists() {
         colonists.removeIf(c -> !c.isAlive());
+
+
     }
 
 
@@ -221,5 +237,13 @@ public class Colony {
 
     public List<Building> getBuildings() {
         return buildings;
+    }
+
+    public int getFoodDemand() {
+        fooddemand = 0;
+        for(Colonist c:colonists){
+            fooddemand += c.getFoodConsumption();
+        }
+        return fooddemand;
     }
 }

@@ -27,7 +27,7 @@ public class IntercourseAction extends InteractAction{
 
         Random rand = new Random();
         if (mother != null && father != null && mother.getPregnancy() == null) {
-            if (rand.nextDouble() < PREGNANCY_CHANCE) {
+            if (rand.nextDouble() < PREGNANCY_CHANCE && mother.getPostpartumTimer() == 0) {
                 Pregnancy pregnancy = new Pregnancy(mother, father);
 
 

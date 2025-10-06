@@ -123,13 +123,23 @@ public class Colonist {
         paternal.adjustValue(RelationshipType.FAMILIAL,10);
         this.relationships.addRelationship(maternal);
         this.relationships.addRelationship(paternal);
+        Relationship child1 = new Relationship(bioFather,this,"Child");
+        Relationship child2 = new Relationship(bioMother,this,"Child");
+        bioFather.getRelationships().addRelationship(child1);
+        bioMother.getRelationships().addRelationship(child2);
+        bioMother.children.add(this);
+        bioFather.children.add(this);
+
     }
 
-    public boolean isAlive() { return hp > 0; }
+    public boolean isAlive() { return hp >= 0; }
 
     public void takeDamage(int dmg) {
         hp -= dmg;
         if (hp < 0) hp = 0;
+    }
+    public int getPostpartumTimer(){
+        return postpartumTimer;
     }
 
 
@@ -164,6 +174,9 @@ public class Colonist {
         if (ageMonths == 12) {
             ageMonths = 0;
             age += 1;
+        }
+        if(age > 80){
+            hp -= 1;
         }
 
         if (postpartumTimer > 0) {
@@ -248,6 +261,36 @@ public class Colonist {
 
         return isMarried;
     }
+    public boolean isSibling(Colonist other) {
+        if (other == null || other == this) return false;
+
+
+        if (this.bioMother != null && this.bioMother == other.bioMother)
+            return true;
+
+
+        if (this.bioFather != null && this.bioFather == other.bioFather)
+            return true;
+
+
+        return false;
+    }
+    public boolean isRelated(Colonist other) {
+        if (other == null || other == this) return false;
+
+
+        boolean sharedMother = this.bioMother != null && this.bioMother == other.bioMother;
+        boolean sharedFather = this.bioFather != null && this.bioFather == other.bioFather;
+
+        if (sharedMother || sharedFather) return true;
+
+
+        if (this.children.contains(other) || other.children.contains(this)) return true;
+
+
+        return false;
+    }
+
 
     public boolean isEngagedTo(Colonist c2) {
         return (this.partner == c2);

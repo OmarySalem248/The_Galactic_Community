@@ -3,15 +3,14 @@ package Game.Colonist.Profession;
 import Game.Colonist.Colonist;
 import Game.Resources;
 
-public class TribeLeader implements Profession{
+public class Builder implements Profession{
     @Override
     public Resources work(Colonist colonist, int usedEnergy) {
-        colonist.getColony().getLeadership().getGovernment().assignJobs();
         return null;
     }
 
     @Override
     public String getName() {
-        return "Tribe Leader";
+        return null;
     }
 }

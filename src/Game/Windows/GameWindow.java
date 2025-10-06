@@ -25,6 +25,9 @@ public class GameWindow {
     private JLabel occupationLabel;
     private JButton feedButton;
     private JButton reduceFeedButton;
+    private boolean autoRunning = false;
+    private Timer autoTurnTimer;
+    private JButton autoRunButton;
 
     private JComboBox<String> buildingDropdown;
     private JComboBox<String> professionDropdown;
@@ -190,6 +193,9 @@ public class GameWindow {
         buildBtn.addActionListener(e -> new BuildWindow(this.game, this));
         bottomPanel.add(nextTurnBtn);
         bottomPanel.add(buildBtn);
+        autoRunButton = new JButton("Auto Run");
+        autoRunButton.addActionListener(e -> toggleAutoRun());
+        bottomPanel.add(autoRunButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         // Initial UI update
@@ -198,7 +204,37 @@ public class GameWindow {
 
         frame.setVisible(true);
     }
+    private void toggleAutoRun() {
+        if (autoRunning) {
+            autoTurnTimer.stop();
+            autoRunning = false;
+            autoRunButton.setText("Auto Run");
+        } else {
+            autoRunning = true;
+            autoRunButton.setText("Stop Auto Run");
+
+            autoTurnTimer = new Timer(500, e -> {
+                game.nextTurn();
+                updateGameStats();
+                updateColonistStats();
+
+
+                if (game.getColony().getPopulation() == 0) {
+                    autoTurnTimer.stop();
+                    autoRunning = false;
+                    autoRunButton.setText("Auto Run");
+                    JOptionPane.showMessageDialog(null, "All colonists have perished. Auto-run stopped.", "Game Over", JOptionPane.WARNING_MESSAGE);
+                }
+            });
+            autoTurnTimer.start();
+        }
+    }
     public void updateColonistDropdown() {
+        for(Colonist c: knownColonists){
+            if(!c.isAlive()){
+                colonistDropdown.removeItem(c);
+            }
+        }
         for (Colonist c : game.getColony().getColonists()) {
             if (!knownColonists.contains(c)) {
                 colonistDropdown.addItem(c);

@@ -1,21 +1,29 @@
 package Game.Government;
 
+import Game.Buildings.Mine;
 import Game.Colonist.Colonist;
 import Game.Colonist.Profession.TribeLeader;
 import Game.Colony;
+import Game.Government.Types.TribalGovernment;
 
+import javax.swing.*;
 import java.util.Comparator;
 import java.util.Optional;
 
-public class ColonyLeadership {
+public  class ColonyLeadership {
     private Colonist currentLeader;
     private GovernmentType governmentType;
+    private Government government;
+
+    private Colony colony;
     private boolean leadershipEstablished;
 
-    public ColonyLeadership() {
+    public ColonyLeadership(Colony colony) {
         this.currentLeader = null;
-        this.governmentType = GovernmentType.ANARCHY; // default state
+        this.governmentType = GovernmentType.ANARCHY;
         this.leadershipEstablished = false;
+        this.colony = colony;
+        this.government = new Anarchy(colony,null);
     }
 
     public Colonist getCurrentLeader() {
@@ -25,6 +33,8 @@ public class ColonyLeadership {
     public GovernmentType getGovernmentType() {
         return governmentType;
     }
+
+    public Government getGovernment(){return government;}
 
 
     public void setLeadership(Colony colony) {
@@ -38,8 +48,12 @@ public class ColonyLeadership {
                 leadershipEstablished = true;
                 governmentType = GovernmentType.TRIBAL;
                 currentLeader.setProfession(new TribeLeader());
+                this.government = new TribalGovernment(this.colony,currentLeader);
 
             }
         }
     }
+
+
+
 }

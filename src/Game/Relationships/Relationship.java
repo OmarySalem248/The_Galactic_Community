@@ -65,7 +65,6 @@ public class Relationship {
 
             case FAMILIAL:
                 if (current < 0) setType("Poor Family Relationship");
-                if (current > 0) setType("Family");
                 if (current >= 70) setType("Strong Family Bond");
                 break;
 
@@ -96,7 +95,7 @@ public class Relationship {
                 }
 
 
-                if (current < 35) {
+                if (current < 40) {
                     if (marriagestatus || getType().equals("Lover") || getType().equals("Engaged")) {
                         owner.setTaken(false);
                         other.setTaken(false);
