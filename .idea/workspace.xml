@@ -5,26 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="made improvements to rate relationships develop and added a full death mechanic">
-      <change afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/ChitChatAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Buildings/TribeCentre.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Builder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Government/Anarchy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Government/Government.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Government/TribalGovernment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/DateAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/DateAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/IntercourseAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/IntercourseAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Buildings/Building.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Pregnancy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Pregnancy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/TribeLeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colony.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Government/ColonyLeadership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Government/ColonyLeadership.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759663692705</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="made improvements to rate relationships develop and added a full death mechanic">
+      <option name="closed" value="true" />
+      <created>1759731120809</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1759731120809</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

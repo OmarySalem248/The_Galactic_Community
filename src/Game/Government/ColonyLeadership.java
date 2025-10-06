@@ -4,7 +4,7 @@ import Game.Buildings.Mine;
 import Game.Colonist.Colonist;
 import Game.Colonist.Profession.TribeLeader;
 import Game.Colony;
-import Game.Government.Types.TribalGovernment;
+import Game.Government.TribalGovernment;
 
 import javax.swing.*;
 import java.util.Comparator;
