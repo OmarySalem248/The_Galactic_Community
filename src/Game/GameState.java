@@ -1,6 +1,6 @@
 package Game;
 
-import Engine.Resources;
+import com.GalacticCommunity.model.Engine.Resources;
 
 import java.util.List;
 

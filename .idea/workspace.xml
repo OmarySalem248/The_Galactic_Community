@@ -4,69 +4,73 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="fleshed out leadership and succession, started effort to make it into a web application">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Engine/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/BuildingDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/ColonistDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/GameService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/GameState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TGCfrontend.html" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="rearanganged some files and continued trying to integraye into web">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/GalacticCommunityApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/controller/GameController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/service/GameService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/The Galactic Community.iml" beforeDir="false" afterPath="$PROJECT_DIR$/The Galactic Community.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Action.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/AssignAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/AssignAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/BuildAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/BuildAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/ChitChatAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/ChitChatAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/CoworkerInteract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/CoworkerInteract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/DateAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/DateAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/FamilialAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/FamilialAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/FlirtAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/FlirtAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/InteractAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/InteractAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/IntercourseAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/IntercourseAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/LeaderSpeech.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/LeaderSpeech.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/MarryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/MarryAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/ProposeAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Actions/Interactions/ProposeAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Buildings/Building.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/BuildingProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Buildings/BuildingProject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Buildings/Farm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/LumberMill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Buildings/LumberMill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/Mine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Buildings/Mine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Buildings/TribeCentre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Buildings/TribeCentre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Personality/Personality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Personality/Personality.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Personality/PersonalityFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Personality/PersonalityFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Personality/PersonalityTraits.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Personality/PersonalityTraits.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Pregnancy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Pregnancy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Builder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Farmer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Leader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Leader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Miner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Miner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Profession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Profession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/ProfessionRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/ProfessionRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/TribeLeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Unemployed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Unemployed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Woodcutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Woodcutter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Skills/SkillSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colonist/Skills/SkillSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Colony.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Game.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/AssignAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/AssignAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/BuildAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/BuildAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/ChitChatAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/ChitChatAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/CoworkerInteract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/CoworkerInteract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/DateAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/DateAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/FamilialAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/FamilialAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/FlirtAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/FlirtAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/InteractAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/InteractAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/IntercourseAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/IntercourseAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/LeaderSpeech.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/LeaderSpeech.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/MarryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/MarryAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Actions/Interactions/ProposeAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/ProposeAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Buildings/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Buildings/BuildingProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Buildings/BuildingProject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Buildings/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Buildings/Farm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Buildings/LumberMill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Buildings/LumberMill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Buildings/Mine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Buildings/Mine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Buildings/TribeCentre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Buildings/TribeCentre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Colonist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Personality/Personality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Personality/Personality.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Personality/PersonalityFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Personality/PersonalityFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Personality/PersonalityTraits.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Personality/PersonalityTraits.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Pregnancy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Pregnancy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Farmer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Leader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Leader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Miner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Miner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Profession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Profession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/ProfessionRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/ProfessionRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/TribeLeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Unemployed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Unemployed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Profession/Woodcutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Profession/Woodcutter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colonist/Skills/SkillSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Skills/SkillSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colony.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Government/Anarchy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Government/Anarchy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Government/ColonyLeadership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Government/ColonyLeadership.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Government/Government.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Government/Government.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Government/GovernmentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Government/GovernmentType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Government/TribalGovernment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Government/TribalGovernment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Relationships/Relationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Relationships/Relationship.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Relationships/RelationshipManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Relationships/RelationshipManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Relationships/RelationshipSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Relationships/RelationshipSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Relationships/RelationshipType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Relationships/RelationshipType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Engine/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/ColonistDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/ColonistDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/GameController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/GameLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/GameLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/GameRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Government/Anarchy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Government/Anarchy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Government/ColonyLeadership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Government/ColonyLeadership.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Government/Government.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Government/Government.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Government/GovernmentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Government/GovernmentType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Government/TribalGovernment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Government/TribalGovernment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Relationships/Relationship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Relationships/RelationshipManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Relationships/RelationshipSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Relationships/RelationshipType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Engine/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/GameService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/GameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TGCfrontend.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/GalacticCommunity/TGCfrontend.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,8 +82,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -104,6 +108,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.GalacticCommunityApplication.executor": "Run",
     "Application.GameLauncher.executor": "Run",
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -113,6 +118,9 @@
     "jdk.selected.JAVA_MODULE": "corretto-15",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/omary/Downloads/The Galactic Community",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "MavenSettings"
   }
 }]]></component>
@@ -121,9 +129,35 @@
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src\Engine" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\resources\static" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\Resourses\static" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\Resourses" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\java\com\GalacticCommunity" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="main" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="GalacticCommunityApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.GalacticCommunity.GalacticCommunityApplication" />
+      <module name="The Galactic Community" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.GalacticCommunity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GalacticCommunityApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -229,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759983969644</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="rearanganged some files and continued trying to integraye into web">
+      <option name="closed" value="true" />
+      <created>1760007779419</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1760007779419</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -260,20 +302,27 @@
     <MESSAGE value="made improvements to rate relationships develop and added a full death mechanic" />
     <MESSAGE value="fixed import problem" />
     <MESSAGE value="fleshed out leadership and succession, started effort to make it into a web application" />
-    <option name="LAST_COMMIT_MESSAGE" value="fleshed out leadership and succession, started effort to make it into a web application" />
+    <MESSAGE value="rearanganged some files and continued trying to integraye into web" />
+    <option name="LAST_COMMIT_MESSAGE" value="rearanganged some files and continued trying to integraye into web" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Engine/Actions/Interactions/FlirtAction.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Actions/Interactions/FlirtAction.java</url>
           <line>21</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Engine/Colonist/Colonist.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Colonist.java</url>
           <line>290</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/com/GalacticCommunity/model/Engine/Colonist/Colonist.java</url>
+          <line>20</line>
+          <properties field="energy" class="com.GalacticCommunity.model.Engine.Colonist.Colonist" />
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

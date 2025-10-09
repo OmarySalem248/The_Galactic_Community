@@ -1,9 +1,9 @@
 package Game.Windows;
 
-import Engine.Actions.BuildAction;
-import Engine.Buildings.*;
-import Engine.Colony;
-import Engine.Game;
+import com.GalacticCommunity.model.Engine.Actions.BuildAction;
+import com.GalacticCommunity.model.Engine.Buildings.*;
+import com.GalacticCommunity.model.Engine.Colony;
+import com.GalacticCommunity.model.Engine.Game;
 
 import javax.swing.*;
 import java.awt.*;

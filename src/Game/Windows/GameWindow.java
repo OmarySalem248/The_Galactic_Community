@@ -1,11 +1,11 @@
 package Game.Windows;
 
-import Engine.Actions.AssignAction;
-import Engine.Buildings.Building;
-import Engine.Colonist.*;
-import Engine.Colonist.Profession.ProfessionRegistry;
-import Engine.Game;
-import Engine.Government.ColonyLeadership;
+import com.GalacticCommunity.model.Engine.Actions.AssignAction;
+import com.GalacticCommunity.model.Engine.Buildings.Building;
+import com.GalacticCommunity.model.Engine.Colonist.Colonist;
+import com.GalacticCommunity.model.Engine.Colonist.Profession.ProfessionRegistry;
+import com.GalacticCommunity.model.Engine.Game;
+import com.GalacticCommunity.model.Engine.Government.ColonyLeadership;
 
 import javax.swing.*;
 import java.awt.*;

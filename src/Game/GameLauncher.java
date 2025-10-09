@@ -1,6 +1,6 @@
 package Game;
 
-import Engine.Game;
+import com.GalacticCommunity.model.Engine.Game;
 import Game.Windows.GameWindow;
 
 public class GameLauncher {

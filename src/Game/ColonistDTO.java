@@ -1,6 +1,6 @@
 package Game;
 
-import Engine.Colonist.Colonist;
+import com.GalacticCommunity.model.Engine.Colonist.Colonist;
 
 public class ColonistDTO {
     public int id;
