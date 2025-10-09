@@ -3,10 +3,7 @@ package Game;
 import Game.Actions.Action;
 import Game.Actions.AssignAction;
 import Game.Actions.BuildAction;
-import Game.Buildings.Building;
-import Game.Buildings.Farm;
-import Game.Buildings.LumberMill;
-import Game.Buildings.Mine;
+import Game.Buildings.*;
 import Game.Colonist.*;
 import Game.Colonist.Personality.Personality;
 import Game.Colonist.Personality.PersonalityFactory;
@@ -17,6 +14,7 @@ import Game.Colonist.Profession.Woodcutter;
 import Game.Government.ColonyLeadership;
 import Game.Relationships.*;
 
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +22,7 @@ import java.util.List;
 
 public class Colony {
     private List<Colonist> colonists;
+    List<BuildingProject> projects;
 
     private List<Building> buildings;
     private RelationshipManager relman;
@@ -55,6 +54,7 @@ public class Colony {
         relman = new RelationshipManager(this);
         this.leadership = new ColonyLeadership(this);
         this.status ="The crew are lost!";
+        ArrayList<BuildingProject> projects= new ArrayList<BuildingProject>();
 
         buildings.add(new Farm());
         buildings.add(new Farm());
@@ -161,6 +161,19 @@ public class Colony {
             } else {
                 c.takeDamage(10);
             }
+
+            if (c.getProfession().getName().equals("Builder") && !projects.isEmpty()) {
+                BuildingProject activeProject = projects.get(0);
+                int work = c.getEnergy();
+                activeProject.contributeWork(work);
+
+                if (activeProject.isCompleted()) {
+                    buildings.add(activeProject.completeProject());
+                    projects.remove(activeProject);
+                    this.setStatus(activeProject.getName() + " has been completed!");
+                }
+            }
+
             resources.setFood(foodAvailable);
 
             if (c.getAssignedBuilding() != null && consumed > 0 && c.isAlive()) {
@@ -208,6 +221,11 @@ public class Colony {
     }
 
     private void removeDeadColonists() {
+        if(getLeadership().getCurrentLeader()!= null){
+            if(!getLeadership().getCurrentLeader().isAlive()) {
+                getLeadership().changeLeader();
+            }
+        }
         colonists.removeIf(c -> !c.isAlive());
 
 

@@ -30,8 +30,8 @@ public class MarryAction extends InteractAction {
         if (success) {
             rel1.setMarriagestatus(true);
             rel2.setMarriagestatus(true);
-            rel1.setType("Spouse");
-            rel2.setType("Spouse");
+            rel1.setTypeAdv(RelationshipType.ROMANTIC,"Spouse");
+            rel2.setTypeAdv(RelationshipType.ROMANTIC,"Spouse");
 
             c1.setTaken(true);
             c2.setTaken(true);

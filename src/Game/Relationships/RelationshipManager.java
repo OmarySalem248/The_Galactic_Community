@@ -44,8 +44,6 @@ public class RelationshipManager {
 
 
             candidates = selectCandidates(c1);
-            System.out.print(c1);
-            System.out.print(candidates);
 
 
 
@@ -56,11 +54,11 @@ public class RelationshipManager {
                 Relationship rel2 = c2.getRelationships().get(c1.getName());
 
                 if (rel1 == null) {
-                    rel1 = new Relationship(c1,c2,"Stranger");
+                    rel1 = new Relationship(c1,c2,"None");
                     c1.getRelationships().addRelationship(rel1);
                 }
                 if (rel2 == null) {
-                    rel2 = new Relationship(c2,c1,"Stranger");
+                    rel2 = new Relationship(c2,c1,"None");
                     c2.getRelationships().addRelationship(rel2);
                 }
                 for (RelationshipType rtype : RelationshipType.values()) {
@@ -74,7 +72,8 @@ public class RelationshipManager {
                 double flirtchance = rand.nextDouble() + (rel1.getValue(ROMANTIC)+rel2.getValue(ROMANTIC))/2000;
                 if (areCompatible(c1, c2) && rel1.getValue(ROMANTIC) < 50 && !c1.getTaken() && !c2.getTaken() && flirtchance >0.5) {
                     flirt.execute(c1, c2, rel1, rel2);
-                }double datechance = rand.nextDouble() + (rel1.getValue(ROMANTIC)+rel2.getValue(ROMANTIC))/4000;
+                }
+                double datechance = rand.nextDouble() + (rel1.getValue(ROMANTIC)+rel2.getValue(ROMANTIC))/4000;
                 if (rel1.getValue(ROMANTIC) >= 45 && rel2.getValue(ROMANTIC) >= 45 && datechance > 0.5) {
                     date.execute(c1, c2, rel1, rel2);
                 }

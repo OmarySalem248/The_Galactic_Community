@@ -4,8 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="made improvements to rate relationships develop and added a full death mechanic">
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="fixed import problem">
+      <change afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/LeaderSpeech.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Buildings/BuildingProject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Leader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/DateAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/DateAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/FlirtAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/FlirtAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Actions/Interactions/MarryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Actions/Interactions/MarryAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/Farmer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/ProfessionRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/ProfessionRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colonist/Profession/TribeLeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Colony.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Government/Anarchy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Government/Anarchy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Government/ColonyLeadership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Government/ColonyLeadership.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Government/Government.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Government/Government.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Government/TribalGovernment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Government/TribalGovernment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/Relationship.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Relationships/RelationshipManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +33,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -137,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759731120809</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixed import problem">
+      <option name="closed" value="true" />
+      <created>1759731245084</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1759731245084</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -166,7 +192,8 @@
     <MESSAGE value="fleahed out interactions and how personalities affect them" />
     <MESSAGE value="fleshed out relationships and added pregnancy and child birth" />
     <MESSAGE value="made improvements to rate relationships develop and added a full death mechanic" />
-    <option name="LAST_COMMIT_MESSAGE" value="made improvements to rate relationships develop and added a full death mechanic" />
+    <MESSAGE value="fixed import problem" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed import problem" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

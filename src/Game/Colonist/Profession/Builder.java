@@ -1,16 +1,21 @@
 package Game.Colonist.Profession;
 
-import Game.Colonist.Colonist;
 import Game.Resources;
+import Game.Colonist.Colonist;
 
-public class Builder implements Profession{
+public class Builder implements Profession {
+
+    public Builder() {
+
+    }
+
     @Override
     public Resources work(Colonist colonist, int usedEnergy) {
-        return null;
+        return new Resources(0, 0, 0);
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Builder";
     }
 }

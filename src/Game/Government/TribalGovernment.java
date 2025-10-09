@@ -1,6 +1,8 @@
 package Game.Government;
 
 import Game.Colonist.Colonist;
+import Game.Colonist.Profession.Leader;
+import Game.Colonist.Profession.TribeLeader;
 import Game.Colonist.Profession.Unemployed;
 import Game.Colony;
 import Game.Government.Government;
@@ -8,14 +10,32 @@ import Game.Government.GovernmentType;
 import Game.Buildings.Building;
 import Game.Colonist.Profession.ProfessionRegistry;
 
+import java.util.Comparator;
+import java.util.Optional;
+
 public class TribalGovernment extends Government {
 
+    private Colonist successor;
+
     public TribalGovernment(Colony colony, Colonist leader) {
+
         super(colony, leader);
+        leadership = (Leader) leader.getProfession();
     }
+
 
     @Override
     public GovernmentType getType() { return GovernmentType.TRIBAL; }
+
+    @Override
+    public boolean setLeader(Colony colony) {
+        if(leadership.getSuccessor() != null) {
+            leader = leadership.getSuccessor() ;
+            leader.setProfession(new TribeLeader());
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void assignJobs() {
@@ -50,5 +70,13 @@ public class TribalGovernment extends Government {
                 return;
             }
         }
+    }
+    public Colonist getSuccessor(){
+        return leadership.getSuccessor();
+    }
+
+
+    public void setSuccessor(Colonist successor){
+        this.successor = successor;
     }
 }

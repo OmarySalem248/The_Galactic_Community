@@ -39,7 +39,7 @@ public class FlirtAction extends InteractAction {
                 rel1.adjustValue(SEXUAL,2);
                 rel2.adjustValue(SEXUAL,2);
             }
-            c1.getPersonality().modTrait(PersonalityTraits.ROMANCE,1);
+
         }
 
     }

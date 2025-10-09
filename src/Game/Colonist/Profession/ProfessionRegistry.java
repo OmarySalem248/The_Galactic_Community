@@ -12,6 +12,7 @@ public class ProfessionRegistry {
         register(new Farmer());
         register(new Miner());
         register(new Woodcutter());
+        register(new Builder());
     }
 
     private static void register(Profession prof) {

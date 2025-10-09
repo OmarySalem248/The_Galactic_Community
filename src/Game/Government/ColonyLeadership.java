@@ -36,6 +36,16 @@ public  class ColonyLeadership {
 
     public Government getGovernment(){return government;}
 
+    public void changeLeader(){
+        boolean leader = this.government.setLeader(colony);
+        if(!leader) {
+            this.government = new Anarchy(colony, null);
+            leadershipEstablished = false;
+            return;
+        }
+        currentLeader = this.government.getLeader();
+    }
+
 
     public void setLeadership(Colony colony) {
         if (!leadershipEstablished) {

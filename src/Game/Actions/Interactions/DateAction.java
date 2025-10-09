@@ -36,15 +36,13 @@ public class DateAction extends InteractAction {
             rel1.adjustValue(RelationshipType.PLATONIC, 3);
             rel2.adjustValue(RelationshipType.PLATONIC, 3);
 
-            System.out.println(c1.getName() + " and " + c2.getName() + " had a lovely date! ❤️ (+"
-                    + bonus + " romantic points)");
+
         } else {
             int penalty = FAILURE_PENALTY - rand.nextInt(5);
             rel1.adjustValue(RelationshipType.ROMANTIC, penalty);
             rel2.adjustValue(RelationshipType.ROMANTIC, penalty);
 
-            System.out.println(c1.getName() + " and " + c2.getName() + " had an awkward date... 💔 ("
-                    + penalty + " romantic points)");
+
         }
 
 
