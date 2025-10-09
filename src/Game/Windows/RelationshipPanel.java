@@ -1,14 +1,13 @@
 package Game.Windows;
 
-import Game.Colonist.Colonist;
-import Game.*;
-import Game.Relationships.Relationship;
-import Game.Relationships.RelationshipType;
+import Engine.Colonist.Colonist;
+import Engine.Game;
+import Engine.Relationships.Relationship;
+import Engine.Relationships.RelationshipType;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.util.*;
 
 public class RelationshipPanel extends JPanel {
     private JComboBox<Colonist> colonistDropdown;

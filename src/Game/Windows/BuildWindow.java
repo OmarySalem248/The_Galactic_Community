@@ -1,9 +1,9 @@
 package Game.Windows;
 
-import Game.Actions.BuildAction;
-import Game.Buildings.*;
-import Game.Colony;
-import Game.Game;
+import Engine.Actions.BuildAction;
+import Engine.Buildings.*;
+import Engine.Colony;
+import Engine.Game;
 
 import javax.swing.*;
 import java.awt.*;

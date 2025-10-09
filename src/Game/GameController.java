@@ -1,48 +1,42 @@
 package Game;
 
-import Game.Actions.AssignAction;
-import Game.Buildings.Building;
-import Game.Colonist.Colonist;
-import Game.Colonist.Profession.ProfessionRegistry;
+import Engine.Actions.AssignAction;
+import Engine.Buildings.Building;
+import Engine.Colonist.Colonist;
+import Engine.Game;
 
+@RestController
+@RequestMapping("/api")
 public class GameController {
+
     private final Game game;
 
     public GameController(Game game) {
         this.game = game;
     }
 
+    @GetMapping("/state")
+    public GameState getState() {
+        return game.toGameState(); // convert game to JSON DTO
+    }
 
+    @PostMapping("/feed")
+    public boolean feedColonist(@RequestParam String name, @RequestParam int amount) {
+        Colonist c = game.getColony().findColonistByName(name);
+        if (c != null) return game.getColony().feedColonist(c, amount);
+        return false;
+    }
+
+    @PostMapping("/assign")
+    public boolean assignBuilding(@RequestParam String colonist, @RequestParam String building) {
+        Colonist c = game.getColony().findColonistByName(colonist);
+        Building b = game.getColony().findBuildingByName(building);
+        return game.getColony().performAction(new AssignAction(c, b));
+    }
+
+    @PostMapping("/nextTurn")
     public void nextTurn() {
         game.nextTurn();
     }
 
-
-    public boolean feedColonist(Colonist colonist, int food) {
-        return game.getColony().feedColonist(colonist, food);
-    }
-
-
-    public boolean assignColonistToBuilding(Colonist colonist, Building building) {
-        AssignAction action = new AssignAction(colonist, building);
-        return game.getColony().performAction(action);
-    }
-
-
-    public boolean changeProfession(Colonist colonist, String professionName) {
-        if (colonist == null) return false;
-
-        colonist.setProfession(ProfessionRegistry.create(professionName));
-
-        // Ensure building compatibility
-        if (colonist.getAssignedBuilding() != null && !colonist.getAssignedBuilding().isCompatible(colonist)) {
-            colonist.unassignBuilding();
-        }
-
-        return true;
-    }
-
-    public Game getGame() {
-        return game;
-    }
 }

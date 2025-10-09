@@ -1,5 +1,6 @@
 package Game;
 
+import Engine.Game;
 import Game.Windows.GameWindow;
 
 public class GameLauncher {

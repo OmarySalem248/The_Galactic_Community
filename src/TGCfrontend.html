@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Colony Builder</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #colonistList div { padding: 5px; border-bottom: 1px solid #ccc; }
+        .leader { font-weight: bold; color: darkgreen; }
+    </style>
+</head>
+<body>
+
+<h1>Colony Builder</h1>
+<div id="turnLabel"></div>
+<div id="resourcesLabel"></div>
+
+<h2>Colonists</h2>
+<div id="colonistList"></div>
+
+<h3>Actions</h3>
+<select id="colonistSelect"></select>
+<button onclick="feedColonist(1)">Feed +1</button>
+<button onclick="feedColonist(-1)">Remove Food</button>
+<select id="buildingSelect"></select>
+<button onclick="assignBuilding()">Assign Building</button>
+<button onclick="nextTurn()">Next Turn</button>
+
+<script>
+    let gameState = null;
+
+    async function fetchState() {
+      const res = await fetch('/api/state');
+      gameState = await res.json();
+      renderGame();
+    }
+
+    function renderGame() {
+      document.getElementById('turnLabel').innerText = "Turn: " + gameState.turn;
+      document.getElementById('resourcesLabel').innerText = "Food: " + gameState.resources.food;
+
+      const colonistList = document.getElementById('colonistList');
+      colonistList.innerHTML = '';
+      const colonistSelect = document.getElementById('colonistSelect');
+      colonistSelect.innerHTML = '';
+      const buildingSelect = document.getElementById('buildingSelect');
+      buildingSelect.innerHTML = '';
+
+      gameState.buildings.forEach(b => {
+        const option = document.createElement('option');
+        option.value = b.name;
+        option.innerText = b.name;
+        buildingSelect.appendChild(option);
+      });
+
+      gameState.colonists.forEach(c => {
+        const div = document.createElement('div');
+        div.innerText = `${c.name} - ${c.occupation} (${c.profession}) Energy:${c.energy} HP:${c.health} Age:${c.age}`;
+        if(c.isLeader) div.classList.add('leader');
+        colonistList.appendChild(div);
+
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.innerText = c.name + (c.isLeader ? " (Leader)" : "");
+        colonistSelect.appendChild(opt);
+      });
+    }
+
+    async function feedColonist(amount) {
+      const name = document.getElementById('colonistSelect').value;
+      await fetch(`/api/feed?name=${name}&amount=${amount}`, { method: 'POST' });
+      fetchState();
+    }
+
+    async function assignBuilding() {
+      const name = document.getElementById('colonistSelect').value;
+      const building = document.getElementById('buildingSelect').value;
+      await fetch(`/api/assign?colonist=${name}&building=${building}`, { method: 'POST' });
+      fetchState();
+    }
+
+    async function nextTurn() {
+      await fetch('/api/nextTurn', { method: 'POST' });
+      fetchState();
+    }
+
+
+    fetchState();
+</script>
+
+</body>
+</html>
+

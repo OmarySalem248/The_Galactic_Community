@@ -1,11 +1,11 @@
 package Game.Windows;
 
-import Game.Actions.AssignAction;
-import Game.Buildings.Building;
-import Game.Colonist.*;
-import Game.Colonist.Profession.ProfessionRegistry;
-import Game.Game;
-import Game.Government.ColonyLeadership;
+import Engine.Actions.AssignAction;
+import Engine.Buildings.Building;
+import Engine.Colonist.*;
+import Engine.Colonist.Profession.ProfessionRegistry;
+import Engine.Game;
+import Engine.Government.ColonyLeadership;
 
 import javax.swing.*;
 import java.awt.*;

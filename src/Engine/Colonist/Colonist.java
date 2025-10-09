@@ -1,0 +1,312 @@
+package Engine.Colonist;
+
+import Engine.Buildings.Building;
+import Engine.Colonist.Personality.Personality;
+import Engine.Colonist.Personality.PersonalityFactory;
+import Engine.Colonist.Profession.Profession;
+import Engine.Colonist.Profession.Unemployed;
+import Engine.Colony;
+import Engine.Relationships.Relationship;
+import Engine.Relationships.RelationshipSet;
+import Engine.Relationships.RelationshipType;
+import Engine.Resources;
+
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Colonist {
+    private String name;
+    private int id;
+    private int energy;
+    private int baseProductivity;
+    private Building assignedBuilding;
+    private int age;
+    private int ageMonths;
+    private int hp;
+    private Colonist bioFather;
+    private Colonist bioMother;
+    private ArrayList<Colonist> children;
+    private String status;
+    private RelationshipSet relationships;
+
+    private PersonalityFactory personalityFactory;
+
+    private int favourability;
+
+    private char sex;
+
+    private Personality personality;
+    private boolean isMarried;
+
+    private char sexuality;
+
+    private boolean taken;
+    private Colony colony;
+
+    private Pregnancy pregnancy;
+    protected int postpartumTimer = 0;
+
+    // ----- Composition: profession object -----
+    private Profession profession;
+    private Colonist partner;
+
+    public Colonist(Colony colony, String name, Profession profession, int age, int energy, int baseProductivity, char sex, Personality personality) {
+        this.name = name;
+        this.profession = profession;
+        this.age = age;
+        this.ageMonths = 0;
+        this.energy = energy;
+        this.baseProductivity = baseProductivity;
+        this.hp = 100;
+        this.children = new ArrayList<>();
+        this.relationships = new RelationshipSet(this);
+        this.status = "Where am I?";
+        this.sex = sex;
+        this.sexuality ='S';
+        this.personality = personality;
+        this.favourability = 0;
+        this.taken = false;
+        this.colony = colony;
+        this.isMarried = false;
+        Random id = new Random();
+        this.id = id.nextInt(999999999);
+    }
+    public Colonist(Colony colony,String name,char sex) {
+        this.name = name;
+        this.profession = new Unemployed();
+        this.age = 0;
+        this.ageMonths = 0;
+        this.energy = 1;
+        this.baseProductivity = 1;
+        this.hp = 100;
+        this.children = new ArrayList<>();
+        this.relationships = new RelationshipSet(this);
+        this.status = " ";
+        this.sex = sex;
+        personalityFactory = new PersonalityFactory();
+        this.personality = personalityFactory.randomPersonality();
+        this.taken = false;
+        this.colony = colony;
+        this.isMarried = false;
+        Random id = new Random();
+        this.id = id.nextInt(999999999);
+    }
+
+    // ----- Basic getters and setters -----
+    public String getName() { return name; }
+    public int getEnergy() { return energy; }
+    public void setEnergy(int energy) { this.energy = Math.max(0, Math.min(energy, 100)); }
+    public int getAge() { return age; }
+    public int getAgeMonths() { return ageMonths; }
+    public int getHealth() { return hp; }
+    public Personality getPersonality(){return personality;}
+    public Profession getProfession;
+    public int getFavourability(){return favourability;}
+    public void modFavourability(int change){ favourability += change;}
+
+    public boolean getTaken(){return taken;}
+
+    public void setTaken(Boolean taken){this.taken = taken;}
+    public void togglesexuality(char sexuality){
+        this.sexuality = sexuality;
+    }
+    public char getSex(){
+        return sex;
+    }
+    public char  getSexuality(){
+        return sexuality;
+    }
+    public RelationshipSet getRelationships() { return relationships; }
+
+    public void setParents(Colonist mom, Colonist dad) {
+        this.bioMother = mom;
+        this.bioFather = dad;
+        Relationship maternal = new Relationship(this,bioMother,"Mother");
+        maternal.adjustValue(RelationshipType.FAMILIAL,10);
+        Relationship paternal = new Relationship(this,bioFather,"Father");
+        paternal.adjustValue(RelationshipType.FAMILIAL,10);
+        this.relationships.addRelationship(maternal);
+        this.relationships.addRelationship(paternal);
+        Relationship child1 = new Relationship(bioFather,this,"Child");
+        Relationship child2 = new Relationship(bioMother,this,"Child");
+        bioFather.getRelationships().addRelationship(child1);
+        bioMother.getRelationships().addRelationship(child2);
+        bioMother.children.add(this);
+        bioFather.children.add(this);
+
+    }
+
+    public boolean isAlive() { return hp >= 0; }
+
+    public void takeDamage(int dmg) {
+        hp -= dmg;
+        if (hp < 0) hp = 0;
+    }
+    public int getPostpartumTimer(){
+        return postpartumTimer;
+    }
+
+
+
+    public int getFoodConsumption() {
+        return energy; // or you can tweak this later
+    }
+
+    public void feedExtra(int extraFood) {
+        int energyGain = extraFood; // adjust formula if needed
+        setEnergy(energy + energyGain);
+    }
+
+    public Building getAssignedBuilding() { return assignedBuilding; }
+
+    public void assignBuilding(Building building) {
+        if (building.getColonists().size() < building.getColonlimit()) {
+            building.getColonists().add(this);
+            this.assignedBuilding = building;
+        }
+    }
+
+    public void unassignBuilding() {
+        if (assignedBuilding != null) {
+            assignedBuilding.getColonists().remove(this);
+            assignedBuilding = null;
+        }
+    }
+
+    public void age() {
+        ageMonths += 1;
+        if (ageMonths == 12) {
+            ageMonths = 0;
+            age += 1;
+        }
+        if(age > 80){
+            hp -= 1;
+        }
+
+        if (postpartumTimer > 0) {
+            postpartumTimer--;
+        }
+    }
+    public void setPregnancy(Pregnancy pregnancy){
+        this.pregnancy = pregnancy;
+    }
+
+
+    public Resources work(int usedEnergy) {
+        if (profession == null) return new Resources(0, 0, 0);
+        return profession.work(this, usedEnergy);
+    }
+
+    public String getOccupation() {
+        return profession != null ? profession.getName() : "Unassigned";
+    }
+
+    public void changeProfession(Profession newProfession) {
+        this.profession = newProfession;
+    }
+
+    // ----- Children and family -----
+    public ArrayList<Colonist> getChildren() { return children; }
+    public Colonist getBioFather() { return bioFather; }
+    public Colonist getBioMother() { return bioMother; }
+
+    // ----- Status -----
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    @Override
+    public String toString() {
+        return name + " (" + getOccupation() + ")";
+    }
+
+    public Profession getProfession() {
+        return  profession;
+    }
+
+    public void setProfession(Profession profession) {
+
+        this.profession = profession;
+        if (this.getAssignedBuilding() != null &&
+                !this.getAssignedBuilding().isCompatible(this)) {
+           this.unassignBuilding();
+        }
+    }
+
+    public Colonist getBiofather() {
+        return bioFather;
+    }
+    public Colonist getBiomother() {
+        return bioMother;
+    }
+
+    public boolean isAttractedTo(Colonist c2) {
+        switch (this.getSexuality()) {
+            case 'S':
+                return this.getSex() != c2.getSex();
+            case 'G':
+                return this.getSex() == c2.getSex();
+            case 'B':
+                return true;
+            default:
+                return false;
+        }
+    }
+
+
+    public Colony getColony() {
+        return colony;
+    }
+
+    public Pregnancy getPregnancy() {
+        return pregnancy;
+    }
+
+    public boolean isMarried() {
+
+        return isMarried;
+    }
+    public boolean isSibling(Colonist other) {
+        if (other == null || other == this) return false;
+
+
+        if (this.bioMother != null && this.bioMother == other.bioMother)
+            return true;
+
+
+        if (this.bioFather != null && this.bioFather == other.bioFather)
+            return true;
+
+
+        return false;
+    }
+    public boolean isRelated(Colonist other) {
+        if (other == null || other == this) return false;
+
+
+        boolean sharedMother = this.bioMother != null && this.bioMother == other.bioMother;
+        boolean sharedFather = this.bioFather != null && this.bioFather == other.bioFather;
+
+        if (sharedMother || sharedFather) return true;
+
+
+        if (this.children.contains(other) || other.children.contains(this)) return true;
+
+
+        return false;
+    }
+
+
+    public boolean isEngagedTo(Colonist c2) {
+        return (this.partner == c2);
+    }
+
+    public void setEngagedTo(Colonist c2) {
+        this.partner = c2;
+    }
+
+    public int getId() {
+        return id;
+    }
+}
+
