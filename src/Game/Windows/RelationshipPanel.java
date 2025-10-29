@@ -1,9 +1,9 @@
 package Game.Windows;
 
-import com.GalacticCommunity.model.Engine.Colonist.Colonist;
-import com.GalacticCommunity.model.Engine.Game;
-import com.GalacticCommunity.model.Engine.Relationships.Relationship;
-import com.GalacticCommunity.model.Engine.Relationships.RelationshipType;
+import Game.Engine.Colonist.Colonist;
+import Game.Engine.Game;
+import Game.Engine.Relationships.Relationship;
+import Game.Engine.Relationships.RelationshipType;
 
 import javax.swing.*;
 import javax.swing.table.*;
