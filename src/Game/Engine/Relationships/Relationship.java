@@ -139,6 +139,7 @@ public class Relationship {
                 break;
             case ADMIRATION:
                 t = RelationshipType.ADMIRATION;
+                if (current <= 30) setTypeAdv(t,this.type);
                 if (current >= 30) setTypeAdv(t,"Idol");
                 if(current >= 50) setTypeAdv(t,"Hero");
                 if (current >= 500) setTypeAdv(t,"Prophet");
