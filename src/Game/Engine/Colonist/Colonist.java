@@ -167,7 +167,7 @@ public class Colonist {
 
     public void assignBuilding(Building building) {
         if (building.getColonists().size() < building.getColonlimit()) {
-            building.getColonists().add(this);
+            building.addColonist(this);
             this.assignedBuilding = building;
         }
     }

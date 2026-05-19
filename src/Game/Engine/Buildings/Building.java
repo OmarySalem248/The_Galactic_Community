@@ -75,4 +75,8 @@ public abstract class Building {
     public String getType() {
         return name;
     }
+
+    public void addColonist(Colonist colonist) {
+        this.colonists.add(colonist);
+    }
 }

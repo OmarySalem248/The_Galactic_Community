@@ -59,6 +59,7 @@ public class RelationshipManager {
                     c1.getRelationships().addRelationship(rel1);
                 }
                 if (rel2 == null) {
+                    System.out.print("NOOOOOOOOO");
                     rel2 = new Relationship(c2,c1,"None");
                     c2.getRelationships().addRelationship(rel2);
                 }

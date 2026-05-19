@@ -47,7 +47,7 @@ public class DateAction extends InteractAction {
 
 
         if (rel1.getValue(RelationshipType.SEXUAL) > 50) {
-            if (rand.nextDouble() < 0.05) {
+            if (rand.nextDouble() < 0.4) {
                 IntercourseAction intercourse = new IntercourseAction();
                 intercourse.execute(c1, c2, rel1, rel2);
             }

@@ -2,10 +2,7 @@ package Game.Engine.Government;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.Profession.Leader;
-import Game.Engine.Colonist.Profession.ProfessionRegistry;
-import Game.Engine.Colonist.Profession.TribeLeader;
-import Game.Engine.Colonist.Profession.Unemployed;
+import Game.Engine.Colonist.Profession.*;
 import Game.Engine.Colony;
 
 public class TribalGovernment extends Government {
@@ -43,27 +40,28 @@ public class TribalGovernment extends Government {
             if (c.getAssignedBuilding() != null) continue;
 
             if (needFarmers) {
-                if(Unemployed.class.isInstance(c.getProfession())){
-                    c.setProfession(ProfessionRegistry.create("Farmer"));
-                }
-                assignToBuilding(c, "Farm");
-                if(c.getEnergy()<5){
-                    c.feedExtra(5);
-                }
-                surplus += c.getEnergy();
-                if(surplus >= 0){
-                    break;
+                Building vac = findVac("Farm");
+                if(vac != null){
+                    c.setProfession(new Farmer());
+                    assignToBuilding(c,vac);
                 }
             }
         }
     }
 
-    private void assignToBuilding(Colonist c, String buildingType) {
+    private Building findVac(String buildingType){
         for (Building b : colony.getBuildings()) {
             if (b.getName().contains(buildingType) && b.hasVacancy()) {
-                c.assignBuilding(b);
-                return;
+                return b;
             }
+        }
+        return null;
+    }
+
+    private void assignToBuilding(Colonist c, Building b) {
+        c.assignBuilding(b);
+        if(c.getEnergy()<5){
+            c.feedExtra(5);
         }
     }
     public Colonist getSuccessor(){

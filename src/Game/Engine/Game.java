@@ -1,18 +1,20 @@
 package Game.Engine;
 
 import Game.Engine.Colonist.Profession.ProfessionRegistry;
+import Game.Engine.Event.EventManager;
 
 public class Game {
 
     private int turn;
     private Colony colony;
-
+    private EventManager eman;
     private String status;
 
     public Game() {
         this.turn = 1;
         this.colony = new Colony(7, new Resources(20, 15, 10));
         this.status = this.colony.getStatus();
+        this.eman = new EventManager(this);
     }
 
     public int getTurn() {
@@ -37,6 +39,7 @@ public class Game {
         if (this.turn ==12){
             colony.getLeadership().setLeadership(colony);
         }
+        this.eman.process();
     }
 
 
