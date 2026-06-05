@@ -42,6 +42,9 @@ public class BuildWindow {
         tcentreBtn.addActionListener(e -> build(new TribeCentre()));
         frame.add(tcentreBtn);
 
+        JButton enghubBtn = new JButton("Build Engineering Hub");
+        enghubBtn.addActionListener(e -> build(new EngineeringHub()));
+        frame.add(enghubBtn);
         frame.setVisible(true);
     }
 
@@ -53,7 +56,7 @@ public class BuildWindow {
 
             resLabel.setText(colony.getResources().toString());
             parentWindow.updateGameStats();          // parent window
-            parentWindow.updateColonistStats();      // refresh dropdowns
+            parentWindow.getColonistWindow().updateColonistStats();      // refresh dropdowns
         } else {
             JOptionPane.showMessageDialog(null, "Not enough resources to build " + building.getName(),
                     "Insufficient Resources", JOptionPane.WARNING_MESSAGE);

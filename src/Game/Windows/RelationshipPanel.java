@@ -18,6 +18,7 @@ public class RelationshipPanel extends JPanel {
     public RelationshipPanel(Game game) {
         this.game = game;
         setLayout(new BorderLayout(8,8));
+        setPreferredSize(new Dimension(320, 0));
 
         String[] columns = {"Colonist", "Platonic", "Familial", "Romantic", "Sexual","Admiration","Proximity"};
         tableModel = new DefaultTableModel(columns, 0) {

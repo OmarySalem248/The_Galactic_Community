@@ -2,9 +2,14 @@ package Game.Engine.Buildings;
 import Game.Engine.Colonist.Profession.Profession;
 import Game.Engine.Colonist.Colonist;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.imageio.ImageIO;
 
 @JsonIgnoreProperties({"colonists"})
 public abstract class Building {
@@ -61,7 +66,16 @@ public abstract class Building {
 
 
     public boolean isCompatible(Colonist selected) {
-        return getCompatible().isInstance(selected.getProfession());
+        return (getCompatible().isInstance(selected.getProfession())|| getCompatible() == null);
+    }
+    public Image getImage() {
+        File f = new File("Resources/Graphics/" + getClass().getSimpleName() + ".jpg");
+        if (!f.exists()) return null;
+        try {
+            return ImageIO.read(f);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public boolean hasVacancy() {

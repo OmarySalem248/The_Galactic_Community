@@ -1,6 +1,7 @@
 package Game.Engine.Colonist;
 
 import Game.Engine.Buildings.Building;
+import Game.Engine.Buildings.Dwelling;
 import Game.Engine.Colonist.Personality.Personality;
 import Game.Engine.Colonist.Personality.PersonalityFactory;
 import Game.Engine.Colonist.Profession.Profession;
@@ -49,6 +50,7 @@ public class Colonist {
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
 
     private Pregnancy pregnancy;
+    private Dwelling dwelling = null;
     protected int postpartumTimer = 0;
 
     // ----- Composition: profession object -----
@@ -123,6 +125,10 @@ public class Colonist {
         return sexuality;
     }
     public RelationshipSet getRelationships() { return relationships; }
+
+    public void setDwelling(Dwelling dwelling){
+        this.dwelling = dwelling;
+    }
 
     public void setParents(Colonist mom, Colonist dad) {
         this.bioMother = mom;

@@ -8,6 +8,7 @@ import Game.Engine.Colonist.Profession.Miner;
 import Game.Engine.Colonist.Profession.Unemployed;
 import Game.Engine.Colonist.Profession.Woodcutter;
 import Game.Engine.Government.ColonyLeadership;
+import Game.Engine.Map.Map;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipManager;
 import Game.Engine.Actions.Action;
@@ -35,14 +36,16 @@ public class Colony {
     private ColonyLeadership leadership;
 
     private String status;
-
+    private Map map;
     private Resources resources;
 
-    public Colony(int startingPopulation, Resources startingResources) {
+    public Colony( Resources startingResources, Map map) {
+        this.map = map;
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
-        this.buildings = new ArrayList<>();
+        this.buildings = map.getBuildings();
         this.persfact = new PersonalityFactory();
+
         colonists.add(new Colonist(this,"Jeff", new Farmer(),35,1,1,'M',persfact.futureDictator()));
         colonists.add(new Colonist(this,"Britta",new Woodcutter(),28,1,1,'F',persfact.comedian()));
         colonists.add(new Colonist(this,"Troy",new Farmer(), 19,1,1,'M',persfact.funGuy()));
@@ -57,10 +60,6 @@ public class Colony {
         this.status ="The crew are lost!";
         ArrayList<BuildingProject> projects= new ArrayList<BuildingProject>();
 
-        buildings.add(new Farm());
-        buildings.add(new Farm());
-        buildings.add(new LumberMill());
-        buildings.add(new Mine());
 
         for (Colonist c : colonists) {
             for(Building b :buildings) {

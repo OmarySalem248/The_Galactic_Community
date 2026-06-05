@@ -5,19 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="fixed but job assignment and made it so random clolonists can join in certain events">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistGen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/EventManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/WanderingColonist.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Government/Following/Following.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Dwelling.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/EngineeringHub.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/House.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/Interactions/DateAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/Interactions/DateAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/The Galactic Community.iml" beforeDir="false" afterPath="$PROJECT_DIR$/The Galactic Community.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colony.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Government/TribalGovernment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Government/TribalGovernment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Relationships/RelationshipManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Relationships/RelationshipManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,9 +33,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="HTML File" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -56,44 +61,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.GalacticCommunityApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GameLauncher.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-15&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/omary/Documents/The Galactic Community&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GalacticCommunityApplication.executor": "Run",
+    "Application.GameLauncher.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "jdk.selected.JAVA_MODULE": "corretto-15",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/omary/Downloads/Cancer-master",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "project.propCompiler"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\omary\Documents\The Galactic Community\Resources\Graphics" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\resources\static" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\Resourses\static" />
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\Resourses" />
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\java\com\GalacticCommunity" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="main" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="GameLauncher" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Game.GameLauncher" />
       <module name="The Galactic Community" />
+      <option name="VM_PARAMETERS" value="--enable-native-access=ALL-UNNAMED" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -235,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769493218439</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="fixed but job assignment and made it so random clolonists can join in certain events">
+      <option name="closed" value="true" />
+      <created>1779156929311</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1779156929311</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -283,7 +297,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java</url>
-          <line>290</line>
+          <line>296</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -298,8 +312,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java</url>
-          <line>24</line>
-          <properties field="energy" class="com.GalacticCommunity.model.Engine.Colonist.Colonist" />
+          <line>25</line>
+          <properties field="baseProductivity" class="Game.Engine.Colonist.Colonist" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

@@ -1,209 +1,107 @@
 package Game.Windows;
 
-import Game.Engine.Actions.AssignAction;
-import Game.Engine.Buildings.Building;
-import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.Profession.ProfessionRegistry;
 import Game.Engine.Game;
-import Game.Engine.Government.ColonyLeadership;
 
 import javax.swing.*;
 import java.awt.*;
 
-
 public class GameWindow {
-    private Game game;
-    private JLabel turnLabel;
-    private JLabel resLabel;
-    private JLabel gameUpdate;
 
-    private JComboBox<Colonist> colonistDropdown;
-    private JLabel energyLabel;
-    private JLabel hpLabel;
-    private JLabel ageLabel;
-    private JLabel colonistUpdate;
-    private JLabel occupationLabel;
-    private JButton feedButton;
-    private JButton reduceFeedButton;
+    private final Game game;
+    private final JLabel turnLabel;
+    private final JLabel resLabel;
+    private final JLabel gameUpdate;
+    private final ColonistsWindow colonistWindow;
+    private final JButton nextTurnBtn;
+    private final JButton buildBtn;
+    private final JButton feedButton;
+    private final JButton reduceFeedButton;
+    private final JComboBox colonistDropdown;
+    private final JComboBox buildingDropdown;
     private boolean autoRunning = false;
     private Timer autoTurnTimer;
-    private JButton autoRunButton;
-
-    private JComboBox<String> buildingDropdown;
-    private JComboBox<String> professionDropdown;
-
-    private JButton nextTurnBtn;
-    private final java.util.Set<Colonist> knownColonists = new java.util.HashSet<>();
-    private JButton buildBtn;
-    private boolean updatingDropdown = false;
-    private boolean updatingProfessionDropdown = false;
-    private ColonyLeadership leadership;
-    private RelationshipPanel relPanel;
+    private final JButton autoRunButton;
 
     public GameWindow(Game game) {
         this.game = game;
-        this.leadership = game.getColony().getLeadership();
-
 
         JFrame frame = new JFrame("Colony Builder - Micromanagement");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 450);
+        frame.setSize(1000, 550);
         frame.setLayout(new BorderLayout(10, 10));
 
         // ----- Top Panel -----
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        JPanel infoPanel = new JPanel(new BorderLayout());
+
+        JPanel statsRow = new JPanel();
+        statsRow.setLayout(new BoxLayout(statsRow, BoxLayout.Y_AXIS));
         turnLabel = new JLabel("Turn: " + game.getTurn(), SwingConstants.CENTER);
         turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
         turnLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         resLabel = new JLabel(game.getColony().getResources().toString(), SwingConstants.CENTER);
         resLabel.setFont(new Font("Monospaced", Font.PLAIN, 16));
         resLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         gameUpdate = new JLabel(game.getStatus(), SwingConstants.CENTER);
         gameUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
-        relPanel = new RelationshipPanel(game);
-        frame.add(relPanel, BorderLayout.EAST);
+        statsRow.add(Box.createVerticalStrut(5));
+        statsRow.add(turnLabel);
+        statsRow.add(resLabel);
+        statsRow.add(gameUpdate);
+        statsRow.add(Box.createVerticalStrut(5));
 
-        infoPanel.add(Box.createVerticalStrut(5));
-        infoPanel.add(turnLabel);
-        infoPanel.add(resLabel);
-        infoPanel.add(gameUpdate);
-        infoPanel.add(Box.createVerticalStrut(5));
+        // View dropdown (top-right)
+        JComboBox<String> viewDropdown = new JComboBox<>(new String[]{"Map", "Relationships"});
+        JPanel viewRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+        viewRow.add(new JLabel("View:"));
+        viewRow.add(viewDropdown);
 
+        infoPanel.add(statsRow,  BorderLayout.CENTER);
+        infoPanel.add(viewRow,   BorderLayout.EAST);
         frame.add(infoPanel, BorderLayout.NORTH);
 
         // ----- Center Panel -----
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 10, 5, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.5;
-        int row = 0;
+        RelationshipPanel relPanel = new RelationshipPanel(game);
+        colonistWindow = new ColonistsWindow(game, relPanel);
 
-        colonistDropdown = new JComboBox<>();
-        for (Colonist c : game.getColony().getColonists()) {
-            colonistDropdown.addItem(c);
-            knownColonists.add(c);
-        }
-        colonistDropdown.addActionListener(e -> updateColonistStats());
+        // Card panel — add new views here as your game grows
+        JPanel cardPanel = new JPanel(new CardLayout());
+        cardPanel.add(new MapPanel(game.getMap()), "Map");
+        cardPanel.add(relPanel,                    "Relationships");
 
-        occupationLabel = new JLabel();
-        energyLabel = new JLabel();
-        hpLabel = new JLabel();
-        ageLabel = new JLabel();
-        colonistUpdate = new JLabel();
-
-        Font statFont = new Font("Monospaced", Font.PLAIN, 14);
-        occupationLabel.setFont(statFont);
-        energyLabel.setFont(statFont);
-        hpLabel.setFont(statFont);
-        ageLabel.setFont(statFont);
-        colonistUpdate.setFont(statFont);
-
-        // Feed buttons
-        feedButton = new JButton("Feed 1 Extra Food");
-        reduceFeedButton = new JButton("Deallocate 1 Food");
-        feedButton.addActionListener(e -> {
-            Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-            if (selected != null) {
-                boolean success = game.getColony().feedColonist(selected, 1);
-                if (success) {
-                    updateColonistStats();
-                    updateGameStats();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Not enough food to feed " + selected.getName(),
-                            "Insufficient Food", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
-        reduceFeedButton.addActionListener(e -> {
-            Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-            if (selected != null ) {
-                if (selected.getEnergy() > 1) {
-                    boolean success = game.getColony().feedColonist(selected, -1);
-                    if (success) {
-                        updateColonistStats();
-                        updateGameStats();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Can't reduce feed any further for " + selected.getName(),
-                            "MINIMUM FEED REACHED", JOptionPane.WARNING_MESSAGE);
-                }
-            }
+        viewDropdown.addActionListener(e -> {
+            CardLayout cl = (CardLayout) cardPanel.getLayout();
+            cl.show(cardPanel, (String) viewDropdown.getSelectedItem());
         });
 
-
-        buildingDropdown = new JComboBox<>();
-        buildingDropdown.addActionListener(e -> assignColonistToBuilding());
-        professionDropdown = new JComboBox<>();
-        for (String profName : ProfessionRegistry.getAllNames()) {
-            professionDropdown.addItem(profName);
-        }
-        professionDropdown.addActionListener(e -> {
-            if (updatingProfessionDropdown) return;
-            changeColonistProfession();
-        });
-
-
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Select Colonist:"), gbc);
-        gbc.gridx = 1; centerPanel.add(colonistDropdown, gbc);
-        row++;
-
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Age:"), gbc);
-        gbc.gridx = 1; centerPanel.add(ageLabel, gbc);
-        row++;
-
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Occupation:"), gbc);
-        gbc.gridx = 1; centerPanel.add(occupationLabel, gbc);
-        row++;
-
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Energy:"), gbc);
-        gbc.gridx = 1; centerPanel.add(energyLabel, gbc);
-        row++;
-
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("HP:"), gbc);
-        gbc.gridx = 1; centerPanel.add(hpLabel, gbc);
-        row++;
-
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Assigned Building:"), gbc);
-        gbc.gridx = 1; centerPanel.add(buildingDropdown, gbc);
-        row++;
-
-        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
-        centerPanel.add(colonistUpdate, gbc);
-        row++;
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(new JLabel("Profession:"), gbc);
-        gbc.gridx = 1; centerPanel.add(professionDropdown, gbc);
-        row++;
-
-        gbc.gridwidth = 1;
-        gbc.gridx = 0; gbc.gridy = row; centerPanel.add(feedButton, gbc);
-        gbc.gridx = 1; centerPanel.add(reduceFeedButton, gbc);
-        row++;
-
+        JPanel centerPanel = new JPanel(new BorderLayout(10, 0));
+        centerPanel.add(colonistWindow, BorderLayout.WEST);
+        centerPanel.add(cardPanel,      BorderLayout.CENTER);
         frame.add(centerPanel, BorderLayout.CENTER);
 
         // ----- Bottom Panel -----
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        nextTurnBtn = new JButton("End Turn");
+        nextTurnBtn   = new JButton("End Turn");
+        buildBtn      = new JButton("Build Structures");
+        autoRunButton = new JButton("Auto Run");
+        ColonistsWindow.ColonistControls controls = colonistWindow.getControls();
+        feedButton       = controls.feedButton();
+        reduceFeedButton = controls.reduceFeedButton();
+        colonistDropdown = controls.colonistDropdown();
+        buildingDropdown = controls.buildingDropdown();
+
         nextTurnBtn.addActionListener(e -> nextTurn());
-        buildBtn = new JButton("Build Structures");
         buildBtn.addActionListener(e -> new BuildWindow(this.game, this));
+        autoRunButton.addActionListener(e -> toggleAutoRun());
+
         bottomPanel.add(nextTurnBtn);
         bottomPanel.add(buildBtn);
-        autoRunButton = new JButton("Auto Run");
-        autoRunButton.addActionListener(e -> toggleAutoRun());
         bottomPanel.add(autoRunButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
-        // Initial UI update
-        updateColonistStats();
         updateGameStats();
-
         frame.setVisible(true);
     }
+
     private void toggleAutoRun() {
         if (autoRunning) {
             autoTurnTimer.stop();
@@ -212,13 +110,9 @@ public class GameWindow {
         } else {
             autoRunning = true;
             autoRunButton.setText("Stop Auto Run");
-
             autoTurnTimer = new Timer(500, e -> {
                 game.nextTurn();
                 updateGameStats();
-                updateColonistStats();
-
-
                 if (game.getColony().getPopulation() == 0) {
                     autoTurnTimer.stop();
                     autoRunning = false;
@@ -229,154 +123,32 @@ public class GameWindow {
             autoTurnTimer.start();
         }
     }
-    public void updateColonistDropdown() {
-        for(Colonist c: knownColonists){
-            if(!c.isAlive()){
-                colonistDropdown.removeItem(c);
-            }
-        }
-        for (Colonist c : game.getColony().getColonists()) {
-            if (!knownColonists.contains(c)) {
-                colonistDropdown.addItem(c);
-                knownColonists.add(c);
-            }
-        }
-    }
-
-    public void updateColonistStats() {
-        updatingDropdown = true;
-        Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-        if (selected != null) {
-            if (leadership.getCurrentLeader() == selected) {
-                occupationLabel.setText("Tribe Leader");
-                professionDropdown.setEnabled(false); // disable changing
-            } else {
-                occupationLabel.setText(selected.getOccupation());
-                professionDropdown.setEnabled(true); // allow changing
-                updatingProfessionDropdown = true;
-                professionDropdown.setSelectedItem(selected.getProfession().getName());
-                updatingProfessionDropdown = false;
-            }
-
-            energyLabel.setText(String.valueOf(selected.getEnergy()));
-            hpLabel.setText(String.valueOf(selected.getHealth()));
-            ageLabel.setText(selected.getAge()+" Years "+selected.getAgeMonths()+" Months");
-            colonistUpdate.setText(selected.getStatus());
-            this.relPanel.updateTable(selected);
-
-            // Update building dropdown
-            buildingDropdown.removeAllItems();
-            buildingDropdown.addItem("Unassigned");
-            for (Building b : game.getColony().getBuildings()) {
-                buildingDropdown.addItem(b.getName());
-            }
-
-            if (selected.getAssignedBuilding() != null) {
-                buildingDropdown.setSelectedItem(selected.getAssignedBuilding().getName());
-            } else {
-                buildingDropdown.setSelectedItem("Unassigned");
-            }
-        }
-
-        updatingDropdown = false;
-    }
-    private void changeColonistProfession() {
-        Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-        if (selected == null) return;
-        if (leadership.getCurrentLeader() == selected) {
-            JOptionPane.showMessageDialog(null,
-                    "The Tribe Leader's role cannot be changed!",
-                    "Leader Protected",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (selected.getAge()<16) {
-            JOptionPane.showMessageDialog(null,
-                    "Child Labour Laws bro",
-                    "Too young",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String newProfessionName = (String) professionDropdown.getSelectedItem();
-        if (newProfessionName == null) return;
-
-        if (newProfessionName.equals(selected.getProfession().getName())) return;
-
-
-        selected.setProfession(ProfessionRegistry.create(newProfessionName));
-
-
-        if (selected.getAssignedBuilding() != null &&
-                !selected.getAssignedBuilding().isCompatible(selected)) {
-            selected.unassignBuilding();
-        }
-
-        updateColonistStats();
-        updateGameStats();
-    }
-
-
-
-    private void assignColonistToBuilding() {
-        if (updatingDropdown) return;
-        Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-        if (selected == null) return;
-
-        String chosen = (String) buildingDropdown.getSelectedItem();
-        Building building = null;
-
-        if (!"Unassigned".equals(chosen)) {
-            for (Building b : game.getColony().getBuildings()) {
-                if (b.getName().equals(chosen)) {
-                    building = b;
-                    break;
-                }
-            }
-        }
-
-        AssignAction action = new AssignAction(selected, building);
-        if (!game.getColony().performAction(action)) {
-            JOptionPane.showMessageDialog(null, "Invalid assignment!", "Error", JOptionPane.ERROR_MESSAGE);
-            buildingDropdown.setSelectedItem("Unassigned");
-        }
-
-        updateColonistStats();
-        updateGameStats();
-    }
 
     public void updateGameStats() {
         turnLabel.setText("Turn: " + game.getTurn());
         resLabel.setText(game.getColony().getResources().toString());
-        updateColonistDropdown();
         gameUpdate.setText(game.getStatus());
-
-
-
+        colonistWindow.updateColonistDropdown();
+        colonistWindow.updateColonistStats();
     }
 
     private void nextTurn() {
         game.nextTurn();
         updateGameStats();
-        updateColonistStats();
-
         if (game.getColony().getPopulation() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "All your colonists have perished! Game Over.",
-                    "Game Over",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "All your colonists have perished! Game Over.", "Game Over", JOptionPane.WARNING_MESSAGE);
             nextTurnBtn.setEnabled(false);
             buildBtn.setEnabled(false);
             feedButton.setEnabled(false);
+            reduceFeedButton.setEnabled(false);
             colonistDropdown.setEnabled(false);
             buildingDropdown.setEnabled(false);
-            reduceFeedButton.setEnabled(false);
-
         }
     }
+    public ColonistsWindow getColonistWindow(){
+        return colonistWindow;
+    }
+
     public static void startGame(Game game) { SwingUtilities.invokeLater(() -> new GameWindow(game)); }
 }
-
-
-
 
