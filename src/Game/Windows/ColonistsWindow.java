@@ -1,6 +1,6 @@
 package Game.Windows;
 
-import Game.Engine.Actions.AssignAction;
+import Game.Engine.Actions.ColonyActions.AssignAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.Profession.ProfessionRegistry;

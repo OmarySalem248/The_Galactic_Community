@@ -1,11 +1,9 @@
-package Game.Engine.Actions;
+package Game.Engine.Actions.ColonistActions;
 
-import Game.Engine.Colony;
-
-public abstract class Action {
+public abstract class ColonistAction {
     protected String name;
 
-    public Action(String name) {
+    public ColonistAction(String name) {
         this.name = name;
     }
 
@@ -17,5 +15,5 @@ public abstract class Action {
      * Executes the action in the context of the colony.
      * Returns true if successful.
      */
-    public abstract boolean  execute(Colony colony);
+    public abstract boolean  execute();
 }

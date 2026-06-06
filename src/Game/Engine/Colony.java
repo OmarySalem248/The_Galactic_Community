@@ -1,5 +1,6 @@
 package Game.Engine;
 
+import Game.Engine.Actions.ColonyActions.ColonyAction;
 import Game.Engine.Buildings.*;
 import Game.Engine.Colonist.Personality.PersonalityFactory;
 import Game.Engine.Colonist.Pregnancy;
@@ -11,8 +12,7 @@ import Game.Engine.Government.ColonyLeadership;
 import Game.Engine.Map.Map;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipManager;
-import Game.Engine.Actions.Action;
-import Game.Engine.Actions.AssignAction;
+import Game.Engine.Actions.ColonyActions.AssignAction;
 
 import Game.Engine.Colonist.Colonist;
 
@@ -251,10 +251,11 @@ public class Colony {
 
 
     public void addBuilding(Building building){
+
         this.buildings.add(building);
     }
 
-    public boolean performAction(Action action) {
+    public boolean performAction(ColonyAction action) {
         return action.execute(this);
     }
 

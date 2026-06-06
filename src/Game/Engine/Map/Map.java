@@ -4,6 +4,7 @@ import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.Farm;
 import Game.Engine.Buildings.LumberMill;
 import Game.Engine.Buildings.Mine;
+import Game.Engine.Colonist.ColonistAvatar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Map {
     // Map data
     // -----------------------------------------------------------------------
     public final int    cols, rows;
+    private final List<ColonistAvatar> avatars = new ArrayList<>();
     private final Tile[][] grid;   // grid[row][col]
     private List<Building> buildings;
 
@@ -58,7 +60,9 @@ public class Map {
         this.buildings.add(building);
         getTile(col, row).placeBuilding(building);
     }
-
+    public void addAvatar(ColonistAvatar avatar)    { avatars.add(avatar); }
+    public void removeAvatar(ColonistAvatar avatar) { avatars.remove(avatar); }
+    public List<ColonistAvatar> getAvatars()        { return avatars; }
 
     /** Returns true if (col, row) is within the map bounds. */
     public boolean inBounds(int col, int row) {

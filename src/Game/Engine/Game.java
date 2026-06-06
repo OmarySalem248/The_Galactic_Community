@@ -2,9 +2,9 @@ package Game.Engine;
 
 import Game.Engine.Buildings.House;
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.Profession.ProfessionRegistry;
 import Game.Engine.Event.EventManager;
 import Game.Engine.Map.Map;
+import Game.Engine.Time.GameClock;
 
 public class Game {
 
@@ -13,10 +13,13 @@ public class Game {
     private Map map;
     private Colony colony;
     private EventManager eman;
+
+    private GameClock clock;
     private String status;
 
     public Game() {
         this.turn = 1;
+        this.clock = new GameClock(this);
         this.map = Map.getBasicMap();
         this.colony = new Colony( new Resources(20, 15, 10),map);
         int x = 10;
@@ -35,6 +38,10 @@ public class Game {
 
     public int getTurn() {
         return turn;
+    }
+
+    public GameClock getClock() {
+        return clock;
     }
 
     public Map getMap() {

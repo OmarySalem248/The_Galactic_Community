@@ -1,10 +1,10 @@
-package Game.Engine.Actions;
+package Game.Engine.Actions.ColonyActions;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colony;
 import Game.Engine.Colonist.Colonist;
 
-public class AssignAction extends Action{
+public class AssignAction extends ColonyAction{
     private Colonist colonist;
     private Building building;
 

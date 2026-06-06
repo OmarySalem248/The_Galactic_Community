@@ -4,25 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="fixed but job assignment and made it so random clolonists can join in certain events">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Dwelling.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/EngineeringHub.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/House.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features">
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ColonistAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/MoveAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/ColonyAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/The Galactic Community.iml" beforeDir="false" afterPath="$PROJECT_DIR$/The Galactic Community.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/Action.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/AssignAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/AssignAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/BuildAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colony.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildWindow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/RelationshipPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,8 +36,8 @@
       <list>
         <option value="Enum" />
         <option value="HTML File" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -85,11 +87,11 @@
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\Game\Windows" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\Resources\Graphics" />
       <recent name="C:\Users\omary\Documents\The Galactic Community" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\resources\static" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main" />
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\Resourses\static" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="main" />
@@ -249,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779156929311</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features">
+      <option name="closed" value="true" />
+      <created>1780670629640</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1780670629640</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -285,7 +295,8 @@
     <MESSAGE value="after complications it was decided to leave this project as a trial and a good practice example, elements of this project will be adapted and used in future project built from the ground up to be hosted online" />
     <MESSAGE value="added some advancements to interactions including leadership" />
     <MESSAGE value="fixed but job assignment and made it so random clolonists can join in certain events" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed but job assignment and made it so random clolonists can join in certain events" />
+    <MESSAGE value="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -297,7 +308,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java</url>
-          <line>296</line>
+          <line>297</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

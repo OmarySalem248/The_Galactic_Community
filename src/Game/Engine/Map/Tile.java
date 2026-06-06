@@ -2,7 +2,6 @@ package Game.Engine.Map;
 
 
 import Game.Engine.Buildings.Building;
-import Game.Windows.BuildWindow;
 
 /**
  * Tile.java

@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import Game.Engine.Map.Tile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.imageio.ImageIO;
@@ -17,6 +19,9 @@ public abstract class Building {
     protected int woodCost;
     protected int stoneCost;
     private int id;
+    private Image image;
+
+    private ArrayList<Tile> coords;
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
     private Class<? extends Profession> compatibleProfession;
 
@@ -34,6 +39,15 @@ public abstract class Building {
         this.compatibleProfession = compatible;
         colonists = new ArrayList<>();
         this.id = ID_GENERATOR.incrementAndGet();
+        File f = new File("Resources/Graphics/" + getClass().getSimpleName() + ".jpg");
+        if (f.exists()) {
+            try {
+                image = ImageIO.read(f);
+            } catch (IOException e) {
+                image = null;
+            }
+        }
+        this.coords = new ArrayList<>();
     }
     public Class<? extends Profession> getCompatible() {
         return compatibleProfession;
@@ -42,6 +56,10 @@ public abstract class Building {
         return colonlimit;
     }
 
+    public void setcoords(Tile tile){
+        this.coords.add(tile);
+    }
+    public ArrayList<Tile> getCoords() { return coords; }
     public String getName() {
         return name+" "+ colonists.size();
     }
@@ -69,13 +87,7 @@ public abstract class Building {
         return (getCompatible().isInstance(selected.getProfession())|| getCompatible() == null);
     }
     public Image getImage() {
-        File f = new File("Resources/Graphics/" + getClass().getSimpleName() + ".jpg");
-        if (!f.exists()) return null;
-        try {
-            return ImageIO.read(f);
-        } catch (IOException e) {
-            return null;
-        }
+        return image;
     }
 
     public boolean hasVacancy() {

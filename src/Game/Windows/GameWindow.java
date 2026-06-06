@@ -13,7 +13,6 @@ public class GameWindow {
     private final JLabel gameUpdate;
     private final ColonistsWindow colonistWindow;
     private final JButton nextTurnBtn;
-    private final JButton buildBtn;
     private final JButton feedButton;
     private final JButton reduceFeedButton;
     private final JComboBox colonistDropdown;
@@ -21,6 +20,7 @@ public class GameWindow {
     private boolean autoRunning = false;
     private Timer autoTurnTimer;
     private final JButton autoRunButton;
+    private MapPanel mapPanel;
 
     public GameWindow(Game game) {
         this.game = game;
@@ -32,7 +32,6 @@ public class GameWindow {
 
         // ----- Top Panel -----
         JPanel infoPanel = new JPanel(new BorderLayout());
-
         JPanel statsRow = new JPanel();
         statsRow.setLayout(new BoxLayout(statsRow, BoxLayout.Y_AXIS));
         turnLabel = new JLabel("Turn: " + game.getTurn(), SwingConstants.CENTER);
@@ -49,24 +48,22 @@ public class GameWindow {
         statsRow.add(gameUpdate);
         statsRow.add(Box.createVerticalStrut(5));
 
-        // View dropdown (top-right)
         JComboBox<String> viewDropdown = new JComboBox<>(new String[]{"Map", "Relationships"});
         JPanel viewRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
         viewRow.add(new JLabel("View:"));
         viewRow.add(viewDropdown);
-
-        infoPanel.add(statsRow,  BorderLayout.CENTER);
-        infoPanel.add(viewRow,   BorderLayout.EAST);
+        infoPanel.add(statsRow, BorderLayout.CENTER);
+        infoPanel.add(viewRow,  BorderLayout.EAST);
         frame.add(infoPanel, BorderLayout.NORTH);
 
         // ----- Center Panel -----
         RelationshipPanel relPanel = new RelationshipPanel(game);
         colonistWindow = new ColonistsWindow(game, relPanel);
+        mapPanel = new MapPanel(game, this, game.getClock());
 
-        // Card panel — add new views here as your game grows
         JPanel cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(new MapPanel(game.getMap()), "Map");
-        cardPanel.add(relPanel,                    "Relationships");
+        cardPanel.add(mapPanel, "Map");
+        cardPanel.add(relPanel, "Relationships");
 
         viewDropdown.addActionListener(e -> {
             CardLayout cl = (CardLayout) cardPanel.getLayout();
@@ -81,8 +78,8 @@ public class GameWindow {
         // ----- Bottom Panel -----
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         nextTurnBtn   = new JButton("End Turn");
-        buildBtn      = new JButton("Build Structures");
         autoRunButton = new JButton("Auto Run");
+
         ColonistsWindow.ColonistControls controls = colonistWindow.getControls();
         feedButton       = controls.feedButton();
         reduceFeedButton = controls.reduceFeedButton();
@@ -90,17 +87,18 @@ public class GameWindow {
         buildingDropdown = controls.buildingDropdown();
 
         nextTurnBtn.addActionListener(e -> nextTurn());
-        buildBtn.addActionListener(e -> new BuildWindow(this.game, this));
         autoRunButton.addActionListener(e -> toggleAutoRun());
-
         bottomPanel.add(nextTurnBtn);
-        bottomPanel.add(buildBtn);
         bottomPanel.add(autoRunButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         updateGameStats();
         frame.setVisible(true);
     }
+
+    public ColonistsWindow getColonistWindow() { return colonistWindow; }
+
+    public void repaintMap() { mapPanel.repaint(); }
 
     private void toggleAutoRun() {
         if (autoRunning) {
@@ -138,17 +136,12 @@ public class GameWindow {
         if (game.getColony().getPopulation() == 0) {
             JOptionPane.showMessageDialog(null, "All your colonists have perished! Game Over.", "Game Over", JOptionPane.WARNING_MESSAGE);
             nextTurnBtn.setEnabled(false);
-            buildBtn.setEnabled(false);
             feedButton.setEnabled(false);
             reduceFeedButton.setEnabled(false);
             colonistDropdown.setEnabled(false);
             buildingDropdown.setEnabled(false);
         }
     }
-    public ColonistsWindow getColonistWindow(){
-        return colonistWindow;
-    }
 
     public static void startGame(Game game) { SwingUtilities.invokeLater(() -> new GameWindow(game)); }
 }
-

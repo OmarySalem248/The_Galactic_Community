@@ -184,6 +184,7 @@ public class Colonist {
             assignedBuilding = null;
         }
     }
+    public Dwelling getDwelling() { return dwelling; }
 
     public void age() {
         ageMonths += 1;
