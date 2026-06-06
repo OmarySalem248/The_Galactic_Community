@@ -20,6 +20,7 @@ public class ColonistAvatar {
     public Tile getCurrentTile()  { return currentTile; }
 
     public void tick(int hour, Map map) {
+
         updateDestination(hour);
         moveTowardDestination(map);
     }
@@ -36,6 +37,7 @@ public class ColonistAvatar {
     private void moveTowardDestination(Map map) {
         if (currentTile == null || destination == null) return;
         if (currentTile == destination) return;
+        System.out.print("movin");
         new MoveAction(this, destination, map).execute();
     }
 
@@ -46,6 +48,7 @@ public class ColonistAvatar {
     }
 
     public void setCurrentTile(Tile tile){
+        tile.colonistEnter(this);
         this.currentTile = tile;
     }
 }

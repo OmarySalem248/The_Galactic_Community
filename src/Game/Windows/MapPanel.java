@@ -27,7 +27,7 @@ public class MapPanel extends JPanel {
     private int dragOriginX, dragOriginY;
 
     public MapPanel(Game game, GameWindow parentWindow, GameClock clock) {
-        this.map          = clock.getMap();
+        this.map          = game.getMap();
         this.game         = game;
         this.parentWindow = parentWindow;
         this.clock        = clock;
@@ -36,7 +36,7 @@ public class MapPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Map"));
 
         // Repaint every tick so avatars move smoothly
-        clock.addTickListener((hour, day) -> repaint());
+        clock.addTickListener((min,hour, day) -> repaint());
 
         MouseAdapter mouse = new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {
@@ -107,6 +107,27 @@ public class MapPanel extends JPanel {
                     }
                 }
 
+                // Colonists on tile
+                if (tile.getColonists().size() > 0 && !tile.hasBuilding()) {
+                    for (ColonistAvatar avatar : tile.getColonists()) {
+                        int cx = PADDING + offsetX + tile.col * CELL;
+                        int cy = PADDING + offsetY + tile.row * CELL;
+
+                        // Dot
+                        g2.setColor(new Color(0xFFD700));
+                        g2.fillOval(cx + CELL / 2 - 5, cy + CELL / 2 - 5, 10, 10);
+                        g2.setColor(new Color(0xB8860B));
+                        g2.drawOval(cx + CELL / 2 - 5, cy + CELL / 2 - 5, 10, 10);
+
+                        // Name label just below the dot
+                        g2.setColor(Color.WHITE);
+                        g2.setFont(new Font("Monospaced", Font.PLAIN, 8));
+                        FontMetrics fm = g2.getFontMetrics();
+                        String name = avatar.getColonist().getName();
+                        g2.drawString(name, cx + (CELL - fm.stringWidth(name)) / 2, cy + CELL / 2 + 14);
+                    }
+                }
+
                 // Grid lines
                 g2.setColor(new Color(255, 255, 255, 30));
                 g2.drawRect(x, y, CELL, CELL);
@@ -119,29 +140,6 @@ public class MapPanel extends JPanel {
                     g2.setStroke(new BasicStroke(1f));
                 }
             }
-        }
-
-        // --- Draw colonist avatars ---
-        List<ColonistAvatar> avatars = clock.getAvatars();
-        for (ColonistAvatar avatar : avatars) {
-            Tile tile = avatar.getCurrentTile();
-            if (tile == null) continue;
-
-            int x = PADDING + offsetX + tile.col * CELL;
-            int y = PADDING + offsetY + tile.row * CELL;
-
-            // Dot
-            g2.setColor(new Color(0xFFD700));
-            g2.fillOval(x + CELL / 2 - 5, y + CELL / 2 - 5, 10, 10);
-            g2.setColor(new Color(0xB8860B));
-            g2.drawOval(x + CELL / 2 - 5, y + CELL / 2 - 5, 10, 10);
-
-            // Name label just below the dot
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Monospaced", Font.PLAIN, 8));
-            FontMetrics fm = g2.getFontMetrics();
-            String name = avatar.getColonist().getName();
-            g2.drawString(name, x + (CELL - fm.stringWidth(name)) / 2, y + CELL / 2 + 14);
         }
 
         // Clock display (top-left corner of panel)

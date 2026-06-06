@@ -72,6 +72,8 @@ public class Colony {
 
         }
     }
+
+
     public void addColonist(Colonist colonist){
         colonists.add(colonist);
     }

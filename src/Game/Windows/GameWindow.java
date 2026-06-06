@@ -1,6 +1,7 @@
 package Game.Windows;
 
 import Game.Engine.Game;
+import Game.Engine.Time.GameClock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,7 +87,10 @@ public class GameWindow {
         colonistDropdown = controls.colonistDropdown();
         buildingDropdown = controls.buildingDropdown();
 
-        nextTurnBtn.addActionListener(e -> nextTurn());
+        nextTurnBtn.addActionListener(e -> {
+            game.getClock().tickOnce();
+            updateGameStats();
+        });
         autoRunButton.addActionListener(e -> toggleAutoRun());
         bottomPanel.add(nextTurnBtn);
         bottomPanel.add(autoRunButton);
@@ -101,24 +105,13 @@ public class GameWindow {
     public void repaintMap() { mapPanel.repaint(); }
 
     private void toggleAutoRun() {
-        if (autoRunning) {
-            autoTurnTimer.stop();
-            autoRunning = false;
+        GameClock clock = game.getClock();
+        if (clock.isRunning()) {
+            clock.stop();
             autoRunButton.setText("Auto Run");
         } else {
-            autoRunning = true;
-            autoRunButton.setText("Stop Auto Run");
-            autoTurnTimer = new Timer(500, e -> {
-                game.nextTurn();
-                updateGameStats();
-                if (game.getColony().getPopulation() == 0) {
-                    autoTurnTimer.stop();
-                    autoRunning = false;
-                    autoRunButton.setText("Auto Run");
-                    JOptionPane.showMessageDialog(null, "All colonists have perished. Auto-run stopped.", "Game Over", JOptionPane.WARNING_MESSAGE);
-                }
-            });
-            autoTurnTimer.start();
+            clock.start();
+            autoRunButton.setText("Stop");
         }
     }
 
@@ -130,18 +123,7 @@ public class GameWindow {
         colonistWindow.updateColonistStats();
     }
 
-    private void nextTurn() {
-        game.nextTurn();
-        updateGameStats();
-        if (game.getColony().getPopulation() == 0) {
-            JOptionPane.showMessageDialog(null, "All your colonists have perished! Game Over.", "Game Over", JOptionPane.WARNING_MESSAGE);
-            nextTurnBtn.setEnabled(false);
-            feedButton.setEnabled(false);
-            reduceFeedButton.setEnabled(false);
-            colonistDropdown.setEnabled(false);
-            buildingDropdown.setEnabled(false);
-        }
-    }
+
 
     public static void startGame(Game game) { SwingUtilities.invokeLater(() -> new GameWindow(game)); }
 }

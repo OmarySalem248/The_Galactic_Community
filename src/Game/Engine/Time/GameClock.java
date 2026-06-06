@@ -5,10 +5,14 @@ package Game.Engine.Time;
 import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Map.Map;
 import Game.Engine.Game;
+import Game.Engine.Time.Event.EventManager;
 
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * GameClock.java
@@ -18,24 +22,28 @@ import java.util.List;
  */
 public class GameClock {
 
-    public interface TickListener {
-        void onTick(int hour, int day);
-    }
+
+
+
 
     private static final int TICK_MS = 200; // real ms per in-game hour — tweak freely
 
     private final Map map;
-    private final List<ColonistAvatar> avatars = new ArrayList<>();
+    private EventManager eman;
     private final List<TickListener>   listeners = new ArrayList<>();
-
+    private int minute = 0;
     private int hour = 6; // start at 6am
     private int day  = 1;
+    private final ExecutorService pool = Executors.newFixedThreadPool(
+            Runtime.getRuntime().availableProcessors()
+    );
     private Game game;
 
     private final Timer timer;
 
     public GameClock(Game game) {
         this.game = game;
+        this.eman = new EventManager(game);
         this.map = game.getMap();
         this.timer = new Timer(TICK_MS, e -> tick());
     }
@@ -44,31 +52,30 @@ public class GameClock {
     public void stop()  { timer.stop();  }
     public boolean isRunning() { return timer.isRunning(); }
     public Map getMap() { return map; }
+    public void tickOnce()  { tick(); }
     public int getHour() { return hour; }
     public int getDay()  { return day;  }
 
-    public void addAvatar(ColonistAvatar avatar)     { avatars.add(avatar); }
-    public void removeAvatar(ColonistAvatar avatar)  { avatars.remove(avatar); }
-    public List<ColonistAvatar> getAvatars()         { return avatars; }
+    public int getMinute() {
+        return minute;
+    }
 
     public void addTickListener(TickListener l)      { listeners.add(l); }
 
     private void tick() {
-        // Advance time
-        hour++;
-        if (hour >= 24) {
-            hour = 0;
-            day++;
+        minute++;
+        if (minute >= 60) { minute = 0; hour++; }
+        if (hour  >= 24)  { hour  = 0; day++;  }
+
+        List<Future<?>> tasks = new ArrayList<>();
+        for (ColonistAvatar avatar : map.getAvatars()) {
+            tasks.add(pool.submit(() -> avatar.tick(hour, map)));
+        }
+        // Wait for all avatars to finish before notifying listeners
+        for (Future<?> f : tasks) {
+            try { f.get(); } catch (Exception ignored) {}
         }
 
-        // Move all avatars
-        for (ColonistAvatar avatar : avatars) {
-            avatar.tick(hour, map);
-        }
-
-        // Notify listeners (UI repaint, game logic hooks etc.)
-        for (TickListener l : listeners) {
-            l.onTick(hour, day);
-        }
+        for (TickListener l : listeners) l.onTick(minute,hour, day);
     }
 }

@@ -19,6 +19,7 @@ public class MoveAction extends ColonistAction {
 
     @Override
     public boolean execute() {
+        System.out.print("walkin");
         Tile current = avatar.getCurrentTile();
         if (current == null || destination == null) return false;
         if (current == destination) return false;
@@ -34,8 +35,9 @@ public class MoveAction extends ColonistAction {
 
         Tile next = map.getTile(col, row);
         if (next == null) return false;
-
+        current.colonistExit(avatar);
         avatar.setCurrentTile(next);
+
         return true;
     }
 }

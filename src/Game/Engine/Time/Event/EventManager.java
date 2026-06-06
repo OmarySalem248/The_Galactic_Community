@@ -1,13 +1,12 @@
-package Game.Engine.Event;
+package Game.Engine.Time.Event;
 
-import Game.Engine.Actions.Interactions.MarryAction;
-import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.ColonistGen;
 import Game.Engine.Game;
+import Game.Engine.Time.TickListener;
 
 import java.util.Random;
 
-public class EventManager {
+public class EventManager implements TickListener {
     private Game game;
     private ColonistGen gen;
 
@@ -19,15 +18,13 @@ public class EventManager {
 
     }
 
-    public void process(){
 
-        if(this.game.getTurn() > 20 && this.game.getTurn() < 40 && this.rand.nextInt(6)>4){
+
+    @Override
+    public void onTick(int min,int hour, int day) {
+        if(day >=7 && day <= 12 && hour == 0 && min == 0){
             WanderingColonist wanderingColonist = new WanderingColonist(this.gen.generate());
-            wanderingColonist.execute(this.game.getColony());
+            wanderingColonist.execute(this.game);
         }
-
-
-
     }
-
 }

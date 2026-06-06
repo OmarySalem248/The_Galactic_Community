@@ -1,7 +1,8 @@
-package Game.Engine.Event;
+package Game.Engine.Time.Event;
 
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colony;
+import Game.Engine.Game;
 
 public class WanderingColonist extends Event{
     private final Colonist c;
@@ -11,8 +12,8 @@ public class WanderingColonist extends Event{
     }
 
     @Override
-    public void execute(Colony colony) {
-        colony.addColonist(c);
+    public void execute(Game game) {
+        game.addColonist(c,game.getMap().findSpawn());
 
     }
 }

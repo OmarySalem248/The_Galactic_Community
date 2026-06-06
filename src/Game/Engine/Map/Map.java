@@ -6,8 +6,7 @@ import Game.Engine.Buildings.LumberMill;
 import Game.Engine.Buildings.Mine;
 import Game.Engine.Colonist.ColonistAvatar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Map {
 
@@ -15,13 +14,14 @@ public class Map {
     // Map data
     // -----------------------------------------------------------------------
     public final int    cols, rows;
-    private final List<ColonistAvatar> avatars = new ArrayList<>();
+    private List<ColonistAvatar> avatars;
     private final Tile[][] grid;   // grid[row][col]
     private List<Building> buildings;
 
     /** Create a blank map filled with PLAINS. */
     public Map(int cols, int rows) {
         this.buildings = new ArrayList<>();
+        this.avatars = new ArrayList<>();
         this.cols = cols;
         this.rows = rows;
         this.grid = new Tile[rows][cols];
@@ -38,7 +38,7 @@ public class Map {
     }
 
     public static Map getBasicMap() {
-        Map basicMap =  new Map(34,24);
+        Map basicMap =  new Map(35,25);
         basicMap.placeBuilding(new Farm(),1,2);
         basicMap.placeBuilding(new Farm(),2,2);
         basicMap.placeBuilding(new LumberMill(),7,2);
@@ -68,7 +68,23 @@ public class Map {
     public boolean inBounds(int col, int row) {
         return col >= 0 && col < cols && row >= 0 && row < rows;
     }
+    public Tile findSpawn() {
+        Queue<Tile> queue = new LinkedList<>();
+        Set<Tile> visited = new HashSet<>();
 
+        Tile start = getTile(18, 13);
+        queue.add(start);
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            Tile current = queue.poll();
+            if (current.isEmpty()) return current;
+            for (Tile n : current.getNeighbours(this)) {
+                if (visited.add(n)) queue.add(n);
+            }
+        }
+        return null;
+    }
 
     public List<Building> getBuildings() {
         return buildings;
