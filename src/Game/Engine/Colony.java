@@ -8,7 +8,9 @@ import Game.Engine.Colonist.Profession.Farmer;
 import Game.Engine.Colonist.Profession.Miner;
 import Game.Engine.Colonist.Profession.Unemployed;
 import Game.Engine.Colonist.Profession.Woodcutter;
+import Game.Engine.Event.GameEventBus;
 import Game.Engine.Government.ColonyLeadership;
+import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Map;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipManager;
@@ -81,6 +83,7 @@ public class Colony {
     public List<Colonist> getColonists() {
         return colonists;
     }
+
 
     public Resources getResources() {
         return resources;

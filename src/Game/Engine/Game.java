@@ -1,10 +1,12 @@
 package Game.Engine;
 
 import Game.Engine.Buildings.House;
+import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Event.GameEventBus;
+import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
-import Game.Engine.Time.Event.EventManager;
 import Game.Engine.Map.Map;
 import Game.Engine.Time.GameClock;
 
@@ -15,6 +17,7 @@ public class Game {
     private Map map;
     private Colony colony;
 
+    private final GameEventBus eventBus = new GameEventBus();
 
     private GameClock clock;
     private String status;
@@ -30,7 +33,9 @@ public class Game {
 
             House house = new House();
             house.addResident(c);
+            Tile startingTile = map.getTile(x,y);
             ColonistAvatar avatar = new ColonistAvatar(c,map.getTile(x,y));
+            avatar.setActionManager(new ActionManager(avatar, startingTile, eventBus));
             this.map.placeBuilding(house,x,y);
             map.addAvatar(avatar);
             x++;
@@ -54,9 +59,14 @@ public class Game {
         return map;
     }
 
+
     public String getStatus(){
         return this.colony.getStatus();
     }
+    public GameEventBus getEventBus() {
+        return eventBus;
+    }
+
 
     public Colony getColony() {
         return colony;

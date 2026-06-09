@@ -36,7 +36,7 @@ public class MapPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Map"));
 
         // Repaint every tick so avatars move smoothly
-        clock.addTickListener((min,hour, day) -> repaint());
+        clock.addTickListener((time) -> repaint());
 
         MouseAdapter mouse = new MouseAdapter() {
             @Override public void mousePressed(MouseEvent e) {

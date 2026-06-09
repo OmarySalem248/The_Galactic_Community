@@ -1,26 +1,25 @@
 package Game.Engine.Actions.ColonistActions;
 
+import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Map.Map;
 import Game.Engine.Map.Tile;
 
 public class MoveAction extends ColonistAction {
 
-    private final ColonistAvatar avatar;
+
     private final Tile destination;
     private final Map map;
 
-    public MoveAction(ColonistAvatar avatar, Tile destination, Map map) {
-        super("Move");
-        this.avatar      = avatar;
+    public MoveAction(ActionManager colonist, Tile destination, Map map) {
+        super("Move",colonist);
         this.destination = destination;
         this.map         = map;
     }
 
     @Override
     public boolean execute() {
-        System.out.print("walkin");
-        Tile current = avatar.getCurrentTile();
+        Tile current = colonistam.getCurrentTile();
         if (current == null || destination == null) return false;
         if (current == destination) return false;
 
@@ -35,8 +34,8 @@ public class MoveAction extends ColonistAction {
 
         Tile next = map.getTile(col, row);
         if (next == null) return false;
-        current.colonistExit(avatar);
-        avatar.setCurrentTile(next);
+        current.colonistExit(colonistam.getAvatar());
+        colonistam.getAvatar().setCurrentTile(next);
 
         return true;
     }

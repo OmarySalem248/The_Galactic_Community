@@ -1,12 +1,11 @@
-package Game.Engine.Time.Event;
+package Game.Engine.Time.WorldEvent;
 
-import Game.Engine.Colony;
 import Game.Engine.Game;
 
-public abstract class Event {
+public abstract class WorldEvent {
     protected String name;
 
-    public Event(String name) {
+    public WorldEvent(String name) {
         this.name = name;
     }
 

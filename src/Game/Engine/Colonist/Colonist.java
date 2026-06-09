@@ -10,7 +10,7 @@ import Game.Engine.Colony;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipSet;
 import Game.Engine.Relationships.RelationshipType;
-import Game.Engine.Resources;
+import Game.Engine.Inventory.Resources;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -57,6 +57,10 @@ public class Colonist {
     private Profession profession;
     private Colonist partner;
 
+    private boolean atWork = false;
+
+
+
     public Colonist(Colony colony, String name, Profession profession, int age, int energy, int baseProductivity, char sex, Personality personality) {
         this.name = name;
         this.profession = profession;
@@ -101,6 +105,9 @@ public class Colonist {
 
     // ----- Basic getters and setters -----
     public String getName() { return name; }
+
+
+
     public int getEnergy() { return energy; }
     public void setEnergy(int energy) { this.energy = Math.max(0, Math.min(energy, 100)); }
     public int getAge() { return age; }
@@ -170,6 +177,11 @@ public class Colonist {
     }
 
     public Building getAssignedBuilding() { return assignedBuilding; }
+
+    public void setAtWork(boolean atwork){
+        atWork = atwork;
+    }
+    public boolean isAtWork(){return atWork;}
 
     public void assignBuilding(Building building) {
         if (building.getColonists().size() < building.getColonlimit()) {

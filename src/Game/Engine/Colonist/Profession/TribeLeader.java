@@ -1,9 +1,7 @@
 package Game.Engine.Colonist.Profession;
 
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Relationships.Relationship;
-import Game.Engine.Relationships.RelationshipType;
-import Game.Engine.Resources;
+import Game.Engine.Inventory.Resources;
 
 public class TribeLeader extends Leader{
 

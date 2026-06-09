@@ -4,51 +4,38 @@ import Game.Engine.Actions.ColonistActions.MoveAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Map.Map;
 import Game.Engine.Map.Tile;
-
+import Game.Engine.Time.GameTime;
+/*
+Physical representation of colonist, the shell that contains data in Colonist class and decision making in ActionManager
+ */
 public class ColonistAvatar {
     private final Colonist colonist;
     private Tile currentTile;
-    private Tile destination;
+    private  ActionManager actionManager;
 
     public ColonistAvatar(Colonist colonist, Tile startingTile) {
         this.colonist    = colonist;
         this.currentTile = startingTile;
-        this.destination = startingTile;
+    }
+
+    public void setActionManager(ActionManager actionManager) {
+        this.actionManager = actionManager;
     }
 
     public Colonist getColonist() { return colonist; }
     public Tile getCurrentTile()  { return currentTile; }
 
-    public void tick(int hour, Map map) {
-
-        updateDestination(hour);
-        moveTowardDestination(map);
+    public ActionManager getActionManager() {
+        return actionManager;
     }
 
-    private void updateDestination(int hour) {
-        if (hour == 8) {
-            Tile workTile = getFirstTile(colonist.getAssignedBuilding());
-            if (workTile != null) destination = workTile;
-        } else if (hour == 20) {
-            Tile homeTile = getFirstTile(colonist.getDwelling());
-            if (homeTile != null) destination = homeTile;
-        }
+    public void tick(GameTime time, Map map) {
+        actionManager.run(time,map,getCurrentTile());
     }
-    private void moveTowardDestination(Map map) {
-        if (currentTile == null || destination == null) return;
-        if (currentTile == destination) return;
-        System.out.print("movin");
-        new MoveAction(this, destination, map).execute();
-    }
-
-    private Tile getFirstTile(Building building) {
-        if (building == null) return null;
-        if (building.getCoords().isEmpty()) return null;
-        return building.getCoords().get(0);
-    }
-
     public void setCurrentTile(Tile tile){
         tile.colonistEnter(this);
         this.currentTile = tile;
     }
+
+
 }

@@ -1,6 +1,6 @@
 package Game.Engine.Buildings;
 
-import Game.Engine.Resources;
+import Game.Engine.Inventory.Resources;
 
 public class BuildingProject {
     private String name;

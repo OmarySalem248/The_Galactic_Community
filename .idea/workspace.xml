@@ -4,20 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Made it so that buildings can be build from a menu that appears when clicking tiles, working on colonist avatars that move and interact with map">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Time/TickListener.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form">
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventBus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameTime.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ColonistAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ColonistAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/MoveAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/MoveAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/BuildingProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/BuildingProject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Miner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Miner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Profession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Profession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Unemployed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Unemployed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Woodcutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Woodcutter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colony.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/Event/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Event/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/Event/EventManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Event/WanderingColonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/Event/WanderingColonist.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Resources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/WorldEvent/WorldEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Event/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/WorldEvent/WorldEventManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Event/WanderingColonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/WorldEvent/WanderingColonist.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/TickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/TickListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,10 +45,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="HTML File" />
-        <option value="Class" />
+        <option value="Record" />
+        <option value="Enum" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -57,25 +75,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GalacticCommunityApplication.executor": "Run",
-    "Application.GameLauncher.executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "jdk.selected.JAVA_MODULE": "corretto-15",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/omary/Downloads/Cancer-master",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propCompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GalacticCommunityApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GameLauncher.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-15&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/omary/Downloads/Cancer-master&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
@@ -261,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780730488687</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form">
+      <option name="closed" value="true" />
+      <created>1780748074012</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1780748074012</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -299,7 +325,8 @@
     <MESSAGE value="fixed but job assignment and made it so random clolonists can join in certain events" />
     <MESSAGE value="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features" />
     <MESSAGE value="Made it so that buildings can be build from a menu that appears when clicking tiles, working on colonist avatars that move and interact with map" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made it so that buildings can be build from a menu that appears when clicking tiles, working on colonist avatars that move and interact with map" />
+    <MESSAGE value="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -311,7 +338,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java</url>
-          <line>297</line>
+          <line>309</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -323,19 +350,6 @@
           <url>file://$PROJECT_DIR$/src/Game/Engine/Relationships/RelationshipManager.java</url>
           <line>80</line>
           <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java</url>
-          <line>45</line>
-          <properties>
-            <option name="lambda-ordinal" value="-10" />
-          </properties>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

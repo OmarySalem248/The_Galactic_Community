@@ -1,4 +1,4 @@
-package Game.Engine;
+package Game.Engine.Inventory;
 
 public class Resources {
     private int food;

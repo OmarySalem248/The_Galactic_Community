@@ -1,10 +1,9 @@
-package Game.Engine.Time.Event;
+package Game.Engine.Time.WorldEvent;
 
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colony;
 import Game.Engine.Game;
 
-public class WanderingColonist extends Event{
+public class WanderingColonist extends WorldEvent {
     private final Colonist c;
     public WanderingColonist(Colonist c) {
         super("Wandering");

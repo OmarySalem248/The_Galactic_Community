@@ -1,7 +1,7 @@
 package Game.Engine.Colonist.Profession;
 
 
-import Game.Engine.Resources;
+import Game.Engine.Inventory.Resources;
 import Game.Engine.Colonist.Colonist;
 
 

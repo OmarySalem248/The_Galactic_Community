@@ -2,7 +2,7 @@ package Game.Engine.Actions.ColonyActions;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colony;
-import Game.Engine.Resources;
+import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
 
 public class BuildAction extends ColonyAction {

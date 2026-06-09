@@ -1,7 +1,7 @@
 package Game.Engine.Colonist.Profession;
 
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Resources;
+import Game.Engine.Inventory.Resources;
 
 public class Woodcutter implements Profession{
     public Resources work(Colonist colonist, int usedEnergy) {
