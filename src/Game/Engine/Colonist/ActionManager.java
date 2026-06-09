@@ -28,13 +28,13 @@ public class ActionManager {
     public ColonistAvatar getAvatar() { return colonistav; }
 
 
-    public void run(GameTime time, Map map, Tile location, GameEventBus eventBus) {
+    public void run(GameTime time, Map map, Tile location) {
         workTile = getFirstTile(this.colonist.getAssignedBuilding());
         colonist.setAtWork(getCurrentTile() == workTile);
         updateDestination(time.hour());
         moveTowardDestination(map);
         if (colonist.isAtWork()) {
-            new WorkAction(this, eventBus).execute();
+            new WorkAction(this).execute();
         }
     }
 

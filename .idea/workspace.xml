@@ -4,38 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventBus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameTime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ColonistAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ColonistAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/MoveAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/MoveAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/BuildingProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/BuildingProject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Builder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Miner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Miner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Profession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Profession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Unemployed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Unemployed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Woodcutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Woodcutter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colony.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Resources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Event/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/WorldEvent/WorldEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Event/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/WorldEvent/WorldEventManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Event/WanderingColonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/WorldEvent/WanderingColonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/TickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/TickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Made it so that colonists can walk to and back from work , started working on event system so that resources can be collected while they work.">
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780748074012</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Made it so that colonists can walk to and back from work , started working on event system so that resources can be collected while they work.">
+      <option name="closed" value="true" />
+      <created>1780986206137</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1780986206137</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -326,7 +304,8 @@
     <MESSAGE value="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features" />
     <MESSAGE value="Made it so that buildings can be build from a menu that appears when clicking tiles, working on colonist avatars that move and interact with map" />
     <MESSAGE value="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form" />
+    <MESSAGE value="Made it so that colonists can walk to and back from work , started working on event system so that resources can be collected while they work." />
+    <option name="LAST_COMMIT_MESSAGE" value="Made it so that colonists can walk to and back from work , started working on event system so that resources can be collected while they work." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
