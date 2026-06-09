@@ -13,13 +13,20 @@ public class ColonistAvatar {
     private Tile currentTile;
     private  ActionManager actionManager;
 
+    private ColonistStatus status;
+
     public ColonistAvatar(Colonist colonist, Tile startingTile) {
         this.colonist    = colonist;
         this.currentTile = startingTile;
+        this.status = new ColonistStatus(this);
     }
 
     public void setActionManager(ActionManager actionManager) {
         this.actionManager = actionManager;
+    }
+
+    public ColonistStatus getStatus(){
+        return status;
     }
 
     public Colonist getColonist() { return colonist; }
@@ -31,6 +38,7 @@ public class ColonistAvatar {
 
     public void tick(GameTime time, Map map) {
         actionManager.run(time,map,getCurrentTile());
+        status.update();
     }
     public void setCurrentTile(Tile tile){
         tile.colonistEnter(this);

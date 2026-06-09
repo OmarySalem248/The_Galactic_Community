@@ -17,6 +17,12 @@ public class Resources {
 
     public void setFood(int amount) { this.food = amount; }
 
+    public void add(Resources newRes){
+        addFood(newRes.getFood());
+        addStone(newRes.getStone());
+        addWood(newRes.getWood());
+    }
+
     public void addFood(int amount) { food += amount; }
     public void addWood(int amount) { wood += amount; }
     public void addStone(int amount) { stone += amount; }

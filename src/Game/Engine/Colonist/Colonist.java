@@ -57,7 +57,7 @@ public class Colonist {
     private Profession profession;
     private Colonist partner;
 
-    private boolean atWork = false;
+
 
 
 
@@ -178,10 +178,8 @@ public class Colonist {
 
     public Building getAssignedBuilding() { return assignedBuilding; }
 
-    public void setAtWork(boolean atwork){
-        atWork = atwork;
-    }
-    public boolean isAtWork(){return atWork;}
+
+
 
     public void assignBuilding(Building building) {
         if (building.getColonists().size() < building.getColonlimit()) {

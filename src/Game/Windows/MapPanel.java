@@ -72,6 +72,7 @@ public class MapPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        parentWindow.updateGameStats();
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

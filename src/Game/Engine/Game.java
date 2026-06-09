@@ -4,6 +4,7 @@ import Game.Engine.Buildings.House;
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Event.EventManager;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
@@ -12,6 +13,7 @@ import Game.Engine.Time.GameClock;
 
 public class Game {
 
+    private final EventManager eman;
     private int turn;
 
     private Map map;
@@ -41,6 +43,7 @@ public class Game {
             x++;
             y++;
         }
+        this.eman = new EventManager(this, eventBus);
         this.status = this.colony.getStatus();
 
         this.clock = new GameClock(this);
