@@ -38,7 +38,7 @@ public class ColonistAvatar {
 
     public void tick(GameTime time, Map map) {
         actionManager.run(time,map,getCurrentTile());
-        status.update();
+        status.update(time);
     }
     public void setCurrentTile(Tile tile){
         tile.colonistEnter(this);

@@ -29,19 +29,19 @@ public class ActionManager {
 
 
     public void run(GameTime time, Map map, Tile location) {
-        updateDestination(time.hour());
+        updateDestination();
         moveTowardDestination(map);
-        if (colonistav.getStatus().getatWork()) {
+        if (colonistav.getStatus().getatWork() && time.minute()%10 == 0) {
             new WorkAction(this).execute();
         }
     }
 
-    private void updateDestination(int hour) {
+    private void updateDestination() {
 
-        if (hour == 8) {
+        if (colonistav.getStatus().getshouldWork()) {
             workTile = getFirstTile(this.colonist.getAssignedBuilding());
             if (workTile != null) destination = workTile;
-        } else if (hour == 20) {
+        } else{
             Tile homeTile = getFirstTile(colonist.getDwelling());
             if (homeTile != null) destination = homeTile;
         }

@@ -4,21 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Fixed up errors from previous work on event structure">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Event/ResourceProducedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Inventory.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Allow colonists to work and produce resources with the map based game structure">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistAvatar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Event/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Event/EventManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Event/GameEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventBus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Event/GameEventBus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Resources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Resources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameTime.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,25 +50,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GalacticCommunityApplication.executor": "Run",
-    "Application.GameLauncher.executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "jdk.selected.JAVA_MODULE": "corretto-15",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/omary/Downloads/Cancer-master",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propCompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GalacticCommunityApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GameLauncher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-15&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/omary/Downloads/Cancer-master&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
@@ -286,7 +278,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780986319276</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Allow colonists to work and produce resources with the map based game structure">
+      <option name="closed" value="true" />
+      <created>1780989407148</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1780989407148</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -327,7 +327,8 @@
     <MESSAGE value="Made it so that colonists that can move that are displayed, now have to implement old features into this new game form" />
     <MESSAGE value="Made it so that colonists can walk to and back from work , started working on event system so that resources can be collected while they work." />
     <MESSAGE value="Fixed up errors from previous work on event structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed up errors from previous work on event structure" />
+    <MESSAGE value="Allow colonists to work and produce resources with the map based game structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allow colonists to work and produce resources with the map based game structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -30,6 +30,10 @@ public class GameClock {
 
     private final Map map;
     private WorldEventManager eman;
+
+    private int weekday;
+
+
     private final List<TickListener>   listeners = new ArrayList<>();
     private int minute = 0;
     private int hour = 8; // start at 6am
@@ -46,6 +50,7 @@ public class GameClock {
         this.eman = new WorldEventManager(game);
         this.map = game.getMap();
         this.timer = new Timer(TICK_MS, e -> tick());
+        this.timer.setDelay(5);
     }
 
     public void start() { timer.start(); }
@@ -55,6 +60,8 @@ public class GameClock {
     public void tickOnce()  { tick(); }
     public int getHour() { return hour; }
     public int getDay()  { return day;  }
+
+    public int getWeekday(){return day%7;}
 
     public int getMinute() {
         return minute;
@@ -66,7 +73,7 @@ public class GameClock {
         minute++;
         if (minute >= 60) { minute = 0; hour++; }
         if (hour  >= 24)  { hour  = 0; day++;  }
-        GameTime time = new GameTime(minute, hour, day);
+        GameTime time = new GameTime(minute, hour, day, getWeekday());
         List<Future<?>> tasks = new ArrayList<>();
         for (ColonistAvatar avatar : map.getAvatars()) {
             tasks.add(pool.submit(() -> avatar.tick(time, map)));
