@@ -40,7 +40,7 @@ public class TileWindow {
 
             for (Building building : new Building[]{
                     new Farm(), new LumberMill(), new Mine(),
-                    new TribeCentre(), new EngineeringHub(), new House()
+                    new TribeCentre(), new EngineeringHub(), new House(), new Park(), new Cafe(), new Storage()
             }) {
                 JButton btn = new JButton(building.getType()
                         + "  (Wood: " + building.getWoodCost()

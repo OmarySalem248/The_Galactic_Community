@@ -36,6 +36,7 @@ public class MoveAction extends ColonistAction {
         if (next == null) return false;
         current.colonistExit(colonistam.getAvatar());
         colonistam.getAvatar().setCurrentTile(next);
+        colonist.modEnergy(-1);
 
         return true;
     }

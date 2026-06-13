@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Actions.Interactions;
 
 import Game.Engine.Colonist.Colonist;
@@ -40,4 +41,6 @@ public class IntercourseAction extends InteractAction{
         }
     }
 }
+
+ */
 

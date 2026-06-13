@@ -31,6 +31,7 @@ public class MapPanel extends JPanel {
         this.game         = game;
         this.parentWindow = parentWindow;
         this.clock        = clock;
+        clock.addTickListener((time) -> SwingUtilities.invokeLater(this::repaint));
 
         setBackground(new Color(0x1C1C2E));
         setBorder(BorderFactory.createTitledBorder("Map"));

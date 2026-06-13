@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import Game.Engine.Inventory.Inventory;
 import Game.Engine.Map.Tile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,6 +16,7 @@ import javax.imageio.ImageIO;
 
 @JsonIgnoreProperties({"colonists"})
 public abstract class Building {
+    private Inventory inv;
     protected String name;
     protected int woodCost;
     protected int stoneCost;
@@ -37,6 +39,7 @@ public abstract class Building {
         this.stoneCost = stoneCost;
         this.colonlimit= limit;
         this.compatibleProfession = compatible;
+        this.inv = new Inventory();
         colonists = new ArrayList<>();
         this.id = ID_GENERATOR.incrementAndGet();
         File f = new File("Resources/Graphics/" + getClass().getSimpleName() + ".jpg");

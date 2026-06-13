@@ -4,12 +4,14 @@ import Game.Engine.Colonist.Colonist;
 import Game.Engine.Game;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipType;
+import Game.Engine.Time.GameTime;
+import Game.Engine.Time.TickListener;
 
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 
-public class RelationshipPanel extends JPanel {
+public class RelationshipPanel extends JPanel implements TickListener {
     private JComboBox<Colonist> colonistDropdown;
     private JTable relationshipTable;
     private DefaultTableModel tableModel;
@@ -54,5 +56,11 @@ public class RelationshipPanel extends JPanel {
             };
             tableModel.addRow(row);
         }
+    }
+
+
+    @Override
+    public void onTick(GameTime time) {
+
     }
 }

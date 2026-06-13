@@ -1,12 +1,20 @@
 package Game.Engine.Colonist;
 
 import Game.Engine.Actions.ColonistActions.MoveAction;
+import Game.Engine.Actions.ColonistActions.SleepAction;
 import Game.Engine.Actions.ColonistActions.WorkAction;
+import Game.Engine.Actions.Interactions.ChitChatAction;
+import Game.Engine.Actions.Queue.ActionQueue;
+import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Event.GameEventBus;
+import Game.Engine.Game;
 import Game.Engine.Map.Map;
 import Game.Engine.Map.Tile;
 import Game.Engine.Time.GameTime;
+
+import java.util.List;
+
 
 public class ActionManager {
     private ColonistAvatar colonistav;
@@ -14,8 +22,11 @@ public class ActionManager {
     private Colonist colonist;
     private GameEventBus eventBus;
     private Tile workTile;
+    private final ActionQueue queue = new ActionQueue();
 
-
+    private static final int PRIORITY_MOVE = 10;
+    private static final int PRIORITY_WORK = 5;
+    private static final int PRIORITY_SOCIAL = 3;
     private Tile destination;
     public ActionManager(ColonistAvatar colonist, Tile startingTile, GameEventBus eventBus) {
         this.colonistav =colonist;
@@ -26,13 +37,64 @@ public class ActionManager {
     }
     public Colonist getColonist() { return colonist; }
     public ColonistAvatar getAvatar() { return colonistav; }
-
+    public ColonistStatus status(){
+        return getAvatar().getStatus();
+    }
 
     public void run(GameTime time, Map map, Tile location) {
+        evaluatePriorities(time,map);
+        queue.tick();
+    }
+    private void evaluatePriorities(GameTime time, Map map) {
+        if(status().getatHome() && colonist.getEnergy() < 500){
+            if (!queue.isQueued(SleepAction.class)) {
+                queue.add(new QueuedAction(
+                        new SleepAction(this),
+                        Integer.MAX_VALUE, false, true
+                ));
+            }
+        }
+        // Movement — highest priority, not parallel, interruptible
         updateDestination();
-        moveTowardDestination(map);
-        if (colonistav.getStatus().getatWork() && time.minute()%10 == 0) {
-            new WorkAction(this).execute();
+        if (getCurrentTile() != destination) {
+            if (!queue.isQueued(MoveAction.class)) {
+                queue.add(new QueuedAction(
+                        new MoveAction(this, destination, map),
+                        PRIORITY_MOVE, false, true
+                ));
+            }
+        }
+
+        // Work — parallel (can happen alongside social), not interruptible
+
+        if (colonistav.getStatus().getshouldWork() && colonistav.getStatus().getatWork() && time.minute()%10 == 0 && !queue.isQueued(WorkAction.class)) {
+            queue.add(new QueuedAction(
+                    new WorkAction(this),
+                    PRIORITY_WORK, true, false
+            ));
+        }
+
+        // Social — parallel, interruptible
+        checkSocialOpportunities(time);
+    }
+
+    /** Check nearby colonists for interaction opportunities. */
+    private void checkSocialOpportunities(GameTime time) {
+        Tile current = getCurrentTile();
+        if (current == null) return;
+
+        List<ColonistAvatar> others = current.getColonists();
+        for (ColonistAvatar other : others) {
+            if (other == colonistav) continue;
+            // Only chitchat for now, other interactions will be refactored for this knew system
+            if(time.minute() ==0 && time.hour()%2 == 0) {
+                ChitChatAction chitchat = new ChitChatAction(colonist, other.getColonist());
+                if (!queue.isQueued(ChitChatAction.class)) {
+                    queue.add(new QueuedAction(chitchat, PRIORITY_SOCIAL, true, true));
+                }
+            }
+
+            break; // one interaction at a time for now
         }
     }
 

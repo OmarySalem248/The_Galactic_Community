@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Actions.Interactions;
 
 import Game.Engine.Colonist.Personality.Personality;
@@ -25,3 +26,6 @@ public class CoworkerInteract extends InteractAction{
         }
     }
 }
+
+ */
+

@@ -9,15 +9,12 @@ import java.awt.*;
 public class GameWindow {
 
     private final Game game;
-    private final JLabel turnLabel;
+
     private final JLabel resLabel;
     private final JLabel gameUpdate;
     private final ColonistsWindow colonistWindow;
     private final JButton nextTurnBtn;
-    private final JButton feedButton;
-    private final JButton reduceFeedButton;
-    private final JComboBox colonistDropdown;
-    private final JComboBox buildingDropdown;
+
     private boolean autoRunning = false;
     private Timer autoTurnTimer;
     private final JButton autoRunButton;
@@ -25,8 +22,9 @@ public class GameWindow {
 
     public GameWindow(Game game) {
         this.game = game;
+        game.getClock().addTickListener((time) -> SwingUtilities.invokeLater(this::updateGameStats));
 
-        JFrame frame = new JFrame("Colony Builder - Micromanagement");
+        JFrame frame = new JFrame("Utopia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 550);
         frame.setLayout(new BorderLayout(10, 10));
@@ -35,16 +33,12 @@ public class GameWindow {
         JPanel infoPanel = new JPanel(new BorderLayout());
         JPanel statsRow = new JPanel();
         statsRow.setLayout(new BoxLayout(statsRow, BoxLayout.Y_AXIS));
-        turnLabel = new JLabel("Turn: " + game.getTurn(), SwingConstants.CENTER);
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        turnLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         resLabel = new JLabel(game.getColony().getResources().toString(), SwingConstants.CENTER);
         resLabel.setFont(new Font("Monospaced", Font.PLAIN, 16));
         resLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         gameUpdate = new JLabel(game.getStatus(), SwingConstants.CENTER);
         gameUpdate.setAlignmentX(Component.CENTER_ALIGNMENT);
         statsRow.add(Box.createVerticalStrut(5));
-        statsRow.add(turnLabel);
         statsRow.add(resLabel);
         statsRow.add(gameUpdate);
         statsRow.add(Box.createVerticalStrut(5));
@@ -59,6 +53,7 @@ public class GameWindow {
 
         // ----- Center Panel -----
         RelationshipPanel relPanel = new RelationshipPanel(game);
+        game.getClock().addTickListener(relPanel);
         colonistWindow = new ColonistsWindow(game, relPanel);
         mapPanel = new MapPanel(game, this, game.getClock());
 
@@ -81,11 +76,7 @@ public class GameWindow {
         nextTurnBtn   = new JButton("End Turn");
         autoRunButton = new JButton("Auto Run");
 
-        ColonistsWindow.ColonistControls controls = colonistWindow.getControls();
-        feedButton       = controls.feedButton();
-        reduceFeedButton = controls.reduceFeedButton();
-        colonistDropdown = controls.colonistDropdown();
-        buildingDropdown = controls.buildingDropdown();
+
 
         nextTurnBtn.addActionListener(e -> {
             game.getClock().tickOnce();
@@ -116,7 +107,7 @@ public class GameWindow {
     }
 
     public void updateGameStats() {
-        turnLabel.setText("Turn: " + game.getTurn());
+
         resLabel.setText(game.getColony().getResources().toString());
         gameUpdate.setText(game.getStatus());
         colonistWindow.updateColonistDropdown();

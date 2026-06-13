@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Actions.Interactions;
 
 import Game.Engine.Colonist.Colonist;
@@ -16,3 +17,5 @@ public class LeaderSpeech extends InteractAction{
         c1.modFavourability(effectiveness);
     }
 }
+
+ */

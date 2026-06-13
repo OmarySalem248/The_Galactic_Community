@@ -7,6 +7,8 @@ public class Relationship {
     private Colonist other;      // the other colonist this relationship is with
     private String type;
 
+
+
     private Colonist owner;
 
     private boolean marriagestatus;

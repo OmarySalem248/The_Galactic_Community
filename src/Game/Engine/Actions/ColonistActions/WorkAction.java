@@ -16,7 +16,8 @@ public class WorkAction extends ColonistAction {
     @Override
     public boolean execute() {
 
-        Resources produced = colonist.work(colonist.getEnergy());
+        Resources produced = colonist.work(colonist.getProductivity());
+        colonist.modEnergy(-colonist.getEffort());
 
         if (produced != null) {
             colonistam.getEventBus().fire(new GameEvent<>(

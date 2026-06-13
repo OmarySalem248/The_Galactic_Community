@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Relationships;
 
 import Game.Engine.Actions.Interactions.*;
@@ -168,3 +169,6 @@ public class RelationshipManager {
         return sexuallyAttracted && ageOK && !isRelated;
     }
 }
+
+ */
+

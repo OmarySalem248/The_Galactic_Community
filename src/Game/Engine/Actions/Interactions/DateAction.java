@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Actions.Interactions;
 
 import Game.Engine.Colonist.Colonist;
@@ -54,3 +55,5 @@ public class DateAction extends InteractAction {
         }
     }
 }
+
+ */

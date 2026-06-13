@@ -7,6 +7,7 @@ import Game.Engine.Colonist.Personality.PersonalityFactory;
 import Game.Engine.Colonist.Profession.Profession;
 import Game.Engine.Colonist.Profession.Unemployed;
 import Game.Engine.Colony;
+import Game.Engine.Inventory.Inventory;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipSet;
 import Game.Engine.Relationships.RelationshipType;
@@ -57,6 +58,10 @@ public class Colonist {
     private Profession profession;
     private Colonist partner;
 
+    private int hunger =0;
+
+    private Inventory inv = new Inventory();
+
 
 
 
@@ -106,7 +111,7 @@ public class Colonist {
     // ----- Basic getters and setters -----
     public String getName() { return name; }
 
-
+    public int getHunger(){return hunger;}
 
     public int getEnergy() { return energy; }
     public void setEnergy(int energy) { this.energy = Math.max(0, Math.min(energy, 100)); }
@@ -343,5 +348,26 @@ public class Colonist {
     }
 
 
+    public int getProductivity() {
+        return baseProductivity + energy/200;
+    }
+
+    public void modEnergy(int num) {
+        int newen = energy + num;
+        if(newen<1000){
+            energy = newen;
+        }
+        else{
+            energy = 1000;
+        }
+    }
+
+    public void modHunger(int num){
+        hunger += num;
+    }
+
+    public int getEffort() {
+        return 15*baseProductivity + (age/20) - (energy/100);
+    }
 }
 

@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Actions.Interactions;
 
 import Game.Engine.Colonist.Personality.PersonalityTraits;
@@ -54,3 +55,5 @@ public class FlirtAction extends InteractAction {
         return sexuallyAttracted && ageOK;
     }
 }
+
+ */

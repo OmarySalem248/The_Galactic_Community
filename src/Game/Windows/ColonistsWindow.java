@@ -25,8 +25,7 @@ public class ColonistsWindow extends JPanel {
     private final JLabel hpLabel;
     private final JLabel ageLabel;
     private final JLabel colonistUpdate;
-    private final JButton feedButton;
-    private final JButton reduceFeedButton;
+
 
     private final java.util.Set<Colonist> knownColonists = new java.util.HashSet<>();
     private boolean updatingDropdown           = false;
@@ -62,28 +61,7 @@ public class ColonistsWindow extends JPanel {
         ageLabel        = new JLabel(); ageLabel.setFont(statFont);
         colonistUpdate  = new JLabel(); colonistUpdate.setFont(statFont);
 
-        // Feed buttons
-        feedButton = new JButton("Feed 1 Extra Food");
-        reduceFeedButton = new JButton("Deallocate 1 Food");
-        feedButton.addActionListener(e -> {
-            Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-            if (selected != null) {
-                boolean success = game.getColony().feedColonist(selected, 1);
-                if (success) updateColonistStats();
-                else JOptionPane.showMessageDialog(this, "Not enough food to feed " + selected.getName(), "Insufficient Food", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-        reduceFeedButton.addActionListener(e -> {
-            Colonist selected = (Colonist) colonistDropdown.getSelectedItem();
-            if (selected != null) {
-                if (selected.getEnergy() > 1) {
-                    boolean success = game.getColony().feedColonist(selected, -1);
-                    if (success) updateColonistStats();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Can't reduce feed any further for " + selected.getName(), "MINIMUM FEED REACHED", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
+
 
         // Building + profession dropdowns
         buildingDropdown = new JComboBox<>();
@@ -118,8 +96,7 @@ public class ColonistsWindow extends JPanel {
         gbc.gridx = 0; gbc.gridy = row; add(new JLabel("Profession:"), gbc);
         gbc.gridx = 1; add(professionDropdown, gbc); row++;
 
-        gbc.gridx = 0; gbc.gridy = row; add(feedButton, gbc);
-        gbc.gridx = 1; add(reduceFeedButton, gbc);
+
 
         updateColonistStats();
     }
@@ -214,7 +191,5 @@ public class ColonistsWindow extends JPanel {
             JComboBox<String> buildingDropdown
     ) {}
 
-    public ColonistControls getControls() {
-        return new ColonistControls(feedButton, reduceFeedButton, colonistDropdown, buildingDropdown);
-    }
+
 }

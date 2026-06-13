@@ -10,10 +10,11 @@ import Game.Engine.Colonist.Profession.Unemployed;
 import Game.Engine.Colonist.Profession.Woodcutter;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Government.ColonyLeadership;
+import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Map;
 import Game.Engine.Relationships.Relationship;
-import Game.Engine.Relationships.RelationshipManager;
+
 import Game.Engine.Actions.ColonyActions.AssignAction;
 
 import Game.Engine.Colonist.Colonist;
@@ -29,7 +30,7 @@ public class Colony {
     List<BuildingProject> projects;
 
     private List<Building> buildings;
-    private RelationshipManager relman;
+
     private PersonalityFactory persfact;
     private int netfoodprod;
 
@@ -41,23 +42,26 @@ public class Colony {
     private Map map;
     private Resources resources;
 
+    private Inventory inv;
+
     public Colony( Resources startingResources, Map map) {
+        this.inv = new Inventory();
         this.map = map;
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
         this.buildings = map.getBuildings();
         this.persfact = new PersonalityFactory();
 
-        colonists.add(new Colonist(this,"Jeff", new Farmer(),35,1,1,'M',persfact.futureDictator()));
-        colonists.add(new Colonist(this,"Britta",new Woodcutter(),28,1,1,'F',persfact.comedian()));
-        colonists.add(new Colonist(this,"Troy",new Farmer(), 19,1,1,'M',persfact.funGuy()));
-        colonists.add(new Colonist(this,"Abed",new Miner(),20,1,1,'M',persfact.awkwardDude()));
-        colonists.add(new Colonist(this,"Annie",new Miner(),19,1,1,'F',persfact.perfectionist()));
-        colonists.add(new Colonist(this,"Shirley",new Woodcutter(),43,1,1,'F',persfact.caring()));
-        colonists.add(new Colonist(this,"Pierce",new Unemployed(),75,1,1,'M',persfact.turd()));
+        colonists.add(new Colonist(this,"Jeff", new Farmer(),35,1000,1,'M',persfact.futureDictator()));
+        colonists.add(new Colonist(this,"Britta",new Woodcutter(),28,1000,1,'F',persfact.comedian()));
+        colonists.add(new Colonist(this,"Troy",new Farmer(), 19,1000,1,'M',persfact.funGuy()));
+        colonists.add(new Colonist(this,"Abed",new Miner(),20,1000,1,'M',persfact.awkwardDude()));
+        colonists.add(new Colonist(this,"Annie",new Miner(),19,1000,1,'F',persfact.perfectionist()));
+        colonists.add(new Colonist(this,"Shirley",new Woodcutter(),43,1000,1,'F',persfact.caring()));
+        colonists.add(new Colonist(this,"Pierce",new Unemployed(),75,1000,1,'M',persfact.turd()));
         fooddemand = colonists.size();
         this.initializeRelationships();
-        relman = new RelationshipManager(this);
+
         this.leadership = new ColonyLeadership(this);
         this.status ="The crew are lost!";
         ArrayList<BuildingProject> projects= new ArrayList<BuildingProject>();
@@ -125,9 +129,7 @@ public class Colony {
                 .orElse(null);
     }
 
-    public void developRelationships() {
-        relman.developRelationships();
-    }
+
 
     public ColonyLeadership getLeadership(){return  leadership;}
 

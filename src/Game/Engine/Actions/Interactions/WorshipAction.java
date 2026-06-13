@@ -1,3 +1,4 @@
+/*
 package Game.Engine.Actions.Interactions;
 
 import Game.Engine.Colonist.Colonist;
@@ -7,9 +8,19 @@ import Game.Engine.Relationships.RelationshipType;
 public class WorshipAction extends InteractAction{
 
 
+    public WorshipAction(Colonist c1, Colonist c2, int duration) {
+        super(c1, c2, duration);
+    }
+
     @Override
-    public void execute(Colonist c1, Colonist c2, Relationship rel1, Relationship rel2) {
-        rel1.adjustValue(RelationshipType.PLATONIC,1);
-        rel2.adjustValue(RelationshipType.ADMIRATION,5);
+    protected void onTick() {
+
+    }
+
+    @Override
+    protected void onComplete() {
+
     }
 }
+
+ */
