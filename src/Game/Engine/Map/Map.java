@@ -1,10 +1,9 @@
 package Game.Engine.Map;
 
-import Game.Engine.Buildings.Building;
-import Game.Engine.Buildings.Farm;
-import Game.Engine.Buildings.LumberMill;
-import Game.Engine.Buildings.Mine;
+import Game.Engine.Buildings.*;
 import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Inventory.Items.UberrySeed;
+import Game.Engine.Inventory.Items.UtopiaBar;
 
 import java.util.*;
 
@@ -43,6 +42,10 @@ public class Map {
         basicMap.placeBuilding(new Farm(),2,2);
         basicMap.placeBuilding(new LumberMill(),7,2);
         basicMap.placeBuilding(new Mine(),8,3);
+        Storage beginnerSt = new Storage();
+        beginnerSt.getInv().add(new UberrySeed(),50);
+        beginnerSt.getInv().add(new UtopiaBar(),7);
+        basicMap.placeBuilding(new Storage(),1,7);
         return basicMap;
     }
 

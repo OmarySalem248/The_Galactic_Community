@@ -1,12 +1,13 @@
 package Game.Engine.Colonist.Profession;
 
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Resources;
 
-public class Engineer implements Profession{
-    @Override
-    public Resources work(Colonist colonist, int usedEnergy) {
-        return null;
+public class Engineer extends Profession{
+
+    public Engineer(String name, Class<? extends WorkAction> workAction) {
+        super(name, workAction);
     }
 
     @Override

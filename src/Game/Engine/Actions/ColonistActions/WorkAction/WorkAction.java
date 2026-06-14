@@ -1,5 +1,6 @@
-package Game.Engine.Actions.ColonistActions;
+package Game.Engine.Actions.ColonistActions.WorkAction;
 
+import Game.Engine.Actions.ColonistActions.ColonistAction;
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Event.GameEvent;
 import Game.Engine.Event.GameEventBus;
@@ -7,8 +8,13 @@ import Game.Engine.Event.GameEventType;
 import Game.Engine.Event.ResourceProducedEvent;
 import Game.Engine.Inventory.Resources;
 
-public class WorkAction extends ColonistAction {
+public abstract class WorkAction extends ColonistAction {
+    public WorkAction(String name, ActionManager colonist) {
+        super(name, colonist);
+    }
 
+
+/*
     public WorkAction(ActionManager colonist) {
         super("Work", colonist);
     }
@@ -28,4 +34,6 @@ public class WorkAction extends ColonistAction {
         }
         return true;
     }
+
+ */
 }

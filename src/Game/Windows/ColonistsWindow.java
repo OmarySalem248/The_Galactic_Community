@@ -157,8 +157,8 @@ public class ColonistsWindow extends JPanel {
         String newProfessionName = (String) professionDropdown.getSelectedItem();
         if (newProfessionName == null || newProfessionName.equals(selected.getProfession().getName())) return;
 
-        selected.setProfession(ProfessionRegistry.create(newProfessionName));
-        if (selected.getAssignedBuilding() != null && !selected.getAssignedBuilding().isCompatible(selected))
+        selected.setProfession(ProfessionRegistry.get(newProfessionName));
+        if (selected.getAssignedBuilding() != null && !selected.getAssignedBuilding().isJobCompatible(selected))
             selected.unassignBuilding();
 
         updateColonistStats();

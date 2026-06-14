@@ -8,7 +8,7 @@ public class Farm extends Building {
 
 
     public Farm() {
-        super("Farm", 5, 2,2, Farmer.class);
+        super("Farm", 5, 2,2, Farmer.class,500);
     }
 
 

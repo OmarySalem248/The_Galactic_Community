@@ -1,18 +1,17 @@
 package Game.Engine.Colonist.Profession;
 
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Resources;
 
 public class TribeLeader extends Leader{
 
 
-
-
-    @Override
-    public Resources work(Colonist colonist, int usedEnergy) {
-        colonist.getColony().getLeadership().getGovernment().assignJobs();
-        return null;
+    public TribeLeader() {
+        super("Leader", null);
     }
+
+
 
 
 

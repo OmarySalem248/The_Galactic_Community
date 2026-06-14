@@ -33,13 +33,13 @@ public abstract class Building {
     protected Profession compatible;
 
 
-    public Building(String name, int woodCost, int stoneCost, int limit,Class<? extends Profession> compatible) {
+    public Building(String name, int woodCost, int stoneCost, int limit,Class<? extends Profession> compatible,int storage) {
         this.name = name;
         this.woodCost = woodCost;
         this.stoneCost = stoneCost;
         this.colonlimit= limit;
         this.compatibleProfession = compatible;
-        this.inv = new Inventory();
+        this.inv = new Inventory(storage);
         colonists = new ArrayList<>();
         this.id = ID_GENERATOR.incrementAndGet();
         File f = new File("Resources/Graphics/" + getClass().getSimpleName() + ".jpg");
@@ -78,6 +78,10 @@ public abstract class Building {
         return stoneCost;
     }
 
+    public Inventory getInv(){
+        return inv;
+    }
+
 
 
     @Override
@@ -87,7 +91,13 @@ public abstract class Building {
 
 
     public boolean isCompatible(Colonist selected) {
-        return (getCompatible().isInstance(selected.getProfession())|| getCompatible() == null);
+        return (getCompatible() == null||getCompatible().isInstance(selected.getProfession()));
+    }
+    public boolean isJobCompatible(Colonist selected) {
+        if(getCompatible() != null) {
+            return (getCompatible().isInstance(selected.getProfession()));
+        }
+        return false;
     }
     public Image getImage() {
         return image;

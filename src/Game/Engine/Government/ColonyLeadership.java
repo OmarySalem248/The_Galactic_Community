@@ -3,7 +3,7 @@ package Game.Engine.Government;
 import Game.Engine.Colonist.Profession.TribeLeader;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colony;
-
+import Game.Engine.Colonist.Profession.ProfessionRegistry;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -54,7 +54,7 @@ public  class ColonyLeadership {
                 currentLeader = best.get();
                 leadershipEstablished = true;
                 governmentType = GovernmentType.TRIBAL;
-                currentLeader.setProfession(new TribeLeader());
+                currentLeader.setProfession(ProfessionRegistry.get("TribeLeader"));
                 this.government = new TribalGovernment(this.colony,currentLeader);
 
             }

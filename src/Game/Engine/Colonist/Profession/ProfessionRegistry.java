@@ -1,11 +1,12 @@
 package Game.Engine.Colonist.Profession;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class ProfessionRegistry {
-    private static final Map<String, Class<? extends Profession>> professions = new HashMap<>();
+    private static final Map<String, Profession> professions = new HashMap<>();
 
     static {
         register(new Unemployed());
@@ -13,28 +14,23 @@ public class ProfessionRegistry {
         register(new Miner());
         register(new Woodcutter());
         register(new Builder());
+        register(new TribeLeader());
     }
 
     private static void register(Profession prof) {
-        professions.put(prof.getName(), prof.getClass());
+        professions.put(prof.getName(), prof);
+    }
+
+    public static Profession get(String name) {
+        return professions.get(name);
     }
 
     public static Set<String> getAllNames() {
         return professions.keySet();
     }
 
-    public static Set getAllProfessions(){
-        return professions.entrySet();
-    }
-
-    public static Profession create(String name) {
-        Class<? extends Profession> clazz = professions.get(name);
-        if (clazz == null) return null;
-        try {
-            return clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create profession: " + name, e);
-        }
+    public static Collection<Profession> getAllProfessions() {
+        return professions.values();
     }
 }
 

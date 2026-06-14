@@ -14,6 +14,7 @@ import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Map;
 import Game.Engine.Relationships.Relationship;
+import Game.Engine.Colonist.Profession.ProfessionRegistry;
 
 import Game.Engine.Actions.ColonyActions.AssignAction;
 
@@ -38,6 +39,7 @@ public class Colony {
 
     private ColonyLeadership leadership;
 
+
     private String status;
     private Map map;
     private Resources resources;
@@ -45,20 +47,19 @@ public class Colony {
     private Inventory inv;
 
     public Colony( Resources startingResources, Map map) {
-        this.inv = new Inventory();
+
         this.map = map;
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
         this.buildings = map.getBuildings();
         this.persfact = new PersonalityFactory();
-
-        colonists.add(new Colonist(this,"Jeff", new Farmer(),35,1000,1,'M',persfact.futureDictator()));
-        colonists.add(new Colonist(this,"Britta",new Woodcutter(),28,1000,1,'F',persfact.comedian()));
-        colonists.add(new Colonist(this,"Troy",new Farmer(), 19,1000,1,'M',persfact.funGuy()));
-        colonists.add(new Colonist(this,"Abed",new Miner(),20,1000,1,'M',persfact.awkwardDude()));
-        colonists.add(new Colonist(this,"Annie",new Miner(),19,1000,1,'F',persfact.perfectionist()));
-        colonists.add(new Colonist(this,"Shirley",new Woodcutter(),43,1000,1,'F',persfact.caring()));
-        colonists.add(new Colonist(this,"Pierce",new Unemployed(),75,1000,1,'M',persfact.turd()));
+        colonists.add(new Colonist(this,"Jeff", ProfessionRegistry.get("Farmer"),35,1000,1,'M',persfact.futureDictator()));
+        colonists.add(new Colonist(this,"Britta",ProfessionRegistry.get("WoodCutter"),28,1000,1,'F',persfact.comedian()));
+        colonists.add(new Colonist(this,"Troy",ProfessionRegistry.get("Farmer"), 19,1000,1,'M',persfact.funGuy()));
+        colonists.add(new Colonist(this,"Abed",ProfessionRegistry.get("Miner"),20,1000,1,'M',persfact.awkwardDude()));
+        colonists.add(new Colonist(this,"Annie",ProfessionRegistry.get("Miner"),19,1000,1,'F',persfact.perfectionist()));
+        colonists.add(new Colonist(this,"Shirley",ProfessionRegistry.get("WoodCutter"),43,1000,1,'F',persfact.caring()));
+        colonists.add(new Colonist(this,"Pierce",ProfessionRegistry.get("Unemployed"),75,1000,1,'M',persfact.turd()));
         fooddemand = colonists.size();
         this.initializeRelationships();
 
@@ -69,7 +70,7 @@ public class Colony {
 
         for (Colonist c : colonists) {
             for(Building b :buildings) {
-                if (b.isCompatible(c) && b.getColonists().size() < b.getColonlimit()) {
+                if (b.isJobCompatible(c) && b.getColonists().size() < b.getColonlimit()) {
                     AssignAction assign = new AssignAction(c,b);
                     assign.execute(this);
 
@@ -136,79 +137,7 @@ public class Colony {
 
 
 
-    public void consumeAndProduce() {
-        netfoodprod = 0;
-        List<Colonist> farmColonists = new ArrayList<>();
-        List<Colonist> otherColonists = new ArrayList<>();
-        List<Colonist> unassignedColonists = new ArrayList<>();
 
-        for (Colonist c : colonists) {
-            if (!c.isAlive()) continue;
-            if (c.getAssignedBuilding() == null) {
-                unassignedColonists.add(c);
-            } else if (c.getAssignedBuilding().getName().equalsIgnoreCase("Farm")) {
-                farmColonists.add(c);
-            } else if(c != getLeadership().getCurrentLeader() ) {
-                otherColonists.add(c);
-            }
-        }
-
-        farmColonists.sort(Comparator.comparingInt(Colonist::getAge));
-        otherColonists.sort(Comparator.comparingInt(Colonist::getAge));
-        unassignedColonists.sort(Comparator.comparingInt(Colonist::getAge));
-
-
-        List<Colonist> ordered = new ArrayList<>();
-        if(getLeadership().getCurrentLeader() != null){
-            ordered.add(getLeadership().getCurrentLeader());
-        }
-        ordered.addAll(farmColonists);
-        ordered.addAll(otherColonists);
-        ordered.addAll(unassignedColonists);
-        int foodAvailable1 = resources.getFood();
-
-        int foodAvailable = resources.getFood();
-
-        for (Colonist c : ordered) {
-            int consumed = 0;
-
-            if (foodAvailable >= c.getFoodConsumption()) {
-                consumed = c.getFoodConsumption();
-                foodAvailable -= consumed;
-            } else if (foodAvailable > 0) {
-                consumed = foodAvailable;
-                foodAvailable = 0;
-            } else {
-                c.takeDamage(10);
-            }
-
-            if (c.getProfession().getName().equals("Builder") && !projects.isEmpty()) {
-                BuildingProject activeProject = projects.get(0);
-                int work = c.getEnergy();
-                activeProject.contributeWork(work);
-
-                if (activeProject.isCompleted()) {
-                    buildings.add(activeProject.completeProject());
-                    projects.remove(activeProject);
-                    this.setStatus(activeProject.getName() + " has been completed!");
-                }
-            }
-
-            resources.setFood(foodAvailable);
-
-            if (c.getAssignedBuilding() != null && consumed > 0 && c.isAlive()) {
-                produce(c,consumed);
-
-                foodAvailable = resources.getFood();
-            }
-
-            resources.setFood(foodAvailable);
-
-        }
-        netfoodprod = foodAvailable -foodAvailable1;
-
-        removeDeadColonists();
-    }
     public int getNetfoodprod(){return netfoodprod;}
     public void ageColonists() {
         List<Pregnancy> newBirths = new ArrayList<>();
@@ -231,14 +160,7 @@ public class Colony {
         }
     }
 
-    private void produce(Colonist c,int usedenergy){
-        Resources produced = c.work(usedenergy);
-        if(produced != null) {
-            resources.addFood(produced.getFood());
-            resources.addWood(produced.getWood());
-            resources.addStone(produced.getStone());
-        }
-    }
+
 
     private void removeDeadColonists() {
         if(getLeadership().getCurrentLeader()!= null){

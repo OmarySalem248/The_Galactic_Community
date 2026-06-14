@@ -1,11 +1,12 @@
 package Game.Engine.Colonist.Profession;
 
-import Game.Engine.Colonist.Colonist;
-import Game.Engine.Inventory.Resources;
+import Game.Engine.Actions.ColonistActions.WorkAction.MineAction;
 
-public class Miner implements Profession {
-    public Resources work(Colonist colonist, int usedEnergy) {
-        return new Resources(0, 0,usedEnergy );
+public class Miner extends Profession {
+    public Miner() {
+        super("Miner", MineAction.class);
     }
+
+
     public String getName() { return "Miner"; }
 }

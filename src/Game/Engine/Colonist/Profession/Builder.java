@@ -1,17 +1,16 @@
 package Game.Engine.Colonist.Profession;
 
+import Game.Engine.Actions.ColonistActions.WorkAction.BuilderAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
+import Game.Engine.Actions.ColonyActions.BuildAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Resources;
 
-public class Builder implements Profession {
+public class Builder extends Profession {
+
 
     public Builder() {
-
-    }
-
-    @Override
-    public Resources work(Colonist colonist, int usedEnergy) {
-        return new Resources(0, 0, 0);
+        super("Builder", BuilderAction.class);
     }
 
     @Override

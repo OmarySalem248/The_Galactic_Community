@@ -5,6 +5,6 @@ import Game.Engine.Colonist.Profession.Profession;
 
 public class EngineeringHub extends Building{
     public EngineeringHub() {
-        super("Engineering Hub", 100, 100, 1, Engineer.class);
+        super("Engineering Hub", 100, 100, 1, Engineer.class,1000);
     }
 }

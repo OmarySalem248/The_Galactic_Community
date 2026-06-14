@@ -1,11 +1,15 @@
 package Game.Engine.Colonist.Profession;
 
-import Game.Engine.Colonist.Colonist;
-import Game.Engine.Inventory.Resources;
+import Game.Engine.Actions.ColonistActions.WorkAction.FarmAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.*;
 
-public class Farmer implements Profession {
-    public Resources work(Colonist colonist, int usedEnergy) {
-        return new Resources((int) Math.round(usedEnergy *1.5), 0, 0);
+public class Farmer extends Profession {
+    public Farmer() {
+        super("Famer", FarmAction.class);
     }
+
+
     public String getName() { return "Farmer"; }
+
+
 }

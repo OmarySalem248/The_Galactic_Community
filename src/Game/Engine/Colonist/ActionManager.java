@@ -1,14 +1,17 @@
 package Game.Engine.Colonist;
 
+import Game.Engine.Actions.ColonistActions.ConsumeAction;
 import Game.Engine.Actions.ColonistActions.MoveAction;
 import Game.Engine.Actions.ColonistActions.SleepAction;
-import Game.Engine.Actions.ColonistActions.WorkAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Actions.Interactions.ChitChatAction;
 import Game.Engine.Actions.Queue.ActionQueue;
 import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Event.GameEventBus;
-import Game.Engine.Game;
+import Game.Engine.Inventory.Items.Consumable;
+import Game.Engine.Inventory.Items.ItemStack;
+import Game.Engine.Inventory.Items.ItemType;
 import Game.Engine.Map.Map;
 import Game.Engine.Map.Tile;
 import Game.Engine.Time.GameTime;
@@ -41,11 +44,11 @@ public class ActionManager {
         return getAvatar().getStatus();
     }
 
-    public void run(GameTime time, Map map, Tile location) {
+    public void run(GameTime time, Map map, Tile location)  {
         evaluatePriorities(time,map);
         queue.tick();
     }
-    private void evaluatePriorities(GameTime time, Map map) {
+    private void evaluatePriorities(GameTime time, Map map)  {
         if(status().getatHome() && colonist.getEnergy() < 500){
             if (!queue.isQueued(SleepAction.class)) {
                 queue.add(new QueuedAction(
@@ -68,10 +71,26 @@ public class ActionManager {
         // Work — parallel (can happen alongside social), not interruptible
 
         if (colonistav.getStatus().getshouldWork() && colonistav.getStatus().getatWork() && time.minute()%10 == 0 && !queue.isQueued(WorkAction.class)) {
-            queue.add(new QueuedAction(
-                    new WorkAction(this),
-                    PRIORITY_WORK, true, false
-            ));
+            try {
+                Class<? extends WorkAction> action = colonist.getProfession().getWorkAction();
+                WorkAction workAction = action.getDeclaredConstructor(ActionManager.class).newInstance(this);
+                queue.add(new QueuedAction(workAction, PRIORITY_WORK, true, false));
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("Work action missing ActionManager constructor: ", e);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to queue work action", e);
+            }
+        }
+        if (colonist.getHunger() > 40 && !queue.isQueued(ConsumeAction.class)) {
+            List<ItemStack> food = colonist.getInventory().getByType(ItemType.FOOD);
+
+            if(food != null){
+                queue.add(new QueuedAction(
+                        new ConsumeAction(this, (Consumable) food.get(0).getItem()),
+                        PRIORITY_WORK, true, false
+                ));
+                food.get(0).remove(1);
+        }
         }
 
         // Social — parallel, interruptible

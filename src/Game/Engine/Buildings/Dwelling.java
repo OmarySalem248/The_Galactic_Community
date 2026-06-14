@@ -11,8 +11,8 @@ public abstract class Dwelling extends Building{
     private ArrayList<Colonist> residents;
 
 
-    public Dwelling(String name, int woodCost, int stoneCost, int limit, Class<? extends Profession> compatible,int resLimit) {
-        super(name, woodCost, stoneCost, limit, null);
+    public Dwelling(String name, int woodCost, int stoneCost, int limit, Class<? extends Profession> compatible,int resLimit,int storage) {
+        super(name, woodCost, stoneCost, limit, null,storage);
         this.resLimit = resLimit;
         this.residents = new ArrayList<>();
     }

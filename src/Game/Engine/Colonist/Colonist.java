@@ -5,6 +5,7 @@ import Game.Engine.Buildings.Dwelling;
 import Game.Engine.Colonist.Personality.Personality;
 import Game.Engine.Colonist.Personality.PersonalityFactory;
 import Game.Engine.Colonist.Profession.Profession;
+import Game.Engine.Colonist.Profession.ProfessionRegistry;
 import Game.Engine.Colonist.Profession.Unemployed;
 import Game.Engine.Colony;
 import Game.Engine.Inventory.Inventory;
@@ -60,7 +61,7 @@ public class Colonist {
 
     private int hunger =0;
 
-    private Inventory inv = new Inventory();
+    private Inventory inv = new Inventory(100);
 
 
 
@@ -89,7 +90,7 @@ public class Colonist {
     }
     public Colonist(Colony colony,String name,char sex) {
         this.name = name;
-        this.profession = new Unemployed();
+        this.profession = ProfessionRegistry.get("Unemployed");
         this.age = 0;
         this.ageMonths = 0;
         this.energy = 1;
@@ -220,10 +221,7 @@ public class Colonist {
     }
 
 
-    public Resources work(int usedEnergy) {
-        if (profession == null) return new Resources(0, 0, 0);
-        return profession.work(this, usedEnergy);
-    }
+
 
     public String getOccupation() {
         return profession != null ? profession.getName() : "Unassigned";
@@ -255,7 +253,7 @@ public class Colonist {
 
         this.profession = profession;
         if (this.getAssignedBuilding() != null &&
-                !this.getAssignedBuilding().isCompatible(this)) {
+                !this.getAssignedBuilding().isJobCompatible(this)) {
            this.unassignBuilding();
         }
     }
@@ -368,6 +366,10 @@ public class Colonist {
 
     public int getEffort() {
         return 15*baseProductivity + (age/20) - (energy/100);
+    }
+
+    public Inventory getInventory() {
+        return inv;
     }
 }
 

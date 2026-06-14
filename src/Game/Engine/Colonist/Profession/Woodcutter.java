@@ -1,11 +1,15 @@
 package Game.Engine.Colonist.Profession;
 
+import Game.Engine.Actions.ColonistActions.WorkAction.WoodCutAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Resources;
 
-public class Woodcutter implements Profession{
-    public Resources work(Colonist colonist, int usedEnergy) {
-        return new Resources(0, usedEnergy, 0); // produces wood
+public class Woodcutter extends Profession{
+    public Woodcutter() {
+        super("WoodCutter", WoodCutAction.class);
     }
+
+
     public String getName() { return "Woodcutter"; }
 }
