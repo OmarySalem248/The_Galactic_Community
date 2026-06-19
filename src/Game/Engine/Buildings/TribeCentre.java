@@ -3,6 +3,6 @@ package Game.Engine.Buildings;
 import Game.Engine.Colonist.Profession.TribeLeader;
 
 public class TribeCentre extends Building{
-    public TribeCentre(){super("Tribe Center",10,10,1, TribeLeader.class,1000);}
+    public TribeCentre(){super("Tribe Center",10,10,1, TribeLeader.class,1000,BuildingType.GOVERNMENT);}
 
 }

@@ -17,6 +17,7 @@ public class SleepAction extends ColonistAction{
             colonist.modEnergy(50);
         }
         colonist.setStatus("zzzzzzzzzz");
+
         return colonist.getEnergy() < 90;
     }
 }

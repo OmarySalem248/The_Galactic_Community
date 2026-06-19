@@ -4,6 +4,9 @@ package Game.Engine.Colonist.Profession;
 import Game.Engine.Actions.ColonistActions.WorkAction.*;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Colonist.ActionManager;
+import Game.Engine.Colonist.Colonist;
+import Game.Engine.Map.Tile;
+import Game.Engine.Time.GameTime;
 
 
 public abstract class Profession {
@@ -30,9 +33,9 @@ public abstract class Profession {
     }
 
 
-
-
-
+    public boolean isItWorkHours(GameTime time) {
+        return (time.hour()) >= 8 && time.hour() <= 17 && time.weekday() >= 1 && time.weekday() <= 5;
+    }
 }
 
 

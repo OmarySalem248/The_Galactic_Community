@@ -37,7 +37,7 @@ public class Game {
             house.addResident(c);
             Tile startingTile = map.getTile(x,y);
             ColonistAvatar avatar = new ColonistAvatar(c,map.getTile(x,y));
-            avatar.setActionManager(new ActionManager(avatar, startingTile, eventBus));
+            avatar.setActionManager(new ActionManager(avatar, startingTile, eventBus,map));
             this.map.placeBuilding(house,x,y);
             map.addAvatar(avatar);
             x++;

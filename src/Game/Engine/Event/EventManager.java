@@ -18,6 +18,10 @@ public class EventManager {
             ResourceProducedEvent rpe = (ResourceProducedEvent) event.data();
             game.getColony().getResources().add(rpe.produced());
         });
+        eventBus.subscribe(GameEventType.SCHEDULE_TICKABLE, event -> {
+            ScheduleRequest req = (ScheduleRequest) event.data();
+            game.getClock().schedule(req.target(), req.delay());
+        });
 
 
     }

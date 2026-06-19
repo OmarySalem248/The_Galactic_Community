@@ -3,6 +3,7 @@ package Game.Engine.Colonist.Profession;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Resources;
+import Game.Engine.Time.GameTime;
 
 public class Unemployed extends Profession{
     public Unemployed() {
@@ -13,4 +14,8 @@ public class Unemployed extends Profession{
         return new Resources(0, 0, 0);
     }
     public String getName() { return "Unemployed"; }
+    @Override
+    public boolean isItWorkHours(GameTime time){
+        return false;
+    }
 }

@@ -2,40 +2,58 @@ package Game.Engine.Colonist;
 
 import Game.Engine.Actions.ColonistActions.ConsumeAction;
 import Game.Engine.Actions.ColonistActions.MoveAction;
+import Game.Engine.Actions.ColonistActions.PickupAction;
 import Game.Engine.Actions.ColonistActions.SleepAction;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Actions.Interactions.ChitChatAction;
 import Game.Engine.Actions.Queue.ActionQueue;
 import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
+import Game.Engine.Buildings.BuildingType;
+import Game.Engine.Colonist.Memory.ColonistMemory;
+import Game.Engine.Colonist.Memory.FOVCalculator;
 import Game.Engine.Event.GameEventBus;
-import Game.Engine.Inventory.Items.Consumable;
-import Game.Engine.Inventory.Items.ItemStack;
-import Game.Engine.Inventory.Items.ItemType;
+import Game.Engine.Inventory.Inventory;
+import Game.Engine.Inventory.Items.*;
 import Game.Engine.Map.Map;
 import Game.Engine.Map.Tile;
 import Game.Engine.Time.GameTime;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 
 public class ActionManager {
+
+    private final Map map;
     private ColonistAvatar colonistav;
+
+    private ColonistMemory memory;
 
     private Colonist colonist;
     private GameEventBus eventBus;
     private Tile workTile;
+    private ItemType searchingFor = null;
+    private  BuildingType searchSource = null;
+
     private final ActionQueue queue = new ActionQueue();
 
     private static final int PRIORITY_MOVE = 10;
     private static final int PRIORITY_WORK = 5;
     private static final int PRIORITY_SOCIAL = 3;
+    private static final int PRIORITY_SEARCH = 15;
     private Tile destination;
-    public ActionManager(ColonistAvatar colonist, Tile startingTile, GameEventBus eventBus) {
+
+
+    public ActionManager(ColonistAvatar colonist, Tile startingTile, GameEventBus eventBus,Map map) {
         this.colonistav =colonist;
         this.colonist = colonistav.getColonist();
         this.destination = startingTile;
         this.eventBus = eventBus;
+        this.memory = new ColonistMemory();
+        this.map = map;
 
     }
     public Colonist getColonist() { return colonist; }
@@ -45,11 +63,16 @@ public class ActionManager {
     }
 
     public void run(GameTime time, Map map, Tile location)  {
+        for(Tile tile :  FOVCalculator.calculate(location,10,map)){
+            memory.observe(tile,time.tick());
+        };
         evaluatePriorities(time,map);
         queue.tick();
     }
     private void evaluatePriorities(GameTime time, Map map)  {
-        if(status().getatHome() && colonist.getEnergy() < 500){
+
+        if(status().getatHome() && colonist.getEnergy() < 500 && !queue.isQueued(SleepAction.class)){
+            System.out.print("new sleep");
             if (!queue.isQueued(SleepAction.class)) {
                 queue.add(new QueuedAction(
                         new SleepAction(this),
@@ -70,10 +93,11 @@ public class ActionManager {
 
         // Work — parallel (can happen alongside social), not interruptible
 
-        if (colonistav.getStatus().getshouldWork() && colonistav.getStatus().getatWork() && time.minute()%10 == 0 && !queue.isQueued(WorkAction.class)) {
+        if (colonistav.getStatus().getshouldWork() && colonistav.getStatus().getatWork() && !queue.isQueued(WorkAction.class)) {
             try {
                 Class<? extends WorkAction> action = colonist.getProfession().getWorkAction();
                 WorkAction workAction = action.getDeclaredConstructor(ActionManager.class).newInstance(this);
+
                 queue.add(new QueuedAction(workAction, PRIORITY_WORK, true, false));
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("Work action missing ActionManager constructor: ", e);
@@ -92,6 +116,32 @@ public class ActionManager {
                 food.get(0).remove(1);
         }
         }
+        if(status().getisSearching() && colonistav.getCurrentTile() == destination){
+
+            if(destination.getBuilding() != null && destination.getBuilding().getBType() == searchSource){
+                Inventory inv = destination.getBuilding().getInv();
+                if (inv.hasType(searchingFor)) {
+                    ItemStack stack = inv.getByType(ItemType.SEED).get(0);
+                    Item item = stack.getItem();
+                    int qty = Math.max(stack.getQuantity() / 10, 10);
+                    queue.add(new QueuedAction(new PickupAction(this, inv, item, qty), PRIORITY_WORK, true, false));
+                    // Don't clear search yet — only clear once storage is empty or colonist inventory is full
+
+                    if (stack.getQuantity() - qty <= 0 || colonist.getInventory().isFull()) {
+                        clearSearch();
+                    }
+                }
+            }
+        }
+
+        if (status().getshouldWork() && !getSearching()) {
+            WorkAction currentWork = queue.getWork();
+            if (currentWork != null && currentWork.hasNothingLeftToDo()) {
+                Tile homeTile = getFirstTile(colonist.getDwelling());
+                if (homeTile != null) destination = homeTile;
+            }
+        }
+
 
         // Social — parallel, interruptible
         checkSocialOpportunities(time);
@@ -119,12 +169,16 @@ public class ActionManager {
 
     private void updateDestination() {
 
-        if (colonistav.getStatus().getshouldWork()) {
-            workTile = getFirstTile(this.colonist.getAssignedBuilding());
-            if (workTile != null) destination = workTile;
-        } else{
-            Tile homeTile = getFirstTile(colonist.getDwelling());
-            if (homeTile != null) destination = homeTile;
+        if(!status().getisSearching()) {
+
+            if (colonistav.getStatus().getshouldWork()) {
+
+                workTile = getFirstTile(this.colonist.getAssignedBuilding());
+                if (workTile != null) destination = workTile;
+            } else {
+                Tile homeTile = getFirstTile(colonist.getDwelling());
+                if (homeTile != null) destination = homeTile;
+            }
         }
     }
     private void moveTowardDestination(Map map) {
@@ -146,5 +200,98 @@ public class ActionManager {
 
     public GameEventBus getEventBus() {
         return eventBus;
+    }
+
+
+    /**
+     * Enter search state for a specific item type from a specific building type.
+     * Called by work actions (e.g. FarmAction) when they need a resource.
+     */
+    public void searchFor(ItemType itemType, BuildingType source) {
+        this.searchingFor = itemType;
+        this.searchSource = source;
+        status().setIsSearching(true);
+        colonist.setStatus("looking for seeds");
+
+        // Check memory first
+        Optional<Tile> known = memory.recall(source);
+        if (known.isPresent() && known.get().getBuilding().getInv().hasType(searchingFor)) {
+            destination = known.get();
+
+        } else {
+            destination = wanderUnexplored();
+
+        }
+
+        queue.add(new QueuedAction(
+                new MoveAction(this, destination, map),
+                PRIORITY_SEARCH, false, true
+        ));
+    }
+
+    /** Check if we've arrived at the target building — if so pick up item and exit search. */
+    private void checkSearchArrival() {
+        Tile current = getCurrentTile();
+        if (current == null) return;
+
+        if (current.hasBuilding()
+                && current.building.getBType() == searchSource
+                && current.building.getInv().hasType(searchingFor)) {
+
+            // Find the first matching item stack and pick it up
+            current.building.getInv().getByType(searchingFor).stream().findFirst()
+                    .ifPresent(stack -> queue.add(new QueuedAction(
+                            new PickupAction(this, current.building.getInv(),
+                                    stack.getItem(), stack.getQuantity()),
+                            PRIORITY_SEARCH, false, false
+                    )));
+
+            clearSearch();
+        } else if (current == destination) {
+            // Arrived but not found here — wander to next unexplored tile
+            destination = wanderUnexplored();
+            queue.add(new QueuedAction(
+                    new MoveAction(this, destination, map),
+                    PRIORITY_SEARCH, false, true
+            ));
+        }
+    }
+
+    /** Pick a random tile the colonist hasn't explored yet, biased away from known tiles. */
+    private Tile wanderUnexplored() {
+
+        Random rand = new Random();
+        Tile current = getCurrentTile();
+        if (current == null) return destination;
+
+        List<Tile> neighbours = current.getNeighbours(map);
+        List<Tile> unexplored = new ArrayList<>();
+
+        for (Tile n : neighbours) {
+            if (!memory.hasSeen(n)) unexplored.add(n);
+        }
+
+        // Prefer unexplored, fall back to any neighbour
+        List<Tile> candidates = unexplored.isEmpty() ? neighbours : unexplored;
+        if (candidates.isEmpty()) return destination;
+        return candidates.get(rand.nextInt(candidates.size()));
+    }
+
+    public void clearSearch() {
+        status().setIsSearching(false);
+        searchingFor  = null;
+        searchSource  = null;
+    }
+
+    public ColonistMemory getMemory() {
+        return memory;
+    }
+
+    public boolean getSearching() {
+        return status().getisSearching();
+    }
+
+    public String getDestination() {
+        return destination.toString();
     }
 }

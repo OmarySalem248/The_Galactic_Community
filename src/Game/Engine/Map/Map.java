@@ -38,14 +38,13 @@ public class Map {
 
     public static Map getBasicMap() {
         Map basicMap =  new Map(35,25);
-        basicMap.placeBuilding(new Farm(),1,2);
         basicMap.placeBuilding(new Farm(),2,2);
         basicMap.placeBuilding(new LumberMill(),7,2);
         basicMap.placeBuilding(new Mine(),8,3);
         Storage beginnerSt = new Storage();
-        beginnerSt.getInv().add(new UberrySeed(),50);
+        beginnerSt.getInv().add(new UberrySeed(),500);
         beginnerSt.getInv().add(new UtopiaBar(),7);
-        basicMap.placeBuilding(new Storage(),1,7);
+        basicMap.placeBuilding(beginnerSt,1,7);
         return basicMap;
     }
 

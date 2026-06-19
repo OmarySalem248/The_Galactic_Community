@@ -11,5 +11,5 @@ public class Woodcutter extends Profession{
     }
 
 
-    public String getName() { return "Woodcutter"; }
+
 }

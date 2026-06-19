@@ -12,7 +12,7 @@ public abstract class Dwelling extends Building{
 
 
     public Dwelling(String name, int woodCost, int stoneCost, int limit, Class<? extends Profession> compatible,int resLimit,int storage) {
-        super(name, woodCost, stoneCost, limit, null,storage);
+        super(name, woodCost, stoneCost, limit, null,storage,BuildingType.DWELLING);
         this.resLimit = resLimit;
         this.residents = new ArrayList<>();
     }

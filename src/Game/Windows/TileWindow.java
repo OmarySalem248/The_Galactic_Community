@@ -2,6 +2,8 @@ package Game.Windows;
 
 import Game.Engine.Actions.ColonyActions.BuildAction;
 import Game.Engine.Buildings.*;
+import Game.Engine.Colonist.Colonist;
+import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Game;
 import Game.Engine.Map.Tile;
 
@@ -66,6 +68,57 @@ public class TileWindow {
             }
             frame.add(buildPanel, BorderLayout.CENTER);
         }
+        else{
+            Building building = tile.getBuilding();
+            JPanel buildstatPanel = new JPanel();
+            buildstatPanel.setLayout(new BoxLayout(buildstatPanel, BoxLayout.Y_AXIS));
+            buildstatPanel.setBorder(BorderFactory.createTitledBorder("Building"));
+
+            JLabel nameLabel = new JLabel(building.getName());
+            nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            buildstatPanel.add(nameLabel);
+            buildstatPanel.add(Box.createVerticalStrut(8));
+
+            JLabel invHeader = new JLabel("Inventory:");
+            invHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
+            buildstatPanel.add(invHeader);
+
+
+
+
+            if (building.getInv().isEmpty()) {
+                JLabel emptyLabel = new JLabel("(empty)");
+                emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                buildstatPanel.add(emptyLabel);
+            } else {
+                for (var stack : building.getInv().getStacks()) {
+                    JLabel stackLabel = new JLabel(stack.toString());
+                    stackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    buildstatPanel.add(stackLabel);
+                }
+            }
+
+            JLabel weightLabel = new JLabel(String.format("Weight: %.1f / %.1f",
+                    building.getInv().getCurrentWeight(),
+                    building.getInv().getMaxWeight()));
+            weightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            buildstatPanel.add(Box.createVerticalStrut(8));
+            buildstatPanel.add(weightLabel);
+
+            frame.add(buildstatPanel, BorderLayout.CENTER);
+        }
+        JPanel colonistpanel = new JPanel();
+        if (tile.getColonists().isEmpty()) {
+            JLabel emptyLabel = new JLabel("(no colonist)");
+            colonistpanel.add(emptyLabel);
+        } else {
+            for (ColonistAvatar colonist : tile.getColonists()) {
+                Colonist c = colonist.getColonist();
+                JLabel stackLabel = new JLabel(c.toString()+colonist.getActionManager().getDestination());
+                colonistpanel.add(stackLabel);
+            }
+        }
+        frame.add(colonistpanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }

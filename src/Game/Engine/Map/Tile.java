@@ -57,6 +57,10 @@ public class Tile {
     public boolean isEmpty() {
         return (!hasBuilding() && getColonists().isEmpty());
     }
+    public boolean blocksVision() {
+        // Buildings block vision — terrain blocking can be added here later
+        return hasBuilding();
+    }
 
     public List<Tile> getNeighbours(Map map) {
         List<Tile> neighbours = new ArrayList<>();
@@ -66,5 +70,9 @@ public class Tile {
             if (t != null) neighbours.add(t);
         }
         return neighbours;
+    }
+
+    public Building getBuilding() {
+        return building;
     }
 }

@@ -1,6 +1,7 @@
 package Game.Engine.Actions.Queue;
 
 import Game.Engine.Actions.ColonistActions.ColonistAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Actions.Interactions.InteractAction;
 
 import java.util.ArrayList;
@@ -67,5 +68,22 @@ public class ActionQueue {
     public void clear() {
         active.clear();
         pending.clear();
+    }
+
+    public WorkAction getWork() {
+        for (QueuedAction action : active) {
+            if (action.getAction() instanceof WorkAction work) return work;
+        }
+        for (QueuedAction action : pending) {
+            if (action.getAction() instanceof WorkAction work) return work;
+        }
+        return null;
+    }
+    public ArrayList<String>  print() {
+        ArrayList<String> actions = new ArrayList<>();
+        for (QueuedAction action : active) {
+                actions.add(action.getAction().toString());
+        }
+        return actions;
     }
 }

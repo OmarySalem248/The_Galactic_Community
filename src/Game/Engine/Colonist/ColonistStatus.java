@@ -7,22 +7,28 @@ public class ColonistStatus {
 
     private ColonistAvatar avatar;
     private Colonist colonist;
+
+    private Boolean isSearching;
     private  ActionManager aman;
 
     private boolean atWork;
 
     private boolean shouldWork;
 
+    private boolean workToDo;
+
     private boolean atHome;
     public ColonistStatus(ColonistAvatar avatar){
         this.avatar = avatar;
         this.colonist = avatar.getColonist();
         this.aman = avatar.getActionManager();
+        this.isSearching = false;
     }
 
     public void update(GameTime time){
+
         atWork = colonist.getAssignedBuilding().getCoords().contains(avatar.getCurrentTile());
-        shouldWork =  (time.hour() >= 8 && time.hour() <= 17)&&(time.weekday() >=1 && time.weekday() <= 5);
+        shouldWork =  colonist.getProfession().isItWorkHours(time);
         atHome = colonist.getDwelling().getCoords().contains(avatar.getCurrentTile());
     }
 
@@ -36,5 +42,14 @@ public class ColonistStatus {
 
     public boolean getshouldWork(){
         return shouldWork;
+    }
+
+    public boolean getisSearching(){
+        return isSearching;
+    }
+
+
+    public void setIsSearching(Boolean is){
+        isSearching = is;
     }
 }

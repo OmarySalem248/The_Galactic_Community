@@ -53,13 +53,17 @@ public class Colony {
         this.colonists = new ArrayList<>();
         this.buildings = map.getBuildings();
         this.persfact = new PersonalityFactory();
+
         colonists.add(new Colonist(this,"Jeff", ProfessionRegistry.get("Farmer"),35,1000,1,'M',persfact.futureDictator()));
+
         colonists.add(new Colonist(this,"Britta",ProfessionRegistry.get("WoodCutter"),28,1000,1,'F',persfact.comedian()));
         colonists.add(new Colonist(this,"Troy",ProfessionRegistry.get("Farmer"), 19,1000,1,'M',persfact.funGuy()));
         colonists.add(new Colonist(this,"Abed",ProfessionRegistry.get("Miner"),20,1000,1,'M',persfact.awkwardDude()));
         colonists.add(new Colonist(this,"Annie",ProfessionRegistry.get("Miner"),19,1000,1,'F',persfact.perfectionist()));
         colonists.add(new Colonist(this,"Shirley",ProfessionRegistry.get("WoodCutter"),43,1000,1,'F',persfact.caring()));
         colonists.add(new Colonist(this,"Pierce",ProfessionRegistry.get("Unemployed"),75,1000,1,'M',persfact.turd()));
+
+
         fooddemand = colonists.size();
         this.initializeRelationships();
 

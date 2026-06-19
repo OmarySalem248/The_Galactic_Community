@@ -23,6 +23,8 @@ public abstract class Building {
     private int id;
     private Image image;
 
+    private BuildingType type;
+
     private ArrayList<Tile> coords;
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
     private Class<? extends Profession> compatibleProfession;
@@ -33,11 +35,12 @@ public abstract class Building {
     protected Profession compatible;
 
 
-    public Building(String name, int woodCost, int stoneCost, int limit,Class<? extends Profession> compatible,int storage) {
+    public Building(String name, int woodCost, int stoneCost, int limit,Class<? extends Profession> compatible,int storage,BuildingType type) {
         this.name = name;
         this.woodCost = woodCost;
         this.stoneCost = stoneCost;
         this.colonlimit= limit;
+        this.type = type;
         this.compatibleProfession = compatible;
         this.inv = new Inventory(storage);
         colonists = new ArrayList<>();
@@ -68,6 +71,10 @@ public abstract class Building {
     }
     public ArrayList<Colonist> getColonists(){
         return colonists;
+    }
+
+    public BuildingType getBType(){
+        return type;
     }
 
     public int getWoodCost() {

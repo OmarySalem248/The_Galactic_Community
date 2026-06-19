@@ -5,6 +5,6 @@ import Game.Engine.Colonist.Profession.Profession;
 public class Storage extends Building{
 
     public Storage() {
-        super("Storage", 5, 5, Integer.MAX_VALUE, null,50000);
+        super("Storage", 5, 5, Integer.MAX_VALUE, null,50000,BuildingType.STORAGE);
     }
 }

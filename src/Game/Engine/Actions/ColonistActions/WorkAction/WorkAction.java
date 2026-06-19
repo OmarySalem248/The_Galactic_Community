@@ -12,6 +12,10 @@ public abstract class WorkAction extends ColonistAction {
     public WorkAction(String name, ActionManager colonist) {
         super(name, colonist);
     }
+    public boolean hasNothingLeftToDo(){
+        return false;
+    };
+
 
 
 /*

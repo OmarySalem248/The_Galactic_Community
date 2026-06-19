@@ -4,6 +4,6 @@ import Game.Engine.Colonist.Profession.Profession;
 
 public class Park extends  Building{
     public Park() {
-        super("Park", 10, 10, Integer.MAX_VALUE, null,10);
+        super("Park", 10, 10, Integer.MAX_VALUE, null,10,BuildingType.SOCIAL);
     }
 }
