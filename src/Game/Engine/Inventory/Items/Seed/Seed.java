@@ -1,6 +1,10 @@
-package Game.Engine.Inventory.Items;
+package Game.Engine.Inventory.Items.Seed;
 
-public abstract class Seed extends Item{
+import Game.Engine.Inventory.Items.Item;
+import Game.Engine.Inventory.Items.ItemType;
+import Game.Engine.Inventory.Items.Plant.Plant;
+
+public abstract class Seed extends Item {
     private Plant plant;
     public Seed(String name, float weight, Plant plant) {
         super(name, weight, ItemType.SEED);

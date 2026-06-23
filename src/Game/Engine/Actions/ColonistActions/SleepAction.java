@@ -12,12 +12,20 @@ public class SleepAction extends ColonistAction{
 
     @Override
     public boolean execute() {
+
+        colonistam.sleep();
+
+
         tick++;
         if(tick%60 ==0) {
             colonist.modEnergy(50);
         }
         colonist.setStatus("zzzzzzzzzz");
 
-        return colonist.getEnergy() < 90;
+        if ((colonist.getEnergy() >= 900 && colonistam.status().getshouldWork())||(colonist.getEnergy() >= 1000)){
+            colonistam.wake();
+            return true;
+        }
+        return false;
     }
 }

@@ -17,6 +17,8 @@ public class ColonistStatus {
 
     private boolean workToDo;
 
+    private boolean isAsleep = false;
+
     private boolean atHome;
     public ColonistStatus(ColonistAvatar avatar){
         this.avatar = avatar;
@@ -51,5 +53,13 @@ public class ColonistStatus {
 
     public void setIsSearching(Boolean is){
         isSearching = is;
+    }
+
+    public void setSleep(boolean b) {
+        this.isAsleep = b;
+    }
+
+    public boolean getIsAsleep() {
+        return isAsleep;
     }
 }

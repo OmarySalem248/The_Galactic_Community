@@ -1,8 +1,7 @@
 package Game.Engine.Actions.ColonistActions;
 
 import Game.Engine.Colonist.ActionManager;
-import Game.Engine.Inventory.Items.Consumable;
-import Game.Engine.Inventory.Items.Item;
+import Game.Engine.Inventory.Items.Consumable.Consumable;
 
 public class ConsumeAction extends ColonistAction{
     private int timetocon;

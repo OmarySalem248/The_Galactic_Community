@@ -21,6 +21,7 @@ public abstract class Building {
     protected int woodCost;
     protected int stoneCost;
     private int id;
+    private Building prefStor;
     private Image image;
 
     private BuildingType type;
@@ -124,5 +125,14 @@ public abstract class Building {
 
     public void addColonist(Colonist colonist) {
         this.colonists.add(colonist);
+    }
+
+    public void setPrefStor(Building stor){
+        this.prefStor = stor;
+    }
+
+    public Building getPreferredStorage() {
+
+        return prefStor;
     }
 }

@@ -40,6 +40,8 @@ public class Colonist {
 
     private int favourability;
 
+    private int tendcount = 0;
+
     private char sex;
 
     private Personality personality;
@@ -115,6 +117,14 @@ public class Colonist {
     public int getHunger(){return hunger;}
 
     public int getEnergy() { return energy; }
+
+    public void addtendcount(){
+        tendcount++;
+    }
+
+    public int getTendcount(){
+        return tendcount;
+    }
     public void setEnergy(int energy) { this.energy = Math.max(0, Math.min(energy, 100)); }
     public int getAge() { return age; }
 
@@ -371,5 +381,7 @@ public class Colonist {
     public Inventory getInventory() {
         return inv;
     }
+
+
 }
 

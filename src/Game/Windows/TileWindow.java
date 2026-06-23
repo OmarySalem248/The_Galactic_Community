@@ -98,6 +98,12 @@ public class TileWindow {
                 }
             }
 
+            if(building.getType() == "Farm"){
+                Farm farm = (Farm) building;
+                JLabel inccount = new JLabel(String.valueOf(farm.getActiveInc().size()));
+                buildstatPanel.add(inccount);
+            }
+
             JLabel weightLabel = new JLabel(String.format("Weight: %.1f / %.1f",
                     building.getInv().getCurrentWeight(),
                     building.getInv().getMaxWeight()));
@@ -114,7 +120,7 @@ public class TileWindow {
         } else {
             for (ColonistAvatar colonist : tile.getColonists()) {
                 Colonist c = colonist.getColonist();
-                JLabel stackLabel = new JLabel(c.toString()+colonist.getActionManager().getDestination());
+                JLabel stackLabel = new JLabel(c.toString()+colonist.getActionManager().getDestination().toString());
                 colonistpanel.add(stackLabel);
             }
         }

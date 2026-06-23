@@ -2,8 +2,8 @@ package Game.Engine.Map;
 
 import Game.Engine.Buildings.*;
 import Game.Engine.Colonist.ColonistAvatar;
-import Game.Engine.Inventory.Items.UberrySeed;
-import Game.Engine.Inventory.Items.UtopiaBar;
+import Game.Engine.Inventory.Items.Seed.UberrySeed;
+import Game.Engine.Inventory.Items.Consumable.Food.UtopiaBar;
 
 import java.util.*;
 
@@ -42,7 +42,7 @@ public class Map {
         basicMap.placeBuilding(new LumberMill(),7,2);
         basicMap.placeBuilding(new Mine(),8,3);
         Storage beginnerSt = new Storage();
-        beginnerSt.getInv().add(new UberrySeed(),500);
+        beginnerSt.getInv().add(new UberrySeed(),0);
         beginnerSt.getInv().add(new UtopiaBar(),7);
         basicMap.placeBuilding(beginnerSt,1,7);
         return basicMap;

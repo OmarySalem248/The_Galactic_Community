@@ -1,4 +1,4 @@
-package Game.Engine.Inventory.Items;
+package Game.Engine.Inventory.Items.Consumable;
 
 import Game.Engine.Colonist.Colonist;
 

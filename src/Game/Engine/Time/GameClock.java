@@ -28,7 +28,6 @@ public class GameClock {
 
     private int weekday;
     private long tick;
-
     private int ticc;
 
     private final List<TickListener> listeners = new ArrayList<>();
@@ -55,43 +54,53 @@ public class GameClock {
         this.timer.setDelay(5);
     }
 
-    public void start() { timer.start(); }
-    public void stop()  { timer.stop();  }
+    public void start()    { timer.start(); }
+    public void stop()     { timer.stop();  }
     public boolean isRunning() { return timer.isRunning(); }
-    public Map getMap() { return map; }
+    public Map getMap()    { return map; }
     public void tickOnce() { tick(); }
-    public int getHour() { return hour; }
-    public int getDay()  { return day;  }
+    public int getHour()   { return hour; }
+    public int getDay()    { return day; }
     public int getWeekday() { return day % 7; }
     public int getMinute() { return minute; }
-    public long getTick() { return tick; }
-
-    public int getTicc(){
-        return ticc;
-    }
+    public long getTick()  { return tick; }
+    public int getTicc()   { return ticc; }
 
     public void addTickListener(TickListener l) { listeners.add(l); }
 
-    /** Schedule a Tickable to first run after 'delay' ticks. */
     public void schedule(Tickable target, long delay) {
         scheduler.schedule(target, tick, delay);
     }
 
     private void tick() {
         tick++;
+        ticc++;
         minute++;
         if (minute >= 60) { minute = 0; hour++; }
-        if (hour  >= 24)  { hour  = 0; day++;  }
+        if (hour   >= 24) { hour   = 0; day++;  }
         GameTime time = new GameTime(minute, hour, day, getWeekday(), ticc);
 
         // Only run scheduled Tickables that are actually due this tick
         scheduler.runDue(tick);
 
-        // Tick all colonist avatars in parallel — these run every tick, unlike scheduled Tickables
+        // Build conflict graph — group colonists that could interact or
+        // race for the same resource onto the same thread
+        List<ColonistAvatar> avatars = map.getAvatars();
+        ConflictGraph graph = new ConflictGraph(avatars);
+
+        // Dispatch each conflict group as a single task
+        // — colonists within a group run sequentially (safe, no races)
+        // — groups themselves run in parallel (fully independent)
         List<Future<?>> tasks = new ArrayList<>();
-        for (ColonistAvatar avatar : map.getAvatars()) {
-            tasks.add(pool.submit(() -> avatar.tick(time, map)));
+        for (List<ColonistAvatar> group : graph.getGroups()) {
+            tasks.add(pool.submit(() -> {
+                for (ColonistAvatar avatar : group) {
+                    avatar.tick(time, map);
+                }
+            }));
         }
+
+        // Wait for all groups to finish
         for (Future<?> f : tasks) {
             try { f.get(); } catch (Exception ignored) {}
         }

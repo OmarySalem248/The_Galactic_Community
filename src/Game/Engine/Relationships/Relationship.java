@@ -54,7 +54,7 @@ public class Relationship {
             if(Math.abs(values.get(relationshipType))> strongestrel && relationshipType != RelationshipType.PROXIMITY){
                 type = types.get(relationshipType);
                 strongestrel = Math.abs(values.get(relationshipType));
-                System.out.print(strongestrel);
+
             }
 
         }

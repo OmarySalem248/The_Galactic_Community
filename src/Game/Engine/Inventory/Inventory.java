@@ -1,18 +1,28 @@
 package Game.Engine.Inventory;
 
-import java.util.ArrayList;
-import Game.Engine.Inventory.Items.*;
-import java.util.List;
-import java.util.Optional;
+import Game.Engine.Inventory.Items.Item;
+import Game.Engine.Inventory.Items.ItemStack;
+import Game.Engine.Inventory.Items.ItemType;
+
+import java.util.*;
 
 public class Inventory {
     private final List<ItemStack> stacks = new ArrayList<>();
     private final float maxWeight;
     private float currentWeight = 0;
 
+    private ArrayList<Delivery> deliveries;
+
+    // Tracks item types currently claimed for outbound transport
+    private final Set<ItemType> claimedForTransport = new HashSet<>();
+
     public Inventory(float maxWeight) {
         this.maxWeight = maxWeight;
     }
+
+    // -------------------------------------------------------------------------
+    // Core operations
+    // -------------------------------------------------------------------------
 
     /** Add items — returns how many were actually added (may be limited by weight). */
     public int add(Item item, int quantity) {
@@ -27,6 +37,7 @@ public class Inventory {
         } else {
             stacks.add(new ItemStack(item, toAdd));
         }
+
         currentWeight += weightPerItem * toAdd;
         return toAdd;
     }
@@ -47,13 +58,8 @@ public class Inventory {
         return find(item).map(s -> s.getQuantity() >= quantity).orElse(false);
     }
 
-    public boolean hasAny(Class<?> itemClass) {
-        return stacks.stream().anyMatch(s -> itemClass.isInstance(s.getItem()) && !s.isEmpty());
-    }
-
     public boolean hasType(ItemType type) {
-        return stacks.stream()
-                .anyMatch(s -> s.getItem().getType() == type && !s.isEmpty());
+        return stacks.stream().anyMatch(s -> s.getItem().getType() == type && !s.isEmpty());
     }
 
     public List<ItemStack> getByType(ItemType type) {
@@ -61,16 +67,50 @@ public class Inventory {
                 .filter(s -> s.getItem().getType() == type && !s.isEmpty())
                 .toList();
     }
-    public List<ItemStack> getStacks()   { return stacks; }
-    public float getCurrentWeight()      { return currentWeight; }
-    public float getMaxWeight()          { return maxWeight; }
-    public boolean isFull()              { return currentWeight >= maxWeight; }
-    public boolean isEmpty()             { return stacks.isEmpty(); }
+
+    public boolean hasAny(Class<?> itemClass) {
+        return stacks.stream().anyMatch(s -> itemClass.isInstance(s.getItem()) && !s.isEmpty());
+    }
+
+    // -------------------------------------------------------------------------
+    // Transport claim system
+    // -------------------------------------------------------------------------
+
+    /** Claim an item type for outbound transport — returns false if already claimed. */
+    public boolean claimTransport(ItemType type) {
+        return claimedForTransport.add(type);
+    }
+
+    /** Release a transport claim — called once goods are successfully delivered. */
+    public void releaseTransportClaim(ItemType type) {
+        claimedForTransport.remove(type);
+    }
+
+    public boolean isClaimedForTransport(ItemType type) {
+        return claimedForTransport.contains(type);
+    }
+
+    /**
+     * Returns true if this inventory has items of this type that aren't
+     * already claimed for transport by another colonist.
+     */
+    public boolean hasAvailableType(ItemType type) {
+        return hasType(type) && !isClaimedForTransport(type);
+    }
+
+    // -------------------------------------------------------------------------
+    // Accessors
+    // -------------------------------------------------------------------------
+
+    public List<ItemStack> getStacks()  { return stacks; }
+    public float getCurrentWeight()     { return currentWeight; }
+    public float getMaxWeight()         { return maxWeight; }
+    public boolean isFull()             { return currentWeight >= maxWeight; }
+    public boolean isEmpty()            { return stacks.isEmpty(); }
 
     private Optional<ItemStack> find(Item item) {
         return stacks.stream()
                 .filter(s -> s.getItem().getClass() == item.getClass())
                 .findFirst();
     }
-
 }
