@@ -1,5 +1,5 @@
 package Game.Engine.Time;
 
 public interface Tickable {
-    long tick();
+    long tick(GameTime time);
 }

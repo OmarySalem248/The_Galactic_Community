@@ -19,7 +19,7 @@ public class Farmer extends Profession {
 
     @Override
     public boolean isItWorkHours(GameTime time){
-        return (time.hour()) >= 8 && time.hour() <= 17 ;
+        return true;
     }
 
 

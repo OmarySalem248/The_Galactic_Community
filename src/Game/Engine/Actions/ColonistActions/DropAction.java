@@ -25,7 +25,7 @@ public class DropAction extends ColonistAction {
         int added = target.add(item, quantity);
         colonist.getInventory().remove(item, added);
         // Release the transport claim on the source inventory now that goods are delivered
-        source.releaseTransportClaim(item.getType());
+        source.releaseTransportClaim();
         return true;
     }
 }

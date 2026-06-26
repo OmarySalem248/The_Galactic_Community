@@ -1,9 +1,12 @@
 package Game.Engine.Actions.ColonistActions.WorkAction;
 
+import Game.Engine.Actions.ColonistActions.CollectDeliveryAction;
+import Game.Engine.Actions.ColonistActions.PickupAction;
 import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Buildings.Farm;
 import Game.Engine.Buildings.PlantIncubater;
 import Game.Engine.Colonist.ActionManager;
+import Game.Engine.Inventory.Delivery;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
@@ -23,9 +26,11 @@ public class FarmAction extends WorkAction {
 
     @Override
     public boolean execute() {
+
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) {
             return true;
         }
+
 
         // No seeds anywhere and no active incubators — go search for seeds
 
@@ -35,38 +40,43 @@ public class FarmAction extends WorkAction {
         if (noSeeds && !colonistam.getSearching()) {
             colonist.setStatus("Out of seeds, searching for storage...");
             colonistam.searchFor(ItemType.SEED, BuildingType.STORAGE);
-            return true;
+            return false;
         }
 
 
         // Farm inventory near full — transport jumps to top priority
-        if (isFarmNearFull(farm) && hasGoodsToTransport(farm)) {
-            System.out.println("1");
+        if (isFarmNearFull(farm)) {
+            System.out.println("full");
+
             transportGoods(farm);
             return false;
         }
 
         // Normal priority gate — one action per tick
         if (hasSeedsToDeposit() && !canPlant(farm)) {
+            System.out.println("deposit");
             depositSeeds(farm);
             return false;
         }
         if (hasMyIncubatorsToTend(farm)) {
+            System.out.println("tend");
             tendIncubators(farm);
             return false;
         }
         if (hasMyIncubatorsToHarvest(farm)) {
+            System.out.println("harvest");
             harvest(farm);
             return false;
         }
         if (canPlant(farm)) {
+            System.out.println("plant");
             plant(farm);
             return false;
         }
 
         // Last resort — transport excess goods
         if (hasGoodsToTransport(farm)) {
-            System.out.println(2);
+
             transportGoods(farm);
             return false;
         }
@@ -143,15 +153,27 @@ public class FarmAction extends WorkAction {
                 .orElse(null);
         if (inc == null) return;
 
-        for (ItemStack stack : inc.getPlant().getHarvestYield()) {
-            farm.getInv().add(stack.getItem(), stack.getQuantity());
+        List<ItemStack> yield = inc.getPlant().getHarvestYield();
 
+        // Check if everything fits before touching the inventory
+        float totalWeight = 0;
+        for (ItemStack stack : yield) {
+            totalWeight += stack.getItem().getWeight() * stack.getQuantity();
         }
 
+        float available = farm.getInv().getMaxWeight() - farm.getInv().getCurrentWeight();
+        if (totalWeight > available) {
+            colonist.setStatus("Farm full, waiting to harvest " + inc.getPlant().getName());
+            return; // don't touch inventory or clear incubator
+        }
+
+        // Safe to add everything now
+        for (ItemStack stack : yield) {
+            farm.getInv().add(stack.getItem(), stack.getQuantity());
+        }
 
         farm.clearInc(inc);
-
-
+        colonist.setStatus("Harvested " + inc.getPlant().getName());
     }
 
     // -------------------------------------------------------------------------
@@ -178,7 +200,11 @@ public class FarmAction extends WorkAction {
         Item seed = getSeed(farm);
         farm.plant((Seed) seed, colonistam.getEventBus(), colonist);
         colonist.setStatus("Planted a " + seed.getName());
+        System.out.println("Plant planted");
+
     }
+
+
 
     // -------------------------------------------------------------------------
     // Transport
@@ -194,36 +220,57 @@ public class FarmAction extends WorkAction {
     }
 
     private void transportGoods(Farm farm) {
-        if (colonistam.getColonist().getInventory().hasType(ItemType.FOOD)) {
+        // Already have a pending delivery — just head to storage
+        if (colonistam.getColonist().getInventory().hasDeliveries()) {
+            System.out.println("off");
             deliverToStorage(farm);
             return;
         }
 
-        if (!farm.getInv().claimTransport(ItemType.FOOD)) return;
+        if (!farm.getInv().claimTransport()) return;
 
-        List<ItemStack> goods = new ArrayList<>(farm.getInv().getByType(ItemType.FOOD));
+        // Collect food into a delivery
+        List<ItemStack> collected = new ArrayList<>();
+        List<ItemStack> goods;
+        if(!farm.getInv().hasType(ItemType.FOOD)&& isFarmNearFull(farm)){
+            goods = new ArrayList<>(farm.getInv().getByType(ItemType.SEED));
+        }
+        else{
+            goods = new ArrayList<>(farm.getInv().getByType(ItemType.FOOD));
+        }
         for (ItemStack stack : goods) {
-            int added = colonistam.getColonist().getInventory().add(stack.getItem(), stack.getQuantity());
-            if (added > 0) farm.getInv().remove(stack.getItem(), added);
+            int toTake;
+            if(stack.getItem().getType().equals(ItemType.FOOD)) {
+                toTake = stack.getQuantity();
+            }
+            else{
+                toTake = Math.min(stack.getQuantity(), 100);
+            }
+            if (farm.getInv().remove(stack.getItem(), toTake)) {
+                collected.add(new ItemStack(stack.getItem(), toTake));
+            }
         }
 
-        if (colonistam.getColonist().getInventory().hasType(ItemType.FOOD)) {
-            colonistam.setPendingSourceInventory(farm.getInv());
+        if (!collected.isEmpty()) {
+            Inventory storageInv = farm.getPreferredStorage() != null
+                    ? farm.getPreferredStorage().getInv()
+                    : null; // null destination means search is needed
+            Delivery delivery = new Delivery(collected, farm.getInv(), storageInv);
+            colonistam.getColonist().getInventory().addDelivery(delivery);
             colonist.setStatus("Transporting goods to storage...");
             deliverToStorage(farm);
         } else {
-            farm.getInv().releaseTransportClaim(ItemType.FOOD);
+            farm.getInv().releaseTransportClaim();
         }
     }
 
     private void deliverToStorage(Farm farm) {
-        System.out.println("leo");
         var preferred = farm.getPreferredStorage();
         if (preferred != null) {
             colonistam.setDeliveryTarget(preferred);
         } else if (!colonistam.getSearching()) {
-
-            colonistam.searchForBuilding(BuildingType.STORAGE);
+            colonist.setStatus("Carrying goods, looking for storage...");
+            colonistam.searchFor(null, BuildingType.STORAGE); // null = delivery mode
         }
     }
 
@@ -234,16 +281,26 @@ public class FarmAction extends WorkAction {
     public boolean hasNothingLeftToDo() {
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) return false;
 
-        boolean hasSeedsSomewhere = colonistam.getColonist().getInventory().hasType(ItemType.SEED)
-                || farm.getInv().hasType(ItemType.SEED);
-        boolean myIncNeedTend = myIncubators(farm).stream().anyMatch(PlantIncubater::needsTending);
+        boolean hasSeedsSomewhere = (colonistam.getColonist().getInventory().hasType(ItemType.SEED)
+                || farm.getInv().hasType(ItemType.SEED))&&(!farm.getFreeInc().isEmpty());
+        boolean myIncNeedTend = myIncubators(farm).stream().anyMatch(PlantIncubater::needsTendingToday);
         boolean myIncMature   = myIncubators(farm).stream().anyMatch(PlantIncubater::canHarvest);
         boolean hasGoodsToMove = farm.getInv().hasAvailableType(ItemType.FOOD)
                 || colonistam.getColonist().getInventory().hasType(ItemType.FOOD);
+        boolean farmFull = isFarmNearFull(farm) && myIncubators(farm).stream().anyMatch(PlantIncubater::canHarvest);
+        System.out.println(colonist.getName()+ ":");
+        System.out.println(!hasSeedsSomewhere);
+        System.out.println(!myIncNeedTend);
+        System.out.println(!myIncMature);
+        System.out.println(!hasGoodsToMove);
+        System.out.println(!colonistam.getSearching());
+        System.out.println(!farmFull);
 
-        if (hasSeedsSomewhere || myIncNeedTend || myIncMature
-                || hasGoodsToMove || colonistam.getSearching()) return false;
+        if(!hasSeedsSomewhere && !myIncNeedTend && !myIncMature && !hasGoodsToMove && !colonistam.getSearching() && !farmFull){
+            System.out.println(colonist.getName() + " GO HOME");
+        }
 
-        return colonistam.getMemory().knowsOf(BuildingType.STORAGE);
+
+        return !hasSeedsSomewhere && !myIncNeedTend && !myIncMature && !hasGoodsToMove && !colonistam.getSearching() && !farmFull;
     }
 }

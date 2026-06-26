@@ -55,12 +55,12 @@ public class Colony {
         this.buildings = map.getBuildings();
         this.persfact = new PersonalityFactory();
         Colonist Jeff =new Colonist(this,"Jeff", ProfessionRegistry.get("Farmer"),35,1000,1,'M',persfact.futureDictator());
-        Jeff.getInventory().add(new UberrySeed(),1);
+
         colonists.add(Jeff);
 
         colonists.add(new Colonist(this,"Britta",ProfessionRegistry.get("WoodCutter"),28,1000,1,'F',persfact.comedian()));
         Colonist Troy =  new Colonist(this,"Troy",ProfessionRegistry.get("Farmer"), 19,1000,1,'M',persfact.funGuy());
-        Troy.getInventory().add(new UberrySeed(),1);
+
         colonists.add(Troy);
 
 

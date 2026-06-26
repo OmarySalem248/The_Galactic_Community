@@ -23,14 +23,14 @@ public abstract class Plant {
     private int dailyMain;
     private boolean growing = false;
 
-    public Plant(String name, int dailyMain, int delay,int matureAt,Item product) {
+    public Plant(String name, int dailyMain, int delay,int matureAt) {
         MATURE_AT = matureAt;
         this.name = name;
         this.delay = delay;
         this.dailyMain = dailyMain;
         this.progress = 0;
-        this.product = product;
     }
+
 
     public void beginGrowth() {
         growing = true;
@@ -51,7 +51,9 @@ public abstract class Plant {
 
     /** Called every tick while growing — advance your own progress state. */
     protected void growAmount(){
+
         progress++;
+
     }
 
 
@@ -67,11 +69,17 @@ public abstract class Plant {
 
     public abstract List<ItemStack> getHarvestYield();
 
+
+
     public int getDelay() {
         return delay;
     }
 
     public int getDailyMain(){
         return dailyMain;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 }

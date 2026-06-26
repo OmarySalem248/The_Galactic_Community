@@ -21,6 +21,8 @@ public class ColonistsWindow extends JPanel {
     private final JComboBox<String>   professionDropdown;
 
     private final JLabel occupationLabel;
+    private JTextArea inventoryArea;
+    private JTextArea deliveryArea;
     private final JLabel energyLabel;
     private final JLabel hpLabel;
     private final JLabel ageLabel;
@@ -95,6 +97,25 @@ public class ColonistsWindow extends JPanel {
         gbc.gridwidth = 1;
         gbc.gridx = 0; gbc.gridy = row; add(new JLabel("Profession:"), gbc);
         gbc.gridx = 1; add(professionDropdown, gbc); row++;
+        // Inventory debug
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+        add(new JLabel("── Inventory ──"), gbc); row++;
+
+        inventoryArea = new JTextArea(6, 20);
+        inventoryArea.setEditable(false);
+        inventoryArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+        add(new JScrollPane(inventoryArea), gbc); row++;
+
+        // Deliveries debug
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+        add(new JLabel("── Deliveries ──"), gbc); row++;
+
+        deliveryArea = new JTextArea(4, 20);
+        deliveryArea.setEditable(false);
+        deliveryArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+        add(new JScrollPane(deliveryArea), gbc);
 
 
 
@@ -132,6 +153,30 @@ public class ColonistsWindow extends JPanel {
             ageLabel.setText(selected.getAge() + " Years " + selected.getAgeMonths() + " Months");
             colonistUpdate.setText(selected.getStatus());
             relPanel.updateTable(selected);
+            // Inventory
+            StringBuilder inv = new StringBuilder();
+            if (selected.getInventory().isEmpty()) {
+                inv.append("(empty)");
+            } else {
+                for (var stack : selected.getInventory().getStacks()) {
+                    inv.append(stack.toString()).append("\n");
+                }
+            }
+            inventoryArea.setText(inv.toString());
+
+            // Deliveries
+            StringBuilder del = new StringBuilder();
+            if (!selected.getInventory().hasDeliveries()) {
+                del.append("(none)");
+            } else {
+                for (var delivery : selected.getInventory().getDeliveries()) {
+                    del.append("→ ").append(delivery.getDestination() != null ? "assigned" : "unassigned").append("\n");
+                    for (var stack : delivery.getItems()) {
+                        del.append("  ").append(stack.toString()).append("\n");
+                    }
+                }
+            }
+            deliveryArea.setText(del.toString());
 
             buildingDropdown.removeAllItems();
             buildingDropdown.addItem("Unassigned");
@@ -184,12 +229,7 @@ public class ColonistsWindow extends JPanel {
         }
         updateColonistStats();
     }
-    public record ColonistControls(
-            JButton feedButton,
-            JButton reduceFeedButton,
-            JComboBox<Colonist> colonistDropdown,
-            JComboBox<String> buildingDropdown
-    ) {}
+
 
 
 }

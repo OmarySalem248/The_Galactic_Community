@@ -16,15 +16,13 @@ public class TickScheduler {
     }
 
     /** Call every game tick — executes (and reschedules) anything due now. */
-    public void runDue(long currentTick) {
+    public void runDue(long currentTick, GameTime time) {
         while (!queue.isEmpty() && queue.peek().getExecuteAtTick() <= currentTick) {
             ScheduledTick scheduled = queue.poll();
-            long nextDelay = scheduled.getTarget().tick();
-
+            long nextDelay = scheduled.getTarget().tick(time);
             if (nextDelay >= 0) {
                 schedule(scheduled.getTarget(), currentTick, nextDelay);
             }
-            // negative delay = Tickable wants to stop being scheduled, so we just drop it
         }
     }
 

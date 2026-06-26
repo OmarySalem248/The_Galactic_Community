@@ -4,34 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="reworked how colonists search for stuff and work and added complexity to farming mechanic to have plants grow and be tended to, now need to work on collecting berries">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Delivery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Time/ConflictGraph.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="debugged farming mechanics, reworked how incubators are tended to by attaching them to individual farmers, will now make it so what a colonist is carrying something it is labeled as a delivery seperate from the rest of their inventory.">
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/CollectDeliveryAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/DepositDeliveryAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/Farmdebug" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Del" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Windows/FarmPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ConsumeAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/ConsumeAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/DropAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/DropAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/PickupAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/PickupAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/SleepAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/SleepAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/FarmAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/FarmAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/Queue/ActionQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/Queue/ActionQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/PlantIncubater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/PlantIncubater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colony.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Delivery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Inventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Consumable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Consumable/Consumable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed/Seed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/UberryPlant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/UberryPlant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/UberrySeed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed/UberrySeed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/UtopiaBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Consumable/Food/UtopiaBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Utopiberry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Consumable/Food/Utopiberry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/UberryPlant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/UberryPlant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed/Seed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed/Seed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed/UberrySeed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Seed/UberrySeed.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Relationships/Relationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Relationships/Relationship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/TickScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/TickScheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/Tickable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/Tickable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +45,7 @@
         <option value="Enum" />
         <option value="Interface" />
         <option value="Record" />
+        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
@@ -98,11 +99,11 @@
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\Game\Engine\Actions\ColonistActions" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\Game\Windows" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\Resources\Graphics" />
       <recent name="C:\Users\omary\Documents\The Galactic Community" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\resources\static" />
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src\main" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="main" />
@@ -342,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781888119221</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="debugged farming mechanics, reworked how incubators are tended to by attaching them to individual farmers, will now make it so what a colonist is carrying something it is labeled as a delivery seperate from the rest of their inventory.">
+      <option name="closed" value="true" />
+      <created>1782208194378</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1782208194378</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -363,7 +372,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Made changes to how feeding of colonists work so that starvation is a more engaging mechanic" />
     <MESSAGE value="added relationships between colonists, doesnt work and isnt applied yet, changed how proffessions are applied to colonists" />
     <MESSAGE value="made it possible to change a colonists profession" />
     <MESSAGE value="changed how interactions and relationships work so that there are automated interations and relationship development inbetween turns" />
@@ -388,7 +396,8 @@
     <MESSAGE value="Completely reworked how storage and inventory worked, alongside that also reworked class strucutre of profression and working to help to make more dynamic working and production habits" />
     <MESSAGE value="Redid building mechanics and movements to add complexity and more indepth mechanics to farmer work, working on ticking and how plants will grow now." />
     <MESSAGE value="reworked how colonists search for stuff and work and added complexity to farming mechanic to have plants grow and be tended to, now need to work on collecting berries" />
-    <option name="LAST_COMMIT_MESSAGE" value="reworked how colonists search for stuff and work and added complexity to farming mechanic to have plants grow and be tended to, now need to work on collecting berries" />
+    <MESSAGE value="debugged farming mechanics, reworked how incubators are tended to by attaching them to individual farmers, will now make it so what a colonist is carrying something it is labeled as a delivery seperate from the rest of their inventory." />
+    <option name="LAST_COMMIT_MESSAGE" value="debugged farming mechanics, reworked how incubators are tended to by attaching them to individual farmers, will now make it so what a colonist is carrying something it is labeled as a delivery seperate from the rest of their inventory." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -415,7 +424,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java</url>
-          <line>41</line>
+          <line>43</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>

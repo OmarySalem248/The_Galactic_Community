@@ -1,0 +1,5 @@
+Deliveries:
+
+When a colonist picks something up with the purpose of dropping it off for work or production it is labeled as a delivery and put in a separate array in the colonists inventory
+instead of regular pickup or drop off actions, collect and deposit delivery are used to make sure they are separate, this is so that colonists dont end up getting their own items mixed up
+when depositing or collecting for work

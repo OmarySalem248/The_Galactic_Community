@@ -60,11 +60,10 @@ public class ActionQueue {
     }
 
     public boolean isQueued(Class<?> actionClass) {
-        boolean inActive  = active.stream().anyMatch(q -> q.getAction().getClass() == actionClass);
-        boolean inPending = pending.stream().anyMatch(q -> q.getAction().getClass() == actionClass);
+        boolean inActive  = active.stream().anyMatch(q -> actionClass.isAssignableFrom(q.getAction().getClass()));
+        boolean inPending = pending.stream().anyMatch(q -> actionClass.isAssignableFrom(q.getAction().getClass()));
         return inActive || inPending;
     }
-
     public void clear() {
         active.clear();
         pending.clear();

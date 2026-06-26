@@ -42,7 +42,7 @@ public class Map {
         basicMap.placeBuilding(new LumberMill(),7,2);
         basicMap.placeBuilding(new Mine(),8,3);
         Storage beginnerSt = new Storage();
-        beginnerSt.getInv().add(new UberrySeed(),0);
+        beginnerSt.getInv().add(new UberrySeed(),100);
         beginnerSt.getInv().add(new UtopiaBar(),7);
         basicMap.placeBuilding(beginnerSt,1,7);
         return basicMap;

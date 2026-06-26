@@ -6,8 +6,10 @@ import Game.Engine.Colonist.Profession.Farmer;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Items.Seed.Seed;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Farm extends Building {
 
@@ -17,7 +19,7 @@ public class Farm extends Building {
 
     public Farm() {
         super("Farm", 5, 2, 2, Farmer.class, 500, BuildingType.WORKPLACE);
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 100; i++) {
             PlantIncubater inc = new PlantIncubater();
             incubaters.add(inc);
             freeIncubaters.add(inc);
@@ -62,5 +64,10 @@ public class Farm extends Building {
                 inc.assign(remaining.isEmpty() ? null : remaining.get(i++ % remaining.size()));
             }
         }
+    }
+    public ArrayList<PlantIncubater> getMatInc() {
+        return activeIncubaters.stream()
+                .filter(PlantIncubater::canHarvest)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

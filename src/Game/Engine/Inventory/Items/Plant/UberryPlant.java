@@ -8,10 +8,10 @@ import java.util.List;
 
 public class UberryPlant extends Plant {
     /*
-    20160
+    168
      */
     public UberryPlant() {
-        super("UtopiBerry Bush", 4,60,24, new Utopiberry());
+        super("UtopiBerry Bush", 2,60,24);
 
     }
 

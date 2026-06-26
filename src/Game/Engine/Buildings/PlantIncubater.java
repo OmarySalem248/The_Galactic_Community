@@ -8,6 +8,7 @@ import Game.Engine.Event.GameEventType;
 import Game.Engine.Event.ScheduleRequest;
 import Game.Engine.Inventory.Items.Plant.Plant;
 import Game.Engine.Inventory.Items.Seed.Seed;
+import Game.Engine.Time.GameTime;
 import Game.Engine.Time.Tickable;
 
 public class PlantIncubater implements Tickable {
@@ -28,7 +29,7 @@ public class PlantIncubater implements Tickable {
     public PlantIncubater() {}
 
     public void plantSeed(Seed seed, GameEventBus eventBus, Colonist farmer) {
-        this.plant = seed.getPlant();
+        this.plant = seed.createPlant();
         this.plant.beginGrowth();
         this.ticksSinceLastTend = 0;
         this.ticksSinceDayStart = 0;
@@ -40,23 +41,19 @@ public class PlantIncubater implements Tickable {
     }
 
     @Override
-    public long tick() {
+    public long tick(GameTime time) {
         if (dead || plant == null) return -1;
 
         ticksSinceLastTend += TEND_INTERVAL_TICKS;
-        ticksSinceDayStart += TEND_INTERVAL_TICKS;
         plant.tick();
 
-
-        // Day rollover — reset daily tend allowance
-        if (ticksSinceDayStart >= DAY_TICKS) {
-            ticksSinceDayStart -= DAY_TICKS;
+        // Reset daily tends at midnight — consistent for all plants regardless of planting time
+        if (time.hour() == 0 && time.minute() == 0) {
             tendsDue = plant.getDailyMain();
         }
 
-        // Death purely time-based — unassigned plants keep growing
         long overdueBy = ticksSinceLastTend - plant.getDelay();
-        if (overdueBy >= DEATH_GRACE_TICKS) {
+        if (overdueBy >= DEATH_GRACE_TICKS && !plant.isMatured()) {
             kill();
             return -1;
         }
@@ -98,6 +95,7 @@ public class PlantIncubater implements Tickable {
     public Plant getPlant()  { return plant; }
 
     private void kill() {
+        System.out.println("Skull emoji");
         dead  = true;
         plant = null;
     }
@@ -109,5 +107,9 @@ public class PlantIncubater implements Tickable {
         ticksSinceDayStart = 0;
         tendsDue = 0;
         dead = false;
+    }
+
+    public boolean needsTendingToday() {
+        return tendsDue >0;
     }
 }

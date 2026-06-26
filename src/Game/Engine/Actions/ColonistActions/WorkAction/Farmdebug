@@ -1,0 +1,20 @@
+day 1:
+
+200 active incubators
+
+pass
+
+day 2:
+
+1000 berries, 200 seeds, 200 active incubators
+
+pass
+
+day 3
+expected:
+2000 berries, 400 seeds, 200 active incubators
+no pass
+observed:
+1660 berries, 332 seeds, 200 active incs
+
+ect

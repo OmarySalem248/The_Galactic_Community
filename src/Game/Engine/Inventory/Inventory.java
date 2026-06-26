@@ -4,6 +4,8 @@ import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 import Game.Engine.Inventory.Items.ItemType;
 
+import Game.Engine.Inventory.Delivery;
+
 import java.util.*;
 
 public class Inventory {
@@ -11,10 +13,25 @@ public class Inventory {
     private final float maxWeight;
     private float currentWeight = 0;
 
-    private ArrayList<Delivery> deliveries;
-
     // Tracks item types currently claimed for outbound transport
     private final Set<ItemType> claimedForTransport = new HashSet<>();
+
+    // Work deliveries — separate from personal inventory
+    private final List<Delivery> deliveries = new ArrayList<>();
+    private boolean transportInProgress = false;
+
+    public void addDelivery(Delivery delivery)       { deliveries.add(delivery); }
+    public void removeDelivery(Delivery delivery)    { deliveries.remove(delivery); }
+    public List<Delivery> getDeliveries()            { return deliveries; }
+    public boolean hasDeliveries()                   { return !deliveries.isEmpty(); }
+
+    /** Find a delivery going to a specific destination inventory. */
+    public Delivery getDeliveryFor(Inventory destination) {
+        return deliveries.stream()
+                .filter(d -> d.getDestination() == destination)
+                .findFirst()
+                .orElse(null);
+    }
 
     public Inventory(float maxWeight) {
         this.maxWeight = maxWeight;
@@ -37,7 +54,6 @@ public class Inventory {
         } else {
             stacks.add(new ItemStack(item, toAdd));
         }
-
         currentWeight += weightPerItem * toAdd;
         return toAdd;
     }
@@ -77,14 +93,16 @@ public class Inventory {
     // -------------------------------------------------------------------------
 
     /** Claim an item type for outbound transport — returns false if already claimed. */
-    public boolean claimTransport(ItemType type) {
-        return claimedForTransport.add(type);
+
+
+    public boolean claimTransport() {
+        if (transportInProgress) return false;
+        transportInProgress = true;
+        return true;
     }
 
     /** Release a transport claim — called once goods are successfully delivered. */
-    public void releaseTransportClaim(ItemType type) {
-        claimedForTransport.remove(type);
-    }
+    public void releaseTransportClaim() { transportInProgress = false; }
 
     public boolean isClaimedForTransport(ItemType type) {
         return claimedForTransport.contains(type);

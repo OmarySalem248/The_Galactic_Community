@@ -79,9 +79,11 @@ public class GameClock {
         if (minute >= 60) { minute = 0; hour++; }
         if (hour   >= 24) { hour   = 0; day++;  }
         GameTime time = new GameTime(minute, hour, day, getWeekday(), ticc);
-
+        if(time.minute() == 0) {
+            System.out.println(time.hour());
+        }
         // Only run scheduled Tickables that are actually due this tick
-        scheduler.runDue(tick);
+        scheduler.runDue(tick, time);
 
         // Build conflict graph — group colonists that could interact or
         // race for the same resource onto the same thread
@@ -91,11 +93,15 @@ public class GameClock {
         // Dispatch each conflict group as a single task
         // — colonists within a group run sequentially (safe, no races)
         // — groups themselves run in parallel (fully independent)
+        ArrayList<ColonistAvatar> done = new ArrayList<>();
         List<Future<?>> tasks = new ArrayList<>();
         for (List<ColonistAvatar> group : graph.getGroups()) {
             tasks.add(pool.submit(() -> {
                 for (ColonistAvatar avatar : group) {
-                    avatar.tick(time, map);
+                    if(!done.contains(avatar)) {
+                        avatar.tick(time, map);
+                        done.add(avatar);
+                    }
                 }
             }));
         }

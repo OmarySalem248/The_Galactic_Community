@@ -21,10 +21,10 @@ public class PickupAction extends ColonistAction {
     public boolean execute() {
         if (!source.hasAvailableType(item.getType())) return false;
         if (!source.hasItem(item, quantity)) return false;
-        if (!source.claimTransport(item.getType())) return false; // another colonist already claimed it
+        if (!source.claimTransport()) return false; // another colonist already claimed it
         int added = colonist.getInventory().add(item, quantity);
         source.remove(item, added);
-        source.releaseTransportClaim(item.getType()); // release immediately after pickup
+        source.releaseTransportClaim(); // release immediately after pickup
         return true;
     }
 }
