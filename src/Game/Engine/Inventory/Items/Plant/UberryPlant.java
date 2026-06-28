@@ -11,7 +11,7 @@ public class UberryPlant extends Plant {
     168
      */
     public UberryPlant() {
-        super("UtopiBerry Bush", 2,60,24);
+        super("UtopiBerry Bush", 2,60, 600,24);
 
     }
 

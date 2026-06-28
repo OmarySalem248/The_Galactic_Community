@@ -79,6 +79,9 @@ public class GameClock {
         if (minute >= 60) { minute = 0; hour++; }
         if (hour   >= 24) { hour   = 0; day++;  }
         GameTime time = new GameTime(minute, hour, day, getWeekday(), ticc);
+        if(minute == 0){
+            System.out.println(time);
+        }
         if(time.minute() == 0) {
             System.out.println(time.hour());
         }

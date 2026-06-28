@@ -1,17 +1,19 @@
 package Game.Engine.Actions.ColonistActions.WorkAction;
 
-import Game.Engine.Actions.ColonistActions.CollectDeliveryAction;
-import Game.Engine.Actions.ColonistActions.PickupAction;
+import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Buildings.Farm;
 import Game.Engine.Buildings.PlantIncubater;
 import Game.Engine.Colonist.ActionManager;
+import Game.Engine.Colonist.Memory.ToDo;
+import Game.Engine.Colonist.Memory.TodoType;
 import Game.Engine.Inventory.Delivery;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 import Game.Engine.Inventory.Items.ItemType;
 import Game.Engine.Inventory.Items.Seed.Seed;
+import Game.Engine.Time.GameTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class FarmAction extends WorkAction {
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) {
             return true;
         }
+
 
 
         // No seeds anywhere and no active incubators — go search for seeds
@@ -82,6 +85,33 @@ public class FarmAction extends WorkAction {
         }
 
         return false;
+    }
+    @Override
+    public void setReminder(Building building) {
+        Farm farm = (Farm) building;
+        System.out.println("remember");
+        GameTime present = colonistam.getTime();
+        System.out.println("present");
+        System.out.println(present);
+        GameTime todoTime = null;
+        List<PlantIncubater> myIncs = myIncubators(farm);
+        if(!myIncs.isEmpty()){
+            for(PlantIncubater inc: myIncs){
+                System.out.println("new");
+                GameTime newtime = colonistam.getMemory().setTime(present,inc.getTimeTill());
+                System.out.println(newtime);
+                if(todoTime == null){
+                    todoTime = newtime;
+                }
+                else if(!todoTime.lessThan(newtime)){
+                    todoTime = newtime;
+                }
+            }
+            System.out.println("Final Todo time:");
+            System.out.println(todoTime);
+            colonistam.getMemory().addToDo(new ToDo(farm.getCoords().get(0),todoTime, TodoType.WORK ));
+
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -274,6 +304,8 @@ public class FarmAction extends WorkAction {
         }
     }
 
+
+
     // -------------------------------------------------------------------------
     // Early leave
     // -------------------------------------------------------------------------
@@ -288,13 +320,6 @@ public class FarmAction extends WorkAction {
         boolean hasGoodsToMove = farm.getInv().hasAvailableType(ItemType.FOOD)
                 || colonistam.getColonist().getInventory().hasType(ItemType.FOOD);
         boolean farmFull = isFarmNearFull(farm) && myIncubators(farm).stream().anyMatch(PlantIncubater::canHarvest);
-        System.out.println(colonist.getName()+ ":");
-        System.out.println(!hasSeedsSomewhere);
-        System.out.println(!myIncNeedTend);
-        System.out.println(!myIncMature);
-        System.out.println(!hasGoodsToMove);
-        System.out.println(!colonistam.getSearching());
-        System.out.println(!farmFull);
 
         if(!hasSeedsSomewhere && !myIncNeedTend && !myIncMature && !hasGoodsToMove && !colonistam.getSearching() && !farmFull){
             System.out.println(colonist.getName() + " GO HOME");

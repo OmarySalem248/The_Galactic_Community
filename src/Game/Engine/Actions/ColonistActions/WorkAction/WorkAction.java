@@ -1,6 +1,8 @@
 package Game.Engine.Actions.ColonistActions.WorkAction;
 
 import Game.Engine.Actions.ColonistActions.ColonistAction;
+import Game.Engine.Buildings.Building;
+import Game.Engine.Buildings.Farm;
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Event.GameEvent;
 import Game.Engine.Event.GameEventBus;
@@ -12,6 +14,9 @@ public abstract class WorkAction extends ColonistAction {
     public WorkAction(String name, ActionManager colonist) {
         super(name, colonist);
     }
+
+    public void setReminder(Building building){};
+
     public boolean hasNothingLeftToDo(){
         return false;
     };

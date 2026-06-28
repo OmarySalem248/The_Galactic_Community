@@ -77,7 +77,7 @@ public class ActionManager {
         this.mentaltime = time;
         if (!status().getIsAsleep()) {
             for (Tile tile : FOVCalculator.calculate(location, 12, map)) {
-                memory.observe(tile, time.tick());
+                memory.observe(tile,time);
             }
             evaluatePriorities(time, map);
         }
@@ -96,6 +96,11 @@ public class ActionManager {
             return; // nothing else matters while sleeping
         }
 
+        if(memory.anyWorkToDo()){
+            System.out.println("efwer");
+            workDone = false;
+        }
+
         // 2. Search arrival — check before movement so arrival is handled immediately
         if (status().getisSearching() && getCurrentTile() == destination) {
             handleSearchArrival();
@@ -109,10 +114,11 @@ public class ActionManager {
         }
 
 
-        if (status().getshouldWork() && !getSearching()) {
+        if (status().getshouldWork() && !getSearching()&& !workDone) {
             WorkAction currentWork = queue.getWork();
             //System.out.println(currentWork.hasNothingLeftToDo());
             if (currentWork != null && currentWork.hasNothingLeftToDo()) {
+                currentWork.setReminder(colonist.getAssignedBuilding());
                 Tile homeTile = getFirstTile(colonist.getDwelling());
                 this.workDone = true;
                 if (homeTile != null) destination = homeTile;
@@ -289,7 +295,7 @@ public class ActionManager {
     public void sleep() { status().setSleep(true); }
     public void wake()  {
         status().setSleep(false);
-        workDone = false;
+
     }
 
     // -------------------------------------------------------------------------

@@ -15,6 +15,8 @@ public class PlantIncubater implements Tickable {
 
     private static final long TEND_INTERVAL_TICKS = 60;
     private static final long DEATH_GRACE_TICKS   = 1440;
+
+
     private static final long DAY_TICKS           = 1440;
 
     private Plant plant;
@@ -45,10 +47,11 @@ public class PlantIncubater implements Tickable {
         if (dead || plant == null) return -1;
 
         ticksSinceLastTend += TEND_INTERVAL_TICKS;
+
         plant.tick();
 
         // Reset daily tends at midnight — consistent for all plants regardless of planting time
-        if (time.hour() == 0 && time.minute() == 0) {
+        if (ticksSinceLastTend >= plant.getDelay2()) {
             tendsDue = plant.getDailyMain();
         }
 
@@ -101,6 +104,7 @@ public class PlantIncubater implements Tickable {
     }
 
     public void clear() {
+
         plant = null;
         assignedFarmer = null;
         ticksSinceLastTend = 0;
@@ -111,5 +115,18 @@ public class PlantIncubater implements Tickable {
 
     public boolean needsTendingToday() {
         return tendsDue >0;
+    }
+
+    public int getTimeTill() {
+        int timeleft = (plant.getMATURE_AT() - plant.getProgress())*60;
+        if( (timeleft<= plant.getDelay())|| (timeleft <= plant.getDelay2())){
+            return timeleft;
+        }
+        if(tendsDue> 0){
+            return plant.getDelay() - Math.toIntExact(ticksSinceLastTend);
+        }
+        else{
+            return plant.getDelay2() - Math.toIntExact(ticksSinceLastTend);
+        }
     }
 }

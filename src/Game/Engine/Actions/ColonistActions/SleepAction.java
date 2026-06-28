@@ -23,6 +23,7 @@ public class SleepAction extends ColonistAction{
         colonist.setStatus("zzzzzzzzzz");
 
         if ((colonist.getEnergy() >= 900 && colonistam.status().getshouldWork() && !colonistam.getWorkDone())||(colonist.getEnergy() >= 1000)){
+            System.out.println(colonist.getName() + " wakes up");
             colonistam.wake();
             return true;
         }

@@ -11,6 +11,7 @@ import java.util.List;
  * however fits your design (linear, stages, randomness, environmental factors etc.)
  */
 public abstract class Plant {
+    private int delay2;
     private int progress;
     private int MATURE_AT;
 
@@ -23,10 +24,11 @@ public abstract class Plant {
     private int dailyMain;
     private boolean growing = false;
 
-    public Plant(String name, int dailyMain, int delay,int matureAt) {
+    public Plant(String name, int dailyMain, int delay, int delay2, int matureAt) {
         MATURE_AT = matureAt;
         this.name = name;
         this.delay = delay;
+        this.delay2 = delay2;
         this.dailyMain = dailyMain;
         this.progress = 0;
     }
@@ -81,5 +83,13 @@ public abstract class Plant {
 
     public int getProgress() {
         return progress;
+    }
+
+    public int getMATURE_AT() {
+        return MATURE_AT;
+    }
+
+    public int getDelay2() {
+        return delay2;
     }
 }
