@@ -2,17 +2,17 @@ package Game.Engine.Colonist;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.Dwelling;
+import Game.Engine.Colonist.Career.ColonistCareer;
+import Game.Engine.Colonist.Career.Job.Job;
 import Game.Engine.Colonist.Personality.Personality;
 import Game.Engine.Colonist.Personality.PersonalityFactory;
-import Game.Engine.Colonist.Profession.Profession;
-import Game.Engine.Colonist.Profession.ProfessionRegistry;
-import Game.Engine.Colonist.Profession.Unemployed;
+import Game.Engine.Colonist.Career.Profession.Profession;
+import Game.Engine.Colonist.Career.Profession.ProfessionRegistry;
 import Game.Engine.Colony;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipSet;
 import Game.Engine.Relationships.RelationshipType;
-import Game.Engine.Inventory.Resources;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @JsonIgnoreProperties({"assignedBuilding", "relationships","colony"})
 public class Colonist {
     private String name;
+
+    private ColonistCareer career = new ColonistCareer();
     private int id;
     private int energy;
     private int baseProductivity;
@@ -58,7 +60,7 @@ public class Colonist {
     protected int postpartumTimer = 0;
 
     // ----- Composition: profession object -----
-    private Profession profession;
+
     private Colonist partner;
 
     private int hunger =0;
@@ -71,7 +73,7 @@ public class Colonist {
 
     public Colonist(Colony colony, String name, Profession profession, int age, int energy, int baseProductivity, char sex, Personality personality) {
         this.name = name;
-        this.profession = profession;
+        setProfession(profession);
         this.age = age;
         this.ageMonths = 0;
         this.energy = energy;
@@ -92,7 +94,7 @@ public class Colonist {
     }
     public Colonist(Colony colony,String name,char sex) {
         this.name = name;
-        this.profession = ProfessionRegistry.get("Unemployed");
+        setProfession(ProfessionRegistry.get("Unemployed"));
         this.age = 0;
         this.ageMonths = 0;
         this.energy = 1;
@@ -234,12 +236,10 @@ public class Colonist {
 
 
     public String getOccupation() {
-        return profession != null ? profession.getName() : "Unassigned";
+        return getProfession() != null ? getProfession() .getName() : "Unassigned";
     }
 
-    public void changeProfession(Profession newProfession) {
-        this.profession = newProfession;
-    }
+
 
     // ----- Children and family -----
     public ArrayList<Colonist> getChildren() { return children; }
@@ -256,12 +256,17 @@ public class Colonist {
     }
 
     public Profession getProfession() {
-        return  profession;
+        return  career.getCurrentProf();
+    }
+
+    public Job getJob() {
+        return  career.getActiveJob();
     }
 
     public void setProfession(Profession profession) {
 
-        this.profession = profession;
+        career.setCurrentProf(profession);
+
         if (this.getAssignedBuilding() != null &&
                 !this.getAssignedBuilding().isJobCompatible(this)) {
            this.unassignBuilding();
@@ -345,7 +350,7 @@ public class Colonist {
     }
 
     public String getProfessionName() {
-        return profession.getName();
+        return getProfession.getName();
     }
 
     public String getAssignedBuildingName() {
@@ -381,6 +386,7 @@ public class Colonist {
     public Inventory getInventory() {
         return inv;
     }
+
 
 
 }

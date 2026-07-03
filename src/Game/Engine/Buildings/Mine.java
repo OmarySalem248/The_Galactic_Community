@@ -1,9 +1,14 @@
 package Game.Engine.Buildings;
 
-import Game.Engine.Colonist.Profession.Miner;
+import Game.Engine.Colonist.Career.Profession.Miner;
+import Game.Engine.Inventory.Items.Resources.Stone;
+import Game.Engine.Inventory.Items.Resources.Wood;
 
 public class Mine extends Building{
     public Mine() {
-        super("Mine",2, 5,2, Miner.class,500,BuildingType.WORKPLACE);
+
+        super("Mine",2, Miner.class,500,BuildingType.WORKPLACE);
+        addNeededRes(new Wood(),2);
+        addNeededRes(new Stone(),5);
     }
 }

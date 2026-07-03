@@ -2,20 +2,15 @@ package Game.Engine;
 
 import Game.Engine.Actions.ColonyActions.ColonyAction;
 import Game.Engine.Buildings.*;
+import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Colonist.Personality.PersonalityFactory;
 import Game.Engine.Colonist.Pregnancy;
-import Game.Engine.Colonist.Profession.Farmer;
-import Game.Engine.Colonist.Profession.Miner;
-import Game.Engine.Colonist.Profession.Unemployed;
-import Game.Engine.Colonist.Profession.Woodcutter;
-import Game.Engine.Event.GameEventBus;
 import Game.Engine.Government.ColonyLeadership;
 import Game.Engine.Inventory.Inventory;
-import Game.Engine.Inventory.Items.Seed.UberrySeed;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Map;
 import Game.Engine.Relationships.Relationship;
-import Game.Engine.Colonist.Profession.ProfessionRegistry;
+import Game.Engine.Colonist.Career.Profession.ProfessionRegistry;
 
 import Game.Engine.Actions.ColonyActions.AssignAction;
 
@@ -23,7 +18,6 @@ import Game.Engine.Colonist.Colonist;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 

@@ -53,9 +53,9 @@ public class ColonistMemory {
 
     }
 
-    public Boolean anyWorkToDo(){
+    public ToDo anyWorkToDo(){
         if(!todoMap.containsKey(TodoType.WORK)){
-            return false;
+            return null;
         }
         else{
             ArrayList<ToDo> todoList = todoMap.get(TodoType.WORK);
@@ -63,12 +63,12 @@ public class ColonistMemory {
                 if(todo.getTime().lessThan(mentalTime)){
                     System.out.println("gotta do that");
                     todoList.remove(todo);
-                    return true;
+                    return todo;
 
                 }
             }
         }
-        return false;
+        return null;
     }
 
     public GameTime setTime(GameTime time, int minutes){

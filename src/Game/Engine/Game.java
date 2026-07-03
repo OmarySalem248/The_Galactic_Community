@@ -10,6 +10,7 @@ import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
 import Game.Engine.Map.Map;
 import Game.Engine.Time.GameClock;
+import Game.Modes.BuildMode;
 
 public class Game {
 
@@ -22,6 +23,8 @@ public class Game {
     private final GameEventBus eventBus = new GameEventBus();
 
     private GameClock clock;
+
+    private BuildMode buildMode = new BuildMode();
     private String status;
 
     public Game() {
@@ -82,7 +85,7 @@ public class Game {
     }
 
 
-
-
-
+    public BuildMode getBuildMode() {
+        return buildMode;
+    }
 }

@@ -23,4 +23,8 @@ public class ToDo {
     public GameTime getTime() {
         return time;
     }
+
+    public Tile getDes() {
+        return where;
+    }
 }

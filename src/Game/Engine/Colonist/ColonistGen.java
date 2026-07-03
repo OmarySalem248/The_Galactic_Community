@@ -1,8 +1,8 @@
 package Game.Engine.Colonist;
 
 import Game.Engine.Colonist.Personality.PersonalityFactory;
-import Game.Engine.Colonist.Profession.Profession;
-import Game.Engine.Colonist.Profession.Unemployed;
+import Game.Engine.Colonist.Career.Profession.Profession;
+import Game.Engine.Colonist.Career.Profession.Unemployed;
 import Game.Engine.Colony;
 
 import java.util.*;

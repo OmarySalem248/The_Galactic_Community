@@ -31,7 +31,6 @@ public class MapPanel extends JPanel {
         this.game         = game;
         this.parentWindow = parentWindow;
         this.clock        = clock;
-        clock.addTickListener((time) -> SwingUtilities.invokeLater(this::repaint));
 
         setBackground(new Color(0x1C1C2E));
         setBorder(BorderFactory.createTitledBorder("Map"));
@@ -73,7 +72,6 @@ public class MapPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        parentWindow.updateGameStats();
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -91,6 +89,16 @@ public class MapPanel extends JPanel {
                 g2.setColor(new Color(0x2A2A45));
                 g2.fillRect(x, y, CELL, CELL);
 
+                // Build mode highlight on empty tiles
+                if (game.getBuildMode().isActive() && !tile.hasBuilding()) {
+                    g2.setColor(new Color(100, 200, 100, 40));
+                    g2.fillRect(x, y, CELL, CELL);
+                    g2.setColor(new Color(100, 200, 100, 120));
+                    g2.setStroke(new BasicStroke(1.5f));
+                    g2.drawRect(x, y, CELL, CELL);
+                    g2.setStroke(new BasicStroke(1f));
+                }
+
                 // Building
                 if (tile.hasBuilding()) {
                     Image img = tile.building.getImage();
@@ -106,6 +114,15 @@ public class MapPanel extends JPanel {
                         while (name.length() > 1 && fm.stringWidth(name) > CELL - 6)
                             name = name.substring(0, name.length() - 1);
                         g2.drawString(name, x + (CELL - fm.stringWidth(name)) / 2, y + CELL / 2 + fm.getAscent() / 2 - 2);
+                    }
+
+                    // WIP overlay for active build projects
+                    if (tile.getBuildProject() != null && !tile.getBuildProject().isCompleted()) {
+                        g2.setColor(new Color(255, 165, 0, 180));
+                        g2.setFont(new Font("Monospaced", Font.BOLD, 8));
+                        FontMetrics fm = g2.getFontMetrics();
+                        String wip = "WIP";
+                        g2.drawString(wip, x + (CELL - fm.stringWidth(wip)) / 2, y + CELL - 4);
                     }
                 }
 

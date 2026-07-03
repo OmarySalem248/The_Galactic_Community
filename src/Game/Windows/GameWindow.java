@@ -117,4 +117,7 @@ public class GameWindow {
 
 
     public static void startGame(Game game) { SwingUtilities.invokeLater(() -> new GameWindow(game)); }
+
+    public void updateBuildModeIndicator() {
+    }
 }

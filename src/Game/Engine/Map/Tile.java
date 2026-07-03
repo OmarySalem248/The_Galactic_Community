@@ -2,6 +2,7 @@ package Game.Engine.Map;
 
 
 import Game.Engine.Buildings.Building;
+import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.ColonistAvatar;
 
@@ -14,6 +15,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Represents a single cell on the map.
  */
 public class Tile {
+    private BuildingProject buildProject = null;
+
 
     public final int col, row;
     public Building building;
@@ -61,6 +64,8 @@ public class Tile {
         // Buildings block vision — terrain blocking can be added here later
         return hasBuilding();
     }
+    public BuildingProject getBuildProject() { return buildProject; }
+    public void setBuildProject(BuildingProject p) { this.buildProject = p; }
 
     public List<Tile> getNeighbours(Map map) {
         List<Tile> neighbours = new ArrayList<>();

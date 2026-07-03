@@ -1,12 +1,12 @@
 package Game.Engine.Buildings;
 
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.ColonistAvatar;
-import Game.Engine.Colonist.Profession.Farmer;
+import Game.Engine.Colonist.Career.Profession.Farmer;
 import Game.Engine.Event.GameEventBus;
+import Game.Engine.Inventory.Items.Resources.Stone;
+import Game.Engine.Inventory.Items.Resources.Wood;
 import Game.Engine.Inventory.Items.Seed.Seed;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,9 @@ public class Farm extends Building {
     private final ArrayList<PlantIncubater> activeIncubaters = new ArrayList<>();
 
     public Farm() {
-        super("Farm", 5, 2, 2, Farmer.class, 500, BuildingType.WORKPLACE);
+        super("Farm", 2, Farmer.class, 500, BuildingType.WORKPLACE);
+        addNeededRes(new Wood(),5);
+        addNeededRes(new Stone(),2);
         for (int i = 0; i < 100; i++) {
             PlantIncubater inc = new PlantIncubater();
             incubaters.add(inc);

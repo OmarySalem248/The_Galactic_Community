@@ -18,6 +18,8 @@ public class Inventory {
 
     // Work deliveries — separate from personal inventory
     private final List<Delivery> deliveries = new ArrayList<>();
+
+    private final List<Inventory> partitions = new ArrayList<>();
     private boolean transportInProgress = false;
 
     public void addDelivery(Delivery delivery)       { deliveries.add(delivery); }
@@ -130,5 +132,14 @@ public class Inventory {
         return stacks.stream()
                 .filter(s -> s.getItem().getClass() == item.getClass())
                 .findFirst();
+    }
+
+    public boolean addPartition(Inventory partition) {
+        if(getCurrentWeight() + partition.getMaxWeight() <= getMaxWeight()){
+            partitions.add(partition);
+            return true;
+        }
+        return false;
+
     }
 }

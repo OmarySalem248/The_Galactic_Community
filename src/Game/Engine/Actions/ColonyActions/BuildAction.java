@@ -18,16 +18,12 @@ public class BuildAction extends ColonyAction {
     @Override
     public boolean execute(Colony colony) {
         Resources res = colony.getResources();
-        if (res.getWood() >= building.getWoodCost()
-                && res.getStone() >= building.getStoneCost()) {
-            res.addWood(-building.getWoodCost());
-            res.addStone(-building.getStoneCost());
             colony.addBuilding(building);
             tile.placeBuilding(building);
             building.setcoords(tile);
             return true;
-        }
-        return false;
+
+
     }
 
     public Building getBuilding() { return building; }

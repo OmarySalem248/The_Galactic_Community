@@ -4,20 +4,63 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Finally ironed out farming system and work loop, will need to modify colonist memory so they dont go to check on their work when theres nothing to do">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/ToDo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/TodoType.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="fixed farming priority system and farmer memory, now farming mechanics are mostly air tight with farmers only staying on sight and leaving until their memory tells them they have work due">
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/EngineerCheckAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/How Projects are saved" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Projects/Progress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/ColonistCareer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/BuildJob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/FarmJob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/GenericJob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/Job.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/JobType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Resources/Stone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Resources/Wood.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Modes/BuildMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/BuildingStatPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/DefaultBuildingStatPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/SleepAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/SleepAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/FarmAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/FarmAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/WorkAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/WorkAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/PlantIncubater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/PlantIncubater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonyActions/BuildAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/BuildingProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Projects/BuildingProject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Cafe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Cafe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Dwelling.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Dwelling.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/EngineeringHub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/EngineeringHub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/House.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/House.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/LumberMill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/LumberMill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Mine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Mine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Park.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Park.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Storage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/TribeCentre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/TribeCentre.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ColonistGen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/ColonistMemory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/ColonistMemory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/UberryPlant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/UberryPlant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameTime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/ToDo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/ToDo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Engineer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Engineer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Farmer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Farmer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Leader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Leader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Miner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Miner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Profession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Profession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/ProfessionRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/ProfessionRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/TribeLeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/TribeLeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Unemployed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Unemployed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Profession/Woodcutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Profession/Woodcutter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colony.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colony.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Government/ColonyLeadership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Government/ColonyLeadership.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Government/Government.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Government/Government.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Government/TribalGovernment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Government/TribalGovernment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/ItemType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/ItemType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Map.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/ColonistsWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/GameWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/MapPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +74,8 @@
         <option value="Interface" />
         <option value="Record" />
         <option value="AnnotationType" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -85,8 +128,8 @@
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\omary\Documents\The Galactic Community\src\Game\Engine\Actions\ColonistActions" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\Game\Windows" />
+      <recent name="C:\Users\omary\Documents\The Galactic Community\src\Game\Engine\Actions\ColonistActions" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\Resources\Graphics" />
       <recent name="C:\Users\omary\Documents\The Galactic Community" />
       <recent name="C:\Users\omary\Documents\The Galactic Community\src\main\resources\static" />
@@ -345,7 +388,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782458298086</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="fixed farming priority system and farmer memory, now farming mechanics are mostly air tight with farmers only staying on sight and leaving until their memory tells them they have work due">
+      <option name="closed" value="true" />
+      <created>1782629378601</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1782629378601</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -366,7 +417,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="made it possible to change a colonists profession" />
     <MESSAGE value="changed how interactions and relationships work so that there are automated interations and relationship development inbetween turns" />
     <MESSAGE value="fleahed out interactions and how personalities affect them" />
     <MESSAGE value="fleshed out relationships and added pregnancy and child birth" />
@@ -391,7 +441,8 @@
     <MESSAGE value="reworked how colonists search for stuff and work and added complexity to farming mechanic to have plants grow and be tended to, now need to work on collecting berries" />
     <MESSAGE value="debugged farming mechanics, reworked how incubators are tended to by attaching them to individual farmers, will now make it so what a colonist is carrying something it is labeled as a delivery seperate from the rest of their inventory." />
     <MESSAGE value="Finally ironed out farming system and work loop, will need to modify colonist memory so they dont go to check on their work when theres nothing to do" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finally ironed out farming system and work loop, will need to modify colonist memory so they dont go to check on their work when theres nothing to do" />
+    <MESSAGE value="fixed farming priority system and farmer memory, now farming mechanics are mostly air tight with farmers only staying on sight and leaving until their memory tells them they have work due" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed farming priority system and farmer memory, now farming mechanics are mostly air tight with farmers only staying on sight and leaving until their memory tells them they have work due" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -403,7 +454,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java</url>
-          <line>320</line>
+          <line>325</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -418,13 +469,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java</url>
-          <line>43</line>
+          <line>45</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/ColonistMemory.java</url>
           <line>61</line>
           <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Game/Engine/Buildings/EngineeringHub.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

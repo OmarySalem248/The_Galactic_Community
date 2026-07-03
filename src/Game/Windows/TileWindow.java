@@ -1,131 +1,159 @@
 package Game.Windows;
 
-import Game.Engine.Actions.ColonyActions.BuildAction;
 import Game.Engine.Buildings.*;
-import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Game;
 import Game.Engine.Map.Tile;
+import Game.Modes.BuildMode;
+import Game.Windows.BuildingPanels.BuildingStatPanel;
+import Game.Windows.BuildingPanels.DefaultBuildingStatPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class TileWindow {
 
     public TileWindow(Game game, Tile tile, GameWindow parentWindow) {
         JFrame frame = new JFrame("Tile [" + tile.col + ", " + tile.row + "]");
-        frame.setSize(350, 350);
-        frame.setLayout(new BorderLayout(10, 10));
+        frame.setSize(400, 450);
+        frame.setLayout(new BorderLayout(8, 8));
 
-        // ----- Tile info -----
+        // Escape cancels build mode
+        frame.getRootPane().registerKeyboardAction(
+                e -> {
+                    game.getBuildMode().exit();
+                    parentWindow.updateBuildModeIndicator();
+                    frame.dispose();
+                },
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Tile Info"));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 0, 8));
 
         JLabel coordLabel = new JLabel("Location: " + tile.col + ", " + tile.row);
-        JLabel buildingLabel = new JLabel("Building: " + (tile.hasBuilding() ? tile.building.getName() : "None"));
-        coordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        buildingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        infoPanel.add(Box.createVerticalStrut(5));
+        coordLabel.setFont(new Font("Monospaced", Font.PLAIN, 11));
         infoPanel.add(coordLabel);
-        infoPanel.add(buildingLabel);
-        infoPanel.add(Box.createVerticalStrut(5));
+        infoPanel.add(Box.createVerticalStrut(6));
         frame.add(infoPanel, BorderLayout.NORTH);
 
-        // ----- Build options (only if tile is empty) -----
-        if (!tile.hasBuilding()) {
-            JPanel buildPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-            buildPanel.setBorder(BorderFactory.createTitledBorder("Build"));
+        BuildMode buildMode = game.getBuildMode();
 
-            JLabel resLabel = new JLabel(game.getColony().getResources().toString(), SwingConstants.CENTER);
-            buildPanel.add(resLabel);
+        if (buildMode.isActive() && !tile.hasBuilding()) {
+            // --- Build mode: show building picker ---
+            frame.add(buildBuildingPicker(game, tile, frame, parentWindow), BorderLayout.CENTER);
 
-            for (Building building : new Building[]{
-                    new Farm(), new LumberMill(), new Mine(),
-                    new TribeCentre(), new EngineeringHub(), new House(), new Park(), new Cafe(), new Storage()
-            }) {
-                JButton btn = new JButton(building.getType()
-                        + "  (Wood: " + building.getWoodCost()
-                        + "  Stone: " + building.getStoneCost() + ")");
-                btn.addActionListener(e -> {
-                    BuildAction action = new BuildAction(building, tile);
-                    if (game.getColony().performAction(action)) {
-                        JOptionPane.showMessageDialog(frame, building.getName() + " built successfully!");
-                        resLabel.setText(game.getColony().getResources().toString());
-                        buildingLabel.setText("Building: " + tile.building.getName());
-                        parentWindow.updateGameStats();
-                        parentWindow.getColonistWindow().updateColonistStats();
-                        parentWindow.repaintMap();
-                        // Disable all build buttons once tile is occupied
-                        for (Component c : buildPanel.getComponents())
-                            if (c instanceof JButton) c.setEnabled(false);
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Not enough resources to build " + building.getName(),
-                                "Insufficient Resources", JOptionPane.WARNING_MESSAGE);
-                    }
-                });
-                buildPanel.add(btn);
-            }
-            frame.add(buildPanel, BorderLayout.CENTER);
-        }
-        else{
+        } else if (tile.hasBuilding()) {
             Building building = tile.getBuilding();
-            JPanel buildstatPanel = new JPanel();
-            buildstatPanel.setLayout(new BoxLayout(buildstatPanel, BoxLayout.Y_AXIS));
-            buildstatPanel.setBorder(BorderFactory.createTitledBorder("Building"));
 
-            JLabel nameLabel = new JLabel(building.getName());
-            nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            buildstatPanel.add(nameLabel);
-            buildstatPanel.add(Box.createVerticalStrut(8));
-
-            JLabel invHeader = new JLabel("Inventory:");
-            invHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
-            buildstatPanel.add(invHeader);
-
-
-
-
-            if (building.getInv().isEmpty()) {
-                JLabel emptyLabel = new JLabel("(empty)");
-                emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                buildstatPanel.add(emptyLabel);
-            } else {
-                for (var stack : building.getInv().getStacks()) {
-                    JLabel stackLabel = new JLabel(stack.toString());
-                    stackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    buildstatPanel.add(stackLabel);
-                }
+            // Clicking an EngineeringHub enters build mode
+            if (building instanceof EngineeringHub) {
+                game.getBuildMode().enter((EngineeringHub) building);
+                parentWindow.updateBuildModeIndicator();
             }
 
-            if(building.getType() == "Farm"){
-                Farm farm = (Farm) building;
-                JLabel inccount = new JLabel(String.valueOf(farm.getActiveInc().size()));
-                buildstatPanel.add(inccount);
+            // Show WIP label if tile has an active build project
+            if (tile.getBuildProject() != null && !tile.getBuildProject().isCompleted()) {
+                JLabel wipLabel = new JLabel("🔨 WIP: " + tile.getBuildProject().getName());
+                wipLabel.setFont(new Font("Monospaced", Font.BOLD, 13));
+                wipLabel.setForeground(new Color(0xFFA500));
+                wipLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                infoPanel.add(wipLabel);
             }
 
-            JLabel weightLabel = new JLabel(String.format("Weight: %.1f / %.1f",
-                    building.getInv().getCurrentWeight(),
-                    building.getInv().getMaxWeight()));
-            weightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            buildstatPanel.add(Box.createVerticalStrut(8));
-            buildstatPanel.add(weightLabel);
+            // Show building stat panel
+            BuildingStatPanel statPanel = resolveStatPanel(building);
+            frame.add(new JScrollPane(statPanel), BorderLayout.CENTER);
 
-            frame.add(buildstatPanel, BorderLayout.CENTER);
-        }
-        JPanel colonistpanel = new JPanel();
-        if (tile.getColonists().isEmpty()) {
-            JLabel emptyLabel = new JLabel("(no colonist)");
-            colonistpanel.add(emptyLabel);
         } else {
-            for (ColonistAvatar colonist : tile.getColonists()) {
-                Colonist c = colonist.getColonist();
-                JLabel stackLabel = new JLabel(c.toString()+colonist.getActionManager().getDestination().toString());
-                colonistpanel.add(stackLabel);
-            }
+            // Empty tile, not in build mode
+            JLabel emptyLabel = new JLabel("Empty tile", SwingConstants.CENTER);
+            emptyLabel.setForeground(Color.GRAY);
+            frame.add(emptyLabel, BorderLayout.CENTER);
         }
-        frame.add(colonistpanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
+    }
+
+    // -------------------------------------------------------------------------
+    // Building picker panel shown in build mode
+    // -------------------------------------------------------------------------
+    private JPanel buildBuildingPicker(Game game, Tile tile, JFrame frame, GameWindow parentWindow) {
+        JPanel panel = new JPanel(new BorderLayout(6, 6));
+        panel.setBorder(BorderFactory.createTitledBorder("Select Building"));
+
+        JLabel hubLabel = new JLabel("Hub: " + game.getBuildMode().getActiveHub().getName(),
+                SwingConstants.CENTER);
+        hubLabel.setFont(new Font("Monospaced", Font.ITALIC, 11));
+        panel.add(hubLabel, BorderLayout.NORTH);
+
+        JPanel btnPanel = new JPanel(new GridLayout(0, 1, 4, 4));
+        btnPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+        // Add a button for each buildable building type
+        for (Building prototype : getBuildableBuildings()) {
+            float totalCost = prototype.getNeededResourcesWeight();
+            String label = prototype.getType()
+                    + "  (Resources: " + totalCost + ")";
+            JButton btn = new JButton(label);
+            btn.setFont(new Font("Monospaced", Font.PLAIN, 11));
+
+            btn.addActionListener(e -> {
+                // Always create the project — let the hub/colony handle affordability messaging
+                BuildingProject project = new BuildingProject(prototype.getType(), prototype);
+                game.getBuildMode().getActiveHub().addProject(project);
+
+                JOptionPane.showMessageDialog(frame,
+                        prototype.getType() + " project created and assigned to "
+                                + game.getBuildMode().getActiveHub().getName() + ".\n"
+                                + "Builders will begin collecting resources.",
+                        "Project Created",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                parentWindow.repaintMap();
+                frame.dispose();
+            });
+
+            btnPanel.add(btn);
+        }
+
+        JScrollPane scroll = new JScrollPane(btnPanel);
+        panel.add(scroll, BorderLayout.CENTER);
+
+        JButton cancelBtn = new JButton("Cancel Build Mode [Esc]");
+        cancelBtn.addActionListener(e -> {
+            game.getBuildMode().exit();
+            parentWindow.updateBuildModeIndicator();
+            frame.dispose();
+        });
+        panel.add(cancelBtn, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    // -------------------------------------------------------------------------
+    // Resolve which stat panel to show for a given building
+    // -------------------------------------------------------------------------
+    private BuildingStatPanel resolveStatPanel(Building building) {
+        // Add specific panel types here as you build them
+        // e.g. if (building instanceof Farm f) return new FarmStatPanel(f);
+        return new DefaultBuildingStatPanel(building);
+    }
+
+    // -------------------------------------------------------------------------
+    // List of buildings available to build — add new types here
+    // -------------------------------------------------------------------------
+    private Building[] getBuildableBuildings() {
+        return new Building[]{
+                new Farm(),
+                new LumberMill(),
+                new Mine(),
+                new House(),
+                new EngineeringHub(),
+                new Storage()
+        };
     }
 }

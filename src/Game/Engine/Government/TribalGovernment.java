@@ -2,7 +2,7 @@ package Game.Engine.Government;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.Profession.*;
+import Game.Engine.Colonist.Career.Profession.*;
 import Game.Engine.Colony;
 
 public class TribalGovernment extends Government {

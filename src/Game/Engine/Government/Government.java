@@ -1,7 +1,7 @@
 package Game.Engine.Government;
 
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Colonist.Profession.Leader;
+import Game.Engine.Colonist.Career.Profession.Leader;
 import Game.Engine.Colony;
 
 public abstract class Government {

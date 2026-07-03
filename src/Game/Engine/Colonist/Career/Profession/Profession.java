@@ -1,20 +1,23 @@
-package Game.Engine.Colonist.Profession;
+package Game.Engine.Colonist.Career.Profession;
 
 
-import Game.Engine.Actions.ColonistActions.WorkAction.*;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Colonist.ActionManager;
-import Game.Engine.Colonist.Colonist;
-import Game.Engine.Map.Tile;
+import Game.Engine.Colonist.Career.Job.GenericJob;
+import Game.Engine.Colonist.Career.Job.Job;
+import Game.Engine.Colonist.Career.Job.JobType;
 import Game.Engine.Time.GameTime;
 
 
 public abstract class Profession {
     private String name;
     private Class<? extends WorkAction> workAction;
-    public  Profession(String name, Class<? extends WorkAction> workAction){
+
+    private JobType jobType;
+    public  Profession(String name, Class<? extends WorkAction> workAction, JobType jobType){
         this.name = name;
         this.workAction = workAction;
+        this.jobType = jobType;
     }
 
     public Class<? extends WorkAction> getWorkAction(){
@@ -32,9 +35,17 @@ public abstract class Profession {
         return name;
     }
 
+    public JobType getJobType(){
+        return jobType;
+    }
+
 
     public boolean isItWorkHours(GameTime time) {
         return (time.hour()) >= 8 && time.hour() <= 17 && time.weekday() >= 1 && time.weekday() <= 5;
+    }
+
+    public  Job createJob(){
+        return new GenericJob();
     }
 }
 

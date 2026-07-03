@@ -1,9 +1,12 @@
 package Game.Engine.Buildings;
 
-import Game.Engine.Colonist.Profession.Profession;
+import Game.Engine.Inventory.Items.Resources.Stone;
+import Game.Engine.Inventory.Items.Resources.Wood;
 
 public class Park extends  Building{
     public Park() {
-        super("Park", 10, 10, Integer.MAX_VALUE, null,10,BuildingType.SOCIAL);
+        super("Park", Integer.MAX_VALUE, null,10,BuildingType.SOCIAL);
+        addNeededRes(new Wood(),10);
+        addNeededRes(new Stone(),10);
     }
 }

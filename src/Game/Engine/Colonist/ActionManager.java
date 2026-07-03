@@ -2,6 +2,7 @@ package Game.Engine.Colonist;
 
 import Game.Engine.Actions.ColonistActions.*;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
+import Game.Engine.Colonist.Memory.ToDo;
 import Game.Engine.Inventory.Delivery;
 import Game.Engine.Actions.Interactions.ChitChatAction;
 import Game.Engine.Actions.Queue.ActionQueue;
@@ -96,10 +97,7 @@ public class ActionManager {
             return; // nothing else matters while sleeping
         }
 
-        if(memory.anyWorkToDo()){
-            System.out.println("efwer");
-            workDone = false;
-        }
+
 
         // 2. Search arrival — check before movement so arrival is handled immediately
         if (status().getisSearching() && getCurrentTile() == destination) {
@@ -250,7 +248,13 @@ public class ActionManager {
     // Destination management
     // -------------------------------------------------------------------------
     private void updateDestination() {
-        if (status().getisSearching()) return; // search controls destination
+        if (status().getisSearching()) return;// search controls destination
+        ToDo remember = memory.anyWorkToDo();
+        if(remember != null){
+            workDone = false;
+            destination = remember.getDes();
+            return;
+        }
 
         if (status().getshouldWork() && !workDone) {
             workTile = getFirstTile(colonist.getAssignedBuilding());

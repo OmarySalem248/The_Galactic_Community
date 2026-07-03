@@ -1,5 +1,5 @@
 package Game.Engine.Buildings;
-import Game.Engine.Colonist.Profession.Profession;
+import Game.Engine.Colonist.Career.Profession.Profession;
 import Game.Engine.Colonist.Colonist;
 
 import java.awt.*;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Game.Engine.Inventory.Inventory;
+import Game.Engine.Inventory.Items.Item;
+import Game.Engine.Inventory.Items.ItemStack;
 import Game.Engine.Map.Tile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,8 +20,7 @@ import javax.imageio.ImageIO;
 public abstract class Building {
     private Inventory inv;
     protected String name;
-    protected int woodCost;
-    protected int stoneCost;
+
     private int id;
     private Building prefStor;
     private Image image;
@@ -35,11 +36,11 @@ public abstract class Building {
     protected ArrayList<Colonist> colonists;
     protected Profession compatible;
 
+    private ArrayList<ItemStack> neededResources;
 
-    public Building(String name, int woodCost, int stoneCost, int limit,Class<? extends Profession> compatible,int storage,BuildingType type) {
+
+    public Building(String name, int limit,Class<? extends Profession> compatible,int storage,BuildingType type) {
         this.name = name;
-        this.woodCost = woodCost;
-        this.stoneCost = stoneCost;
         this.colonlimit= limit;
         this.type = type;
         this.compatibleProfession = compatible;
@@ -55,6 +56,7 @@ public abstract class Building {
             }
         }
         this.coords = new ArrayList<>();
+        this.neededResources = new ArrayList<>();
     }
     public Class<? extends Profession> getCompatible() {
         return compatibleProfession;
@@ -62,7 +64,12 @@ public abstract class Building {
     public int getColonlimit(){
         return colonlimit;
     }
-
+    public ArrayList<ItemStack> getNeededResources(){
+        return neededResources;
+    }
+    public void addNeededRes(Item item, int quantity){
+        neededResources.add(new ItemStack(item,quantity));
+    }
     public void setcoords(Tile tile){
         this.coords.add(tile);
     }
@@ -78,13 +85,7 @@ public abstract class Building {
         return type;
     }
 
-    public int getWoodCost() {
-        return woodCost;
-    }
 
-    public int getStoneCost() {
-        return stoneCost;
-    }
 
     public Inventory getInv(){
         return inv;
@@ -134,5 +135,14 @@ public abstract class Building {
     public Building getPreferredStorage() {
 
         return prefStor;
+    }
+
+    public float getNeededResourcesWeight() {
+        float weight = 0;
+        for(ItemStack stack : neededResources){
+            weight += stack.getTotalWeight();
+
+        }
+        return weight;
     }
 }

@@ -1,13 +1,12 @@
-package Game.Engine.Colonist.Profession;
+package Game.Engine.Colonist.Career.Profession;
 
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
-import Game.Engine.Colonist.Colonist;
-import Game.Engine.Inventory.Resources;
+import Game.Engine.Colonist.Career.Job.JobType;
 
 public class Engineer extends Profession{
 
     public Engineer(String name, Class<? extends WorkAction> workAction) {
-        super(name, workAction);
+        super(name, workAction, JobType.ENGINEER);
     }
 
     @Override

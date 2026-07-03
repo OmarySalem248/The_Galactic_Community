@@ -1,9 +1,8 @@
 package Game.Engine.Government;
 
-import Game.Engine.Colonist.Profession.TribeLeader;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colony;
-import Game.Engine.Colonist.Profession.ProfessionRegistry;
+import Game.Engine.Colonist.Career.Profession.ProfessionRegistry;
 import java.util.Comparator;
 import java.util.Optional;
 
