@@ -103,7 +103,7 @@ public class TileWindow {
 
             btn.addActionListener(e -> {
                 // Always create the project — let the hub/colony handle affordability messaging
-                BuildingProject project = new BuildingProject(prototype.getType(), prototype);
+                BuildingProject project = new BuildingProject(prototype.getType(), prototype, tile);
                 game.getBuildMode().getActiveHub().addProject(project);
 
                 JOptionPane.showMessageDialog(frame,
@@ -112,6 +112,9 @@ public class TileWindow {
                                 + "Builders will begin collecting resources.",
                         "Project Created",
                         JOptionPane.INFORMATION_MESSAGE);
+                game.getBuildMode().exit();
+                parentWindow.updateBuildModeIndicator();
+                frame.dispose();
 
                 parentWindow.repaintMap();
                 frame.dispose();

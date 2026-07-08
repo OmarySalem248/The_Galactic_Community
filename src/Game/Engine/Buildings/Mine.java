@@ -8,7 +8,12 @@ public class Mine extends Building{
     public Mine() {
 
         super("Mine",2, Miner.class,500,BuildingType.WORKPLACE);
+
+    }
+    @Override
+    public void setNeededRes() {
         addNeededRes(new Wood(),2);
         addNeededRes(new Stone(),5);
     }
+
 }

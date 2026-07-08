@@ -3,7 +3,9 @@ package Game.Engine.Buildings.Projects;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Inventory;
+import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
+import Game.Engine.Inventory.Items.ItemType;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
 
@@ -19,7 +21,7 @@ public class BuildingProject {
 
     private int priority;
 
-    private ArrayList<ItemStack> requiredResources;
+    private Inventory requiredResources;
     private boolean completed;
 
     private Progress progress;
@@ -85,14 +87,46 @@ public class BuildingProject {
         return workProg;
     }
 
-    public boolean isFullyStocked() {
-        return  partition.isFull();
-    }
+
 
     public void setProgress(Progress progress) {
         this.progress = progress;
     }
 
     public List<ItemStack> getStillNeeded() {
+        List<ItemStack> needed = new ArrayList<>();
+        for (ItemStack required : requiredResources.getStacks()) {
+            int have = partition.getByType(required.getItem().getType()).stream()
+                    .mapToInt(ItemStack::getQuantity).sum();
+            int deficit = required.getQuantity() - have;
+            if (deficit > 0) {
+                needed.add(new ItemStack(required.getItem(), deficit));
+            }
+        }
+        return needed;
+    }
+
+    public ItemStack claimMaterial(ItemType type) {
+        // Find the deficit for this type
+        List<ItemStack> needed = getStillNeeded();
+        return needed.stream()
+                .filter(s -> s.getItem().getType() == type)
+                .findFirst()
+                .orElse(null); // null = nothing needed or already fully claimed
+    }
+
+    public void depositMaterial(Item item, int quantity) {
+        // Add to partition and reduce from requiredResources
+        partition.add(item, quantity);
+        for (ItemStack required : requiredResources.getStacks()) {
+            if (required.getItem().getType() == item.getType()) {
+                required.remove(Math.min(quantity, required.getQuantity()));
+                break;
+            }
+        }
+    }
+
+    public boolean isFullyStocked() {
+        return requiredResources.getStacks().stream().allMatch(s -> s.getQuantity() <= 0);
     }
 }

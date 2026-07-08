@@ -3,7 +3,6 @@ package Game.Engine.Map;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.Projects.BuildingProject;
-import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.ColonistAvatar;
 
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class Tile {
     public BuildingProject getBuildProject() { return buildProject; }
     public void setBuildProject(BuildingProject p) { this.buildProject = p; }
 
-    public List<Tile> getNeighbours(Map map) {
+    public List<Tile> getNeighbours(GameMap map) {
         List<Tile> neighbours = new ArrayList<>();
         int[][] offsets = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         for (int[] offset : offsets) {

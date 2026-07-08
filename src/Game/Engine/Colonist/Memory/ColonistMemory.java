@@ -2,6 +2,7 @@ package Game.Engine.Colonist.Memory;
 
 import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Map.Tile;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Time.GameTime;
 
 import java.util.*;
@@ -37,20 +38,18 @@ public class ColonistMemory {
     }
 
     public void  addToDo(ToDo todo){
-        System.out.println("begin");
+
         TodoType type = todo.getType();
         if(todoMap.containsKey(type)){
-            System.out.println("1");
+
             todoMap.get(type).add(todo);
         }
         else {
-            System.out.println("2");
+
             ArrayList<ToDo> newArray = new ArrayList<>();
             newArray.add(todo);
             todoMap.put(type, newArray);
         }
-        System.out.println("end");
-
     }
 
     public ToDo anyWorkToDo(){
@@ -69,6 +68,15 @@ public class ColonistMemory {
             }
         }
         return null;
+    }
+    public Tile wanderUnexplored(Tile current, GameMap map) {
+        Random rand = new Random();
+        List<Tile> neighbours = current.getNeighbours(map);
+        List<Tile> unexplored = neighbours.stream()
+                .filter(n -> !hasSeen(n)).toList();
+        List<Tile> candidates = unexplored.isEmpty() ? neighbours : unexplored;
+        if (candidates.isEmpty()) return current;
+        return candidates.get(rand.nextInt(candidates.size()));
     }
 
     public GameTime setTime(GameTime time, int minutes){

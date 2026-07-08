@@ -22,6 +22,8 @@ public class FarmAction extends WorkAction {
 
     private static final float NEAR_FULL_RATIO = 0.85f;
 
+
+
     public FarmAction(ActionManager colonist) {
         super("Farming", colonist);
     }
@@ -30,7 +32,7 @@ public class FarmAction extends WorkAction {
     public boolean execute() {
 
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) {
-            return true;
+            return false;
         }
 
 
@@ -49,7 +51,7 @@ public class FarmAction extends WorkAction {
 
         // Farm inventory near full — transport jumps to top priority
         if (isFarmNearFull(farm)) {
-            System.out.println("full");
+
 
             transportGoods(farm);
             return false;
@@ -57,22 +59,22 @@ public class FarmAction extends WorkAction {
 
         // Normal priority gate — one action per tick
         if (hasSeedsToDeposit() && !canPlant(farm)) {
-            System.out.println("deposit");
+
             depositSeeds(farm);
             return false;
         }
         if (hasMyIncubatorsToTend(farm)) {
-            System.out.println("tend");
+
             tendIncubators(farm);
             return false;
         }
         if (hasMyIncubatorsToHarvest(farm)) {
-            System.out.println("harvest");
+
             harvest(farm);
             return false;
         }
         if (canPlant(farm)) {
-            System.out.println("plant");
+
             plant(farm);
             return false;
         }
@@ -89,17 +91,17 @@ public class FarmAction extends WorkAction {
     @Override
     public void setReminder(Building building) {
         Farm farm = (Farm) building;
-        System.out.println("remember");
+
         GameTime present = colonistam.getTime();
-        System.out.println("present");
-        System.out.println(present);
+
+
         GameTime todoTime = null;
         List<PlantIncubater> myIncs = myIncubators(farm);
         if(!myIncs.isEmpty()){
             for(PlantIncubater inc: myIncs){
-                System.out.println("new");
+
                 GameTime newtime = colonistam.getMemory().setTime(present,inc.getTimeTill());
-                System.out.println(newtime);
+
                 if(todoTime == null){
                     todoTime = newtime;
                 }
@@ -107,8 +109,8 @@ public class FarmAction extends WorkAction {
                     todoTime = newtime;
                 }
             }
-            System.out.println("Final Todo time:");
-            System.out.println(todoTime);
+
+
             colonistam.getMemory().addToDo(new ToDo(farm.getCoords().get(0),todoTime, TodoType.WORK ));
 
         }
@@ -230,7 +232,7 @@ public class FarmAction extends WorkAction {
         Item seed = getSeed(farm);
         farm.plant((Seed) seed, colonistam.getEventBus(), colonist);
         colonist.setStatus("Planted a " + seed.getName());
-        System.out.println("Plant planted");
+
 
     }
 
@@ -252,7 +254,7 @@ public class FarmAction extends WorkAction {
     private void transportGoods(Farm farm) {
         // Already have a pending delivery — just head to storage
         if (colonistam.getColonist().getInventory().hasDeliveries()) {
-            System.out.println("off");
+
             deliverToStorage(farm);
             return;
         }
@@ -321,9 +323,6 @@ public class FarmAction extends WorkAction {
                 || colonistam.getColonist().getInventory().hasType(ItemType.FOOD);
         boolean farmFull = isFarmNearFull(farm) && myIncubators(farm).stream().anyMatch(PlantIncubater::canHarvest);
 
-        if(!hasSeedsSomewhere && !myIncNeedTend && !myIncMature && !hasGoodsToMove && !colonistam.getSearching() && !farmFull){
-            System.out.println(colonist.getName() + " GO HOME");
-        }
 
 
         return !hasSeedsSomewhere && !myIncNeedTend && !myIncMature && !hasGoodsToMove && !colonistam.getSearching() && !farmFull;

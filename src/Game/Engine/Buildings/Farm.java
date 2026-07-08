@@ -27,6 +27,12 @@ public class Farm extends Building {
             freeIncubaters.add(inc);
         }
     }
+    @Override
+    public void setNeededRes() {
+        addNeededRes(new Wood(),5);
+        addNeededRes(new Stone(),2);
+
+    }
 
     public ArrayList<PlantIncubater> getActiveInc() { return activeIncubaters; }
     public ArrayList<PlantIncubater> getAllInc()     { return incubaters; }

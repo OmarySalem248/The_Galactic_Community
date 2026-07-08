@@ -26,8 +26,15 @@ public class ConflictGraph {
 
     private void build(List<ColonistAvatar> avatars) {
         for (ColonistAvatar avatar : avatars) {
-            Set<Object> keys = getConflictKeys(avatar);
 
+            Set<Object> keys = getConflictKeys(avatar);
+            /*
+            System.out.println(avatar.getColonist().getName()
+                    + " keys: " + keys.size()
+                    + " existingGroup: " + keys.stream().map(keyToGroup::get).filter(Objects::nonNull).findFirst().orElse(-1)
+                    + " building: " + avatar.getColonist().getAssignedBuilding());
+
+             */
             // Find if any of this avatar's conflict keys already belong to a group
             int existingGroup = keys.stream()
                     .map(keyToGroup::get)

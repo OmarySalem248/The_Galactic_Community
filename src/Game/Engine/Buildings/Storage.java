@@ -8,7 +8,12 @@ public class Storage extends Building{
     public Storage() {
 
         super("Storage", Integer.MAX_VALUE, null,50000,BuildingType.STORAGE);
+
+    }
+    @Override
+    public void setNeededRes() {
         addNeededRes(new Wood(),5);
         addNeededRes(new Stone(),5);
     }
+
 }

@@ -36,7 +36,7 @@ public abstract class Building {
     protected ArrayList<Colonist> colonists;
     protected Profession compatible;
 
-    private ArrayList<ItemStack> neededResources;
+    private Inventory neededResources;
 
 
     public Building(String name, int limit,Class<? extends Profession> compatible,int storage,BuildingType type) {
@@ -56,19 +56,24 @@ public abstract class Building {
             }
         }
         this.coords = new ArrayList<>();
-        this.neededResources = new ArrayList<>();
+        this.neededResources = new Inventory();
+        setNeededRes();
+        getNeededResources().setMaxWeight((int) getNeededResources().getCurrentWeight());
+
     }
+
+    public abstract void setNeededRes();
     public Class<? extends Profession> getCompatible() {
         return compatibleProfession;
     }
     public int getColonlimit(){
         return colonlimit;
     }
-    public ArrayList<ItemStack> getNeededResources(){
+    public Inventory getNeededResources(){
         return neededResources;
     }
     public void addNeededRes(Item item, int quantity){
-        neededResources.add(new ItemStack(item,quantity));
+        neededResources.add(item,quantity);
     }
     public void setcoords(Tile tile){
         this.coords.add(tile);
@@ -138,11 +143,6 @@ public abstract class Building {
     }
 
     public float getNeededResourcesWeight() {
-        float weight = 0;
-        for(ItemStack stack : neededResources){
-            weight += stack.getTotalWeight();
-
-        }
-        return weight;
+        return neededResources.getMaxWeight();
     }
 }

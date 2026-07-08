@@ -19,8 +19,8 @@ public class BuildJob extends Job {
     public boolean isAssigned() {
         return !projectList.isEmpty();
     }
-
-    public BuildingProject getTopProj(){
+    public BuildingProject getTopProj() {
+        if (projectList.isEmpty()) return null;
         return projectList.get(0);
     }
 }

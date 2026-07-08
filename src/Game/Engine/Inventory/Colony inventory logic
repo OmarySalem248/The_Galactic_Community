@@ -1,0 +1,10 @@
+Colony has collective inventory mapped out to help decide affordability
+
+Colony does NOT select or collect resources for building project, all the job of builders, simply a way to ensure unaffordable projects
+are not approved
+
+class name: colonyInvMap
+
+maps out every storage building and their inventory,
+
+hash map key is specific

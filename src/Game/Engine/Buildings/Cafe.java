@@ -7,7 +7,14 @@ public class Cafe extends Building{
     public Cafe() {
 
         super("Cafe", Integer.MAX_VALUE, null,200,BuildingType.RESTRAUNT);
+
+    }
+
+    @Override
+    public void setNeededRes() {
         addNeededRes(new Wood(),100);
         addNeededRes(new Stone(),50);
+
+
     }
 }

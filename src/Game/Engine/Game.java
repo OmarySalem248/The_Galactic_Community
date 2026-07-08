@@ -8,7 +8,7 @@ import Game.Engine.Event.EventManager;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Time.GameClock;
 import Game.Modes.BuildMode;
 
@@ -17,7 +17,7 @@ public class Game {
     private final EventManager eman;
     private int turn;
 
-    private Map map;
+    private GameMap map;
     private Colony colony;
 
     private final GameEventBus eventBus = new GameEventBus();
@@ -30,7 +30,7 @@ public class Game {
     public Game() {
         this.turn = 1;
 
-        this.map = Map.getBasicMap();
+        this.map = GameMap.getBasicMap();
         this.colony = new Colony( new Resources(20, 15, 10),map);
         int x = 10;
         int y= 12;
@@ -62,7 +62,7 @@ public class Game {
         return clock;
     }
 
-    public Map getMap() {
+    public GameMap getMap() {
         return map;
     }
 

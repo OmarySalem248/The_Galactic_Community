@@ -1,0 +1,16 @@
+have destination tied to desired action
+Tile variable in Queued Action class
+
+one generic move action at the end of action manager called when destination is chosen
+moving no longer done as a queueable action instead is a separate manager which is called at the bottom of priority management after most important action is decided
+
+MoveManager, universal class each colonist has a unique version of, is called by action man:
+
+Tile, destination: destination can be changed
+List<Tile> path: FIFO of tiles for the planned path
+
+public void changeDes(Tile) changes destination
+
+public Tile calculatePath(Tile destination, FOV) uses FOV and destination tile to create path, if path exhausted and not at des called again with new FOV
+
+public void move(): moves avatar on map

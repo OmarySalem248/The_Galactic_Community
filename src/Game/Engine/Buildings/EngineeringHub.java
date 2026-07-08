@@ -3,6 +3,8 @@ package Game.Engine.Buildings;
 import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Buildings.Projects.Progress;
 import Game.Engine.Colonist.Career.Profession.Builder;
+import Game.Engine.Inventory.Items.Resources.Stone;
+import Game.Engine.Inventory.Items.Resources.Wood;
 
 import java.util.*;
 
@@ -16,6 +18,13 @@ public class EngineeringHub extends Building {
         for (Progress p : Progress.values()) {
             projects.put(p, new ArrayList<>());
         }
+    }
+    @Override
+    public void setNeededRes() {
+        addNeededRes(new Wood(),50);
+        addNeededRes(new Stone(),50);
+
+
     }
 
     public void addProject(BuildingProject project) {

@@ -1,8 +1,6 @@
 package Game.Engine.Colonist;
 
-import Game.Engine.Actions.ColonistActions.MoveAction;
-import Game.Engine.Buildings.Building;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Map.Tile;
 import Game.Engine.Time.GameTime;
 /*
@@ -36,9 +34,14 @@ public class ColonistAvatar {
         return actionManager;
     }
 
-    public void tick(GameTime time, Map map) {
+    public void tick(GameTime time, GameMap map) {
+        if(colonist.getName().equals("Annie")){
+            System.out.println("letsago");
+        }
         actionManager.run(time,map,getCurrentTile());
         status.update(time);
+
+
     }
     public void setCurrentTile(Tile tile){
         tile.colonistEnter(this);

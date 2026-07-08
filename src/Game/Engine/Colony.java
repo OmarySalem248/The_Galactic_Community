@@ -8,7 +8,7 @@ import Game.Engine.Colonist.Pregnancy;
 import Game.Engine.Government.ColonyLeadership;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Resources;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Colonist.Career.Profession.ProfessionRegistry;
 
@@ -36,12 +36,12 @@ public class Colony {
 
 
     private String status;
-    private Map map;
+    private GameMap map;
     private Resources resources;
 
     private Inventory inv;
 
-    public Colony( Resources startingResources, Map map) {
+    public Colony( Resources startingResources, GameMap map) {
 
         this.map = map;
         this.resources = startingResources;
@@ -58,9 +58,9 @@ public class Colony {
         colonists.add(Troy);
 
 
-        colonists.add(new Colonist(this,"Abed",ProfessionRegistry.get("Miner"),20,1000,1,'M',persfact.awkwardDude()));
-        colonists.add(new Colonist(this,"Annie",ProfessionRegistry.get("Miner"),19,1000,1,'F',persfact.perfectionist()));
-        colonists.add(new Colonist(this,"Shirley",ProfessionRegistry.get("WoodCutter"),43,1000,1,'F',persfact.caring()));
+        colonists.add(new Colonist(this,"Abed",ProfessionRegistry.get("Builder"),20,1000,1,'M',persfact.awkwardDude()));
+        colonists.add(new Colonist(this,"Annie",ProfessionRegistry.get("Builder"),19,1000,1,'F',persfact.perfectionist()));
+        colonists.add(new Colonist(this,"Shirley",ProfessionRegistry.get("Miner"),43,1000,1,'F',persfact.caring()));
         colonists.add(new Colonist(this,"Pierce",ProfessionRegistry.get("Unemployed"),75,1000,1,'M',persfact.turd()));
 
 

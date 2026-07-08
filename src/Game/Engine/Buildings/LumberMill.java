@@ -8,7 +8,12 @@ public class LumberMill extends Building{
     public LumberMill() {
 
         super("LumberMill",2, Woodcutter.class, 500, BuildingType.WORKPLACE);
+
+    }
+    @Override
+    public void setNeededRes() {
         addNeededRes(new Wood(),3);
         addNeededRes(new Stone(),3);
+
     }
 }

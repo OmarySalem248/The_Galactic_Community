@@ -1,7 +1,7 @@
 package Game.Engine.Time;
 
 import Game.Engine.Colonist.ColonistAvatar;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Game;
 import Game.Engine.Time.WorldEvent.WorldEventManager;
 
@@ -23,7 +23,7 @@ public class GameClock {
 
     private static final int TICK_MS = 200; // real ms per in-game tick — tweak freely
 
-    private final Map map;
+    private final GameMap map;
     private WorldEventManager eman;
 
     private int weekday;
@@ -57,7 +57,7 @@ public class GameClock {
     public void start()    { timer.start(); }
     public void stop()     { timer.stop();  }
     public boolean isRunning() { return timer.isRunning(); }
-    public Map getMap()    { return map; }
+    public GameMap getMap()    { return map; }
     public void tickOnce() { tick(); }
     public int getHour()   { return hour; }
     public int getDay()    { return day; }
@@ -82,9 +82,7 @@ public class GameClock {
         if(minute == 0){
             System.out.println(time);
         }
-        if(time.minute() == 0) {
-            System.out.println(time.hour());
-        }
+
         // Only run scheduled Tickables that are actually due this tick
         scheduler.runDue(tick, time);
 
@@ -111,7 +109,7 @@ public class GameClock {
 
         // Wait for all groups to finish
         for (Future<?> f : tasks) {
-            try { f.get(); } catch (Exception ignored) {}
+            try { f.get(); } catch (Exception e) { e.printStackTrace(); }
         }
 
         for (TickListener l : listeners) l.onTick(time);

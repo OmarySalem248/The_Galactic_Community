@@ -1,17 +1,16 @@
 package Game.Engine.Actions.ColonistActions;
 
 import Game.Engine.Colonist.ActionManager;
-import Game.Engine.Colonist.ColonistAvatar;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Map.Tile;
 
 public class MoveAction extends ColonistAction {
 
 
     private final Tile destination;
-    private final Map map;
+    private final GameMap map;
 
-    public MoveAction(ActionManager colonist, Tile destination, Map map) {
+    public MoveAction(ActionManager colonist, Tile destination, GameMap map) {
         super("Move",colonist);
         this.destination = destination;
         this.map         = map;

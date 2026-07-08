@@ -3,20 +3,19 @@ package Game.Windows;
 import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Game;
 import Game.Engine.Time.GameClock;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Map.Tile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 
 public class MapPanel extends JPanel {
 
     private static final int CELL    = 48;
     private static final int PADDING = 10;
 
-    private final Map map;
+    private final GameMap map;
     private final Game game;
     private final GameWindow parentWindow;
     private final GameClock clock;

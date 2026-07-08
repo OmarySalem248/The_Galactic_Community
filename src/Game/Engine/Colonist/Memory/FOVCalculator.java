@@ -2,7 +2,7 @@ package Game.Engine.Colonist.Memory;
 
 
 
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Map.Tile;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class FOVCalculator {
      * Returns all tiles visible from origin within radius.
      * Uses ray casting — stops ray when it hits a vision blocker.
      */
-    public static List<Tile> calculate(Tile origin, int radius, Map map) {
+    public static List<Tile> calculate(Tile origin, int radius, GameMap map) {
         List<Tile> visible = new ArrayList<>();
         visible.add(origin);
 
@@ -36,7 +36,7 @@ public class FOVCalculator {
      * Casts a ray from origin toward (dx, dy).
      * Stops when it hits a vision blocker — includes the blocking tile but not beyond.
      */
-    private static List<Tile> castRay(Tile origin, int dx, int dy, Map map) {
+    private static List<Tile> castRay(Tile origin, int dx, int dy, GameMap map) {
         List<Tile> ray = new ArrayList<>();
 
         int steps = Math.max(Math.abs(dx), Math.abs(dy));

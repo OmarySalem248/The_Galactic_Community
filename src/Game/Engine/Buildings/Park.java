@@ -9,4 +9,10 @@ public class Park extends  Building{
         addNeededRes(new Wood(),10);
         addNeededRes(new Stone(),10);
     }
+    @Override
+    public void setNeededRes() {
+        addNeededRes(new Wood(),10);
+        addNeededRes(new Stone(),10);
+    }
+
 }

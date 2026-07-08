@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Inventory {
     private final List<ItemStack> stacks = new ArrayList<>();
-    private final float maxWeight;
+    private float maxWeight;
     private float currentWeight = 0;
 
     // Tracks item types currently claimed for outbound transport
@@ -38,6 +38,13 @@ public class Inventory {
     public Inventory(float maxWeight) {
         this.maxWeight = maxWeight;
     }
+    public Inventory() {
+    }
+
+    public void setMaxWeight(int max){
+        this.maxWeight = max;
+    }
+
 
     // -------------------------------------------------------------------------
     // Core operations
@@ -88,6 +95,18 @@ public class Inventory {
 
     public boolean hasAny(Class<?> itemClass) {
         return stacks.stream().anyMatch(s -> itemClass.isInstance(s.getItem()) && !s.isEmpty());
+    }
+    public boolean hasItem(Class<? extends Item> itemClass, int quantity) {
+        return stacks.stream()
+                .filter(s -> s.getItem().getClass() == itemClass)
+                .mapToInt(ItemStack::getQuantity)
+                .sum() >= quantity;
+    }
+
+    public List<ItemStack> getByClass(Class<? extends Item> itemClass) {
+        return stacks.stream()
+                .filter(s -> s.getItem().getClass() == itemClass)
+                .toList();
     }
 
     // -------------------------------------------------------------------------

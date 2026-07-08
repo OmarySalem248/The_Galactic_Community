@@ -15,123 +15,142 @@ import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.*;
 import Game.Engine.Inventory.Items.Consumable.Consumable;
-import Game.Engine.Map.Map;
+import Game.Engine.Map.GameMap;
 import Game.Engine.Map.Tile;
 import Game.Engine.Time.GameTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class ActionManager {
 
-    private final Map map;
+    private final GameMap map;
     private final ColonistAvatar colonistav;
     private final Colonist colonist;
     private final GameEventBus eventBus;
     private final ColonistMemory memory;
     private final ActionQueue queue = new ActionQueue();
+    private final MoveManager moveManager;
 
     private static final int PRIORITY_SEARCH = 15;
     private static final int PRIORITY_MOVE   = 10;
     private static final int PRIORITY_WORK   = 5;
     private static final int PRIORITY_SOCIAL = 3;
-    private boolean workDone;
 
-    private GameTime mentaltime;
-
-    private Tile destination;
-    private Tile workTile;
+    private boolean workDone = false;
+    private GameTime mentaltime = null;
 
     // Search state
-    private ItemType searchingFor = null;   // null = delivery mode (searching for building only)
+    private ItemType searchingFor = null;
     private BuildingType searchSource = null;
 
-    public ActionManager(ColonistAvatar avatar, Tile startingTile, GameEventBus eventBus, Map map) {
+    public ActionManager(ColonistAvatar avatar, Tile startingTile, GameEventBus eventBus, GameMap map) {
         this.colonistav  = avatar;
         this.colonist    = avatar.getColonist();
-        this.destination = startingTile;
         this.eventBus    = eventBus;
         this.memory      = new ColonistMemory();
         this.map         = map;
-        this.workDone = false;
-        this.mentaltime = null;
+        this.moveManager = new MoveManager(avatar, memory, map);
+        moveManager.changeDes(startingTile);
     }
 
     // -------------------------------------------------------------------------
     // Accessors
     // -------------------------------------------------------------------------
-    public Colonist getColonist()     { return colonist; }
-    public ColonistAvatar getAvatar() { return colonistav; }
-    public ColonistStatus status()    { return colonistav.getStatus(); }
-    public GameEventBus getEventBus() { return eventBus; }
-    public Tile getCurrentTile()      { return colonistav.getCurrentTile(); }
-    public Tile getDestination()      { return destination; }
-    public ColonistMemory getMemory() { return memory; }
-    public boolean getSearching()     { return status().getisSearching(); }
+    public Colonist getColonist()       { return colonist; }
+    public ColonistAvatar getAvatar()   { return colonistav; }
+    public ColonistStatus status()      { return colonistav.getStatus(); }
+    public GameEventBus getEventBus()   { return eventBus; }
+    public Tile getCurrentTile()        { return colonistav.getCurrentTile(); }
+    public Tile getDestination()        { return moveManager.getDestination(); }
+    public ColonistMemory getMemory()   { return memory; }
+    public boolean getSearching()       { return status().getisSearching(); }
+    public GameTime getTime()           { return mentaltime; }
+    public ActionQueue getQueue()       { return queue; }
+    public boolean getWorkDone()        { return workDone; }
+    public MoveManager getMoveManager() { return moveManager; }
 
     // -------------------------------------------------------------------------
     // Main run loop
     // -------------------------------------------------------------------------
-    public void run(GameTime time, Map map, Tile location) {
+    public void run(GameTime time, GameMap map, Tile location) {
+        if(colonist.getName().equals("Annie")){
+            System.out.println("Sfdf");
+        }
         this.mentaltime = time;
+
+
         if (!status().getIsAsleep()) {
             for (Tile tile : FOVCalculator.calculate(location, 12, map)) {
-                memory.observe(tile,time);
+                memory.observe(tile, time);
             }
-            evaluatePriorities(time, map);
+            evaluatePriorities(time,map);
+
+            // Top queued action drives destination
+            var top = queue.peek();
+            if (top != null && top.getDestination() != null) {
+                moveManager.changeDes(top.getDestination());
+            }
+            moveManager.move();
         }
+        if(queue.peek() != null){
+            colonist.setStatus(queue.peek().toString());
+        }else{
+            colonist.setStatus("bored");
+        }
+
         queue.tick();
+
     }
 
     // -------------------------------------------------------------------------
-    // Priority evaluation — one clear pass, top to bottom
+    // Priority evaluation
     // -------------------------------------------------------------------------
-    private void evaluatePriorities(GameTime time, Map map) {
+    private void evaluatePriorities(GameTime time, GameMap map) {
 
-        // 1. Sleep — highest priority when at home and low energy
-        if (status().getatHome() && (colonist.getEnergy() < 1000)
+
+        // 1. Sleep
+        if (status().getatHome() && colonist.getEnergy() < 1000
                 && !queue.isQueued(SleepAction.class)) {
-            queue.add(new QueuedAction(new SleepAction(this), Integer.MAX_VALUE, false, true));
-            return; // nothing else matters while sleeping
+            Tile homeTile = getFirstTile(colonist.getDwelling());
+            queue.add(new QueuedAction(
+                    new SleepAction(this), Integer.MAX_VALUE, false, true));
+            return;
         }
 
-
-
-        // 2. Search arrival — check before movement so arrival is handled immediately
-        if (status().getisSearching() && getCurrentTile() == destination) {
+        // 2. Search arrival
+        if (status().getisSearching() && moveManager.atDestination()) {
             handleSearchArrival();
         }
 
-        // 3. Movement toward destination
+        // 3. Destination management
         updateDestination();
-        if (getCurrentTile() != destination && !queue.isQueued(MoveAction.class)) {
-            queue.add(new QueuedAction(
-                    new MoveAction(this, destination, map), PRIORITY_MOVE, false, true));
-        }
 
-
-        if (status().getshouldWork() && !getSearching()&& !workDone) {
+        // 4. Early leave check
+        if (status().getshouldWork() && !getSearching() && !workDone) {
             WorkAction currentWork = queue.getWork();
-            //System.out.println(currentWork.hasNothingLeftToDo());
             if (currentWork != null && currentWork.hasNothingLeftToDo()) {
                 currentWork.setReminder(colonist.getAssignedBuilding());
                 Tile homeTile = getFirstTile(colonist.getDwelling());
-                this.workDone = true;
-                if (homeTile != null) destination = homeTile;
+                workDone = true;
+                if (homeTile != null) moveManager.changeDes(homeTile);
             }
         }
 
-        // 4. Work
+        // 5. Work
+        if (status().getshouldWork()
+                && !queue.isQueued(WorkAction.class) && !workDone) {
+            if(colonist.getName().equals("Annie")){
+                System.out.println("ERRFEF");
+            }
 
-        if (status().getshouldWork() && status().getatWork()
-                && !queue.isQueued(WorkAction.class)) {
-            System.out.println("worrrk");
             queueWorkAction();
+
         }
 
-        // 5. Hunger — parallel, can eat while working
+
+        // 6. Hunger
         if (colonist.getHunger() > 40 && !queue.isQueued(ConsumeAction.class)) {
             List<ItemStack> food = colonist.getInventory().getByType(ItemType.FOOD);
             if (food != null && !food.isEmpty()) {
@@ -142,27 +161,29 @@ public class ActionManager {
             }
         }
 
-
-
-
-        // 7. Social — lowest priority, parallel
+        // 7. Social
         checkSocialOpportunities(time);
+        if (colonist.getName().equals("Annie")) {
+            System.out.println("Annie - shouldWork: " + status().getshouldWork()
+                    + " atWork: " + status().getatWork()
+                    + " destination: " + moveManager.getDestination()
+                    + " currentTile: " + getCurrentTile()
+                    + " workTile: " + getFirstTile(colonist.getAssignedBuilding()));
+        }
     }
 
     // -------------------------------------------------------------------------
-    // Search arrival — handles both item pickup and delivery deposit
+    // Search arrival
     // -------------------------------------------------------------------------
     private void handleSearchArrival() {
         Tile current = getCurrentTile();
         if (current == null || !current.hasBuilding()) {
-            // Arrived but no building here — wander further
             wanderAndContinue();
             return;
         }
 
         Building building = current.getBuilding();
         if (building.getBType() != searchSource) {
-            // Wrong building type — keep wandering
             wanderAndContinue();
             return;
         }
@@ -170,30 +191,23 @@ public class ActionManager {
         Inventory buildingInv = building.getInv();
 
         if (searchingFor != null) {
-            // Item pickup mode — looking for a specific item type
             if (buildingInv.hasType(searchingFor)) {
                 ItemStack stack = buildingInv.getByType(searchingFor).get(0);
                 int qty = 1;
                 queue.add(new QueuedAction(
                         new PickupAction(this, buildingInv, stack.getItem(), qty),
                         PRIORITY_SEARCH, false, false));
-
                 if (stack.getQuantity() - qty <= 0 || colonist.getInventory().isFull()) {
                     clearSearch();
                 }
             } else if (colonist.getInventory().hasType(searchingFor)) {
-                // Already have what we need — search complete
                 clearSearch();
             } else {
-                // Right building type but no stock — keep wandering
                 wanderAndContinue();
             }
         } else {
-            // Delivery mode — arrived at storage, deposit all pending deliveries
             for (Delivery d : new ArrayList<>(colonist.getInventory().getDeliveries())) {
-                if (d.getDestination() == null) {
-                    d.setDestination(buildingInv);
-                }
+                if (d.getDestination() == null) d.setDestination(buildingInv);
                 if (d.getDestination() == buildingInv) {
                     queue.add(new QueuedAction(
                             new DepositDeliveryAction(this, d),
@@ -205,16 +219,12 @@ public class ActionManager {
     }
 
     private void wanderAndContinue() {
-        destination = wanderUnexplored();
-        queue.add(new QueuedAction(
-                new MoveAction(this, destination, map), PRIORITY_SEARCH, false, true));
+        moveManager.changeDes(memory.wanderUnexplored(getCurrentTile(), map));
     }
 
     // -------------------------------------------------------------------------
     // Search initiation
     // -------------------------------------------------------------------------
-
-    /** Search for a specific item type at a specific building type. */
     public void searchFor(ItemType itemType, BuildingType source) {
         this.searchingFor = itemType;
         this.searchSource = source;
@@ -222,18 +232,14 @@ public class ActionManager {
         colonist.setStatus("Searching for " + (itemType != null ? itemType.name() : source.name()));
 
         Optional<Tile> known = memory.recall(source);
-        if (known.isPresent() &&
-                (itemType == null || known.get().getBuilding().getInv().hasType(itemType))) {
-            destination = known.get();
-        } else {
-            destination = wanderUnexplored();
-        }
+        Tile target = (known.isPresent() &&
+                (itemType == null || known.get().getBuilding().getInv().hasType(itemType)))
+                ? known.get()
+                : memory.wanderUnexplored(getCurrentTile(), map);
 
-        queue.add(new QueuedAction(
-                new MoveAction(this, destination, map), PRIORITY_SEARCH, false, true));
+        moveManager.changeDes(target);
     }
 
-    /** Search for a storage building to deposit deliveries — no specific item needed. */
     public void searchForDelivery(BuildingType buildingType) {
         searchFor(null, buildingType);
     }
@@ -248,30 +254,33 @@ public class ActionManager {
     // Destination management
     // -------------------------------------------------------------------------
     private void updateDestination() {
-        if (status().getisSearching()) return;// search controls destination
+        if (status().getisSearching()) return;
+
+        // Check mental
         ToDo remember = memory.anyWorkToDo();
-        if(remember != null){
+        if (remember != null) {
             workDone = false;
-            destination = remember.getDes();
+            moveManager.changeDes(remember.getDes());
             return;
         }
 
         if (status().getshouldWork() && !workDone) {
-            workTile = getFirstTile(colonist.getAssignedBuilding());
-            if (workTile != null) destination = workTile;
+            Tile workTile = getFirstTile(colonist.getAssignedBuilding());
+            if (workTile != null) moveManager.changeDes(workTile);
         } else {
             Tile homeTile = getFirstTile(colonist.getDwelling());
-            if (homeTile != null) destination = homeTile;
+            if (homeTile != null) moveManager.changeDes(homeTile);
         }
+
     }
 
     public void setDeliveryTarget(Building storage) {
         Tile target = getFirstTile(storage);
-        if (target != null) {
-            destination = target;
-            queue.add(new QueuedAction(
-                    new MoveAction(this, destination, map), PRIORITY_SEARCH, false, true));
-        }
+        if (target != null) moveManager.changeDes(target);
+    }
+
+    public void setTileDestination(Tile tile) {
+        if (tile != null) moveManager.changeDes(tile);
     }
 
     // -------------------------------------------------------------------------
@@ -280,7 +289,6 @@ public class ActionManager {
     private void checkSocialOpportunities(GameTime time) {
         Tile current = getCurrentTile();
         if (current == null) return;
-
         for (ColonistAvatar other : current.getColonists()) {
             if (other == colonistav) continue;
             if (time.minute() == 0 && time.hour() % 2 == 0
@@ -297,10 +305,7 @@ public class ActionManager {
     // Sleep
     // -------------------------------------------------------------------------
     public void sleep() { status().setSleep(true); }
-    public void wake()  {
-        status().setSleep(false);
-
-    }
+    public void wake()  { status().setSleep(false); }
 
     // -------------------------------------------------------------------------
     // Helpers
@@ -318,37 +323,9 @@ public class ActionManager {
         }
     }
 
-    private Tile wanderUnexplored() {
-        Random rand = new Random();
-        Tile current = getCurrentTile();
-        if (current == null) return destination;
-
-        List<Tile> neighbours = current.getNeighbours(map);
-        List<Tile> unexplored = new ArrayList<>();
-        for (Tile n : neighbours) {
-            if (!memory.hasSeen(n)) unexplored.add(n);
-        }
-
-        List<Tile> candidates = unexplored.isEmpty() ? neighbours : unexplored;
-        if (candidates.isEmpty()) return destination;
-        return candidates.get(rand.nextInt(candidates.size()));
-    }
-
-    private Tile getFirstTile(Building building) {
+    public Tile getFirstTile(Building building) {
         if (building == null) return null;
         if (building.getCoords().isEmpty()) return null;
         return building.getCoords().get(0);
-    }
-
-    public GameTime getTime() {
-        return mentaltime;
-    }
-
-    public ActionQueue getQueue() {
-        return queue;
-    }
-
-    public boolean getWorkDone(){
-        return workDone;
     }
 }

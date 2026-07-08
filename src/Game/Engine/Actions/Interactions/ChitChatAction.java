@@ -30,4 +30,9 @@ public class ChitChatAction extends InteractAction {
         c1.setStatus("Had a nice chat with " + c2.getName());
         c2.setStatus("Had a nice chat with " + c1.getName());
     }
+
+    @Override
+    public boolean execute() {
+        return false;
+    }
 }

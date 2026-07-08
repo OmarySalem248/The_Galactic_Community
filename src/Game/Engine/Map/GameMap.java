@@ -2,12 +2,14 @@ package Game.Engine.Map;
 
 import Game.Engine.Buildings.*;
 import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Inventory.Items.Resources.Stone;
+import Game.Engine.Inventory.Items.Resources.Wood;
 import Game.Engine.Inventory.Items.Seed.UberrySeed;
 import Game.Engine.Inventory.Items.Consumable.Food.UtopiaBar;
 
 import java.util.*;
 
-public class Map {
+public class GameMap {
 
     // -----------------------------------------------------------------------
     // Map data
@@ -18,7 +20,7 @@ public class Map {
     private List<Building> buildings;
 
     /** Create a blank map filled with PLAINS. */
-    public Map(int cols, int rows) {
+    public GameMap(int cols, int rows) {
         this.buildings = new ArrayList<>();
         this.avatars = new ArrayList<>();
         this.cols = cols;
@@ -30,14 +32,14 @@ public class Map {
     }
 
     /** Create a map from an existing 2-D tile array [row][col]. */
-    public Map(Tile[][] grid) {
+    public GameMap(Tile[][] grid) {
         this.rows = grid.length;
         this.cols = grid[0].length;
         this.grid = grid;
     }
 
-    public static Map getBasicMap() {
-        Map basicMap =  new Map(35,25);
+    public static GameMap getBasicMap() {
+        GameMap basicMap =  new GameMap(35,25);
         basicMap.placeBuilding(new Farm(),2,2);
         basicMap.placeBuilding(new LumberMill(),7,2);
         basicMap.placeBuilding(new Mine(),8,3);
@@ -45,6 +47,8 @@ public class Map {
         Storage beginnerSt = new Storage();
         beginnerSt.getInv().add(new UberrySeed(),100);
         beginnerSt.getInv().add(new UtopiaBar(),7);
+        beginnerSt.getInv().add(new Wood(),10000);
+        beginnerSt.getInv().add(new Stone(),10000);
         basicMap.placeBuilding(beginnerSt,1,7);
         return basicMap;
     }

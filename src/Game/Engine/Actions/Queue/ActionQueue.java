@@ -68,6 +68,10 @@ public class ActionQueue {
         active.clear();
         pending.clear();
     }
+    public QueuedAction peek() {
+        if (!active.isEmpty()) return active.get(0);
+        return pending.isEmpty() ? null : pending.peek();
+    }
 
     public WorkAction getWork() {
         for (QueuedAction action : active) {

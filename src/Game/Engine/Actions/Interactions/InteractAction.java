@@ -1,10 +1,11 @@
 package Game.Engine.Actions.Interactions;
 
+import Game.Engine.Actions.ColonistActions.ColonistAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipSet;
 
-public abstract class InteractAction {
+public abstract class InteractAction extends ColonistAction {
 
     protected final Colonist c1;
     protected final Colonist c2;
@@ -14,6 +15,7 @@ public abstract class InteractAction {
     protected int ticksElapsed = 0;
 
     public InteractAction(Colonist c1, Colonist c2, int duration) {
+        super("interact", null);
         this.c1       = c1;
         this.c2       = c2;
         this.duration = duration;

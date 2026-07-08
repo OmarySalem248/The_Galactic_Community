@@ -27,11 +27,14 @@ public class ColonistStatus {
         this.isSearching = false;
     }
 
-    public void update(GameTime time){
+    public void update(GameTime time) {
+        atWork = colonist.getAssignedBuilding() != null
+                && colonist.getAssignedBuilding().getCoords().contains(avatar.getCurrentTile());
 
-        atWork = colonist.getAssignedBuilding().getCoords().contains(avatar.getCurrentTile());
-        shouldWork =  colonist.getProfession().isItWorkHours(time);
-        atHome = colonist.getDwelling().getCoords().contains(avatar.getCurrentTile());
+        shouldWork = colonist.getProfession().isItWorkHours(time);
+
+        atHome = colonist.getDwelling() != null
+                && colonist.getDwelling().getCoords().contains(avatar.getCurrentTile());
     }
 
     public boolean getatWork(){
@@ -43,6 +46,7 @@ public class ColonistStatus {
     };
 
     public boolean getshouldWork(){
+
         return shouldWork;
     }
 
