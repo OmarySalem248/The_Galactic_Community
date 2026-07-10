@@ -1,0 +1,10 @@
+Class SearchTile extends Tile
+
+acts as an imaginary tile stored as destination for actions where colonists dont know where to go but know what to look for
+
+for example if colonists in a job need to haul but do not know where resources are then the jobs destination is set to be a new SearchTile
+
+
+Search as a class of itself
+
+acts like an inverted delivery, stored in search tile

@@ -163,13 +163,7 @@ public class ActionManager {
 
         // 7. Social
         checkSocialOpportunities(time);
-        if (colonist.getName().equals("Annie")) {
-            System.out.println("Annie - shouldWork: " + status().getshouldWork()
-                    + " atWork: " + status().getatWork()
-                    + " destination: " + moveManager.getDestination()
-                    + " currentTile: " + getCurrentTile()
-                    + " workTile: " + getFirstTile(colonist.getAssignedBuilding()));
-        }
+
     }
 
     // -------------------------------------------------------------------------

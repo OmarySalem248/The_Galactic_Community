@@ -106,11 +106,11 @@ public class BuildingProject {
         return needed;
     }
 
-    public ItemStack claimMaterial(ItemType type) {
+    public ItemStack claimMaterial(Class<? extends Item> itemClass) {
         // Find the deficit for this type
         List<ItemStack> needed = getStillNeeded();
         return needed.stream()
-                .filter(s -> s.getItem().getType() == type)
+                .filter(s -> s.getItem().getClass() == itemClass)
                 .findFirst()
                 .orElse(null); // null = nothing needed or already fully claimed
     }
@@ -128,5 +128,9 @@ public class BuildingProject {
 
     public boolean isFullyStocked() {
         return requiredResources.getStacks().stream().allMatch(s -> s.getQuantity() <= 0);
+    }
+
+    public Inventory getReqRes() {
+        return requiredResources;
     }
 }

@@ -44,7 +44,7 @@ public class ColonistAvatar {
 
     }
     public void setCurrentTile(Tile tile){
-        tile.colonistEnter(this);
+
         this.currentTile = tile;
     }
 

@@ -7,4 +7,12 @@ class name: colonyInvMap
 
 maps out every storage building and their inventory,
 
-hash map key is specific
+hash map: key is specific storage buildings ID (buildings already ID'd) and contents are the building itself
+
+function to check affordability by iterating through hash map to find if all needed resources are in collective storage
+
+inventory of production buildings not checked, workers need to transport to storage before can be used for building
+
+
+
+ambitious further scope: complicating data structure so map knows where to look for certain resources "I know that storage unit has alot of stone let me check there first"

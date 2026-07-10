@@ -1,6 +1,10 @@
 package Game.Engine.Colonist.Memory;
 
 import Game.Engine.Buildings.BuildingType;
+import Game.Engine.Colonist.Memory.Search.SearchRecord;
+import Game.Engine.Colonist.Memory.Search.SearchResult;
+import Game.Engine.Inventory.Items.Item;
+import Game.Engine.Inventory.Items.ItemType;
 import Game.Engine.Map.Tile;
 import Game.Engine.Map.GameMap;
 import Game.Engine.Time.GameTime;
@@ -11,6 +15,10 @@ public class ColonistMemory {
 
     // Sparse memory — only tiles the colonist has actually seen
     private final Map<Tile, MemoryEntry> memoryMap = new HashMap<>();
+    private final Map<Class<? extends Item>, SearchRecord> classSearchHistory = new HashMap<>();
+    private final Map<ItemType, SearchRecord>              typeSearchHistory  = new HashMap<>();
+
+    private static final long SEARCH_COOLDOWN_TICKS = 360; // 6 hours
 
     private GameTime mentalTime = new GameTime(0,0,0,0,0);
     private HashMap<TodoType, ArrayList<ToDo>> todoMap = new HashMap<>();
@@ -83,6 +91,45 @@ public class ColonistMemory {
         return new GameTime(time.minute() + minutes% 60, time.hour() +Math.floorDiv(minutes,60),
                 time.day() +Math.floorDiv(minutes,1440),(time.day() +Math.floorDiv(minutes,1440)%7),
                 time.tick() + minutes);
+    }
+    public void recordClassSearch(Class<? extends Item> itemClass, SearchResult result, long currentTick, Tile foundAt) {
+        long cooldown = result == SearchResult.FAILED ? currentTick + SEARCH_COOLDOWN_TICKS : 0;
+        classSearchHistory.put(itemClass, new SearchRecord(result, cooldown, foundAt));
+    }
+
+    public SearchRecord getClassSearchRecord(Class<? extends Item> itemClass) {
+        return classSearchHistory.get(itemClass);
+    }
+
+    public boolean isClassOnCooldown(Class<? extends Item> itemClass, long currentTick) {
+        SearchRecord rec = classSearchHistory.get(itemClass);
+        return rec != null && rec.isOnCooldown(currentTick);
+    }
+
+    public Tile recallClassLocation(Class<? extends Item> itemClass) {
+        SearchRecord rec = classSearchHistory.get(itemClass);
+        return (rec != null && rec.hasLocation()) ? rec.foundAt() : null;
+    }
+
+// ---- Type-based search history ----
+
+    public void recordTypeSearch(ItemType type, SearchResult result, long currentTick, Tile foundAt) {
+        long cooldown = result == SearchResult.FAILED ? currentTick + SEARCH_COOLDOWN_TICKS : 0;
+        typeSearchHistory.put(type, new SearchRecord(result, cooldown, foundAt));
+    }
+
+    public SearchRecord getTypeSearchRecord(ItemType type) {
+        return typeSearchHistory.get(type);
+    }
+
+    public boolean isTypeOnCooldown(ItemType type, long currentTick) {
+        SearchRecord rec = typeSearchHistory.get(type);
+        return rec != null && rec.isOnCooldown(currentTick);
+    }
+
+    public Tile recallTypeLocation(ItemType type) {
+        SearchRecord rec = typeSearchHistory.get(type);
+        return (rec != null && rec.hasLocation()) ? rec.foundAt() : null;
     }
 
 

@@ -6,8 +6,11 @@ import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Buildings.Projects.Progress;
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.Career.Job.BuildJob;
+import Game.Engine.Colonist.Memory.Search.ClassSearch;
 import Game.Engine.Inventory.Delivery;
+import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
+import Game.Engine.Map.SearchTile;
 import Game.Engine.Map.Tile;
 
 import java.util.List;
@@ -56,6 +59,7 @@ public class EngineerCheckAction extends WorkAction {
         if (!engHub.hasProjects()) return false;
 
         if (topProject != null) {
+            setName("hey a project!!!!!!!!");
             checkProj(topProject, engHub);
             return false;
         }
@@ -63,6 +67,7 @@ public class EngineerCheckAction extends WorkAction {
         // Haul for any collecting project even if unassigned
         BuildingProject collecting = engHub.getHighPriorityProject(Progress.COLLECTING);
         if (collecting != null) {
+            setName("collectin");
             haulMaterials(collecting, engHub);
             return false;
         }
@@ -101,7 +106,7 @@ public class EngineerCheckAction extends WorkAction {
     }
 
     private void haulMaterials(BuildingProject project, EngineeringHub engHub) {
-        // Already carrying a delivery for this project — head to hub to deposit
+        // Already carrying a delivery — head to hub to deposit
         Delivery pending = colonist.getInventory().getDeliveries().stream()
                 .filter(d -> d.getDestination() == project.getPartition())
                 .findFirst().orElse(null);
@@ -121,17 +126,40 @@ public class EngineerCheckAction extends WorkAction {
             return;
         }
 
-        // Nothing carrying — claim materials and search storage
+        // Nothing carrying — claim and search
         List<ItemStack> needed = project.getStillNeeded();
         if (needed.isEmpty()) return;
 
-        ItemStack claimed = project.claimMaterial(needed.get(0).getItem().getType());
-        if (claimed == null) return;
+        Item item = needed.get(0).getItem();
+        Class<? extends Item> itemClass = item.getClass();
+        long currentTick = colonistam.getTime().tick();
 
-        colonist.setStatus("Hauling materials for " + project.getName());
-        colonistam.searchFor(claimed.getItem().getType(), BuildingType.STORAGE);
+        // Check cooldown — give up until reassigned
+        if (colonistam.getMemory().isClassOnCooldown(itemClass, currentTick)) {
+            colonist.setStatus("Waiting — recent search for " + item.getName() + " failed");
+            return;
+        }
+
+        ItemStack claimed = project.claimMaterial(itemClass);
+        if (claimed == null) return; // another builder already claimed this
+
+        // Check memory for a known location first
+        Tile known = colonistam.getMemory().recallClassLocation(itemClass);
+        if (known != null) {
+            // We remember where this resource was — go straight there
+            setDes(known);
+            Delivery delivery = new Delivery(
+                    List.of(new ItemStack(item, claimed.getQuantity())),
+                    null, project.getPartition()
+            );
+            colonist.getInventory().addDelivery(delivery);
+        } else {
+            // No memory — create a SearchTile to find it
+            SearchTile searchTile = new SearchTile(new ClassSearch(itemClass));
+            setDes(searchTile);
+            colonist.setStatus("Searching for " + item.getName() + " for " + project.getName());
+        }
     }
-
     private boolean assignToProject(BuildingProject project, BuildJob job) {
         if (project.addBuilder(colonist)) {
             job.addProject(project);

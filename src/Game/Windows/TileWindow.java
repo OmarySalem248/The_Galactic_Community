@@ -104,17 +104,27 @@ public class TileWindow {
             btn.addActionListener(e -> {
                 // Always create the project — let the hub/colony handle affordability messaging
                 BuildingProject project = new BuildingProject(prototype.getType(), prototype, tile);
-                game.getBuildMode().getActiveHub().addProject(project);
 
-                JOptionPane.showMessageDialog(frame,
-                        prototype.getType() + " project created and assigned to "
-                                + game.getBuildMode().getActiveHub().getName() + ".\n"
-                                + "Builders will begin collecting resources.",
-                        "Project Created",
-                        JOptionPane.INFORMATION_MESSAGE);
-                game.getBuildMode().exit();
-                parentWindow.updateBuildModeIndicator();
-                frame.dispose();
+                /*
+                make add project a function of the colony with project and the enghub as a parameter
+                 */
+                if(game.getColony().addProject(project,game.getBuildMode().getActiveHub())) {
+
+                    JOptionPane.showMessageDialog(frame,
+                            prototype.getType() + " project created and assigned to "
+                                    + game.getBuildMode().getActiveHub().getName() + ".\n"
+                                    + "Builders will begin collecting resources.",
+                            "Project Created",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    game.getBuildMode().exit();
+                    parentWindow.updateBuildModeIndicator();
+                    frame.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(frame,
+                            "Broke",
+                            "Broke",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
 
                 parentWindow.repaintMap();
                 frame.dispose();

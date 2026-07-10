@@ -6,6 +6,7 @@ import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Colonist.Personality.PersonalityFactory;
 import Game.Engine.Colonist.Pregnancy;
 import Game.Engine.Government.ColonyLeadership;
+import Game.Engine.Inventory.ColonyInvMap;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.GameMap;
@@ -36,6 +37,8 @@ public class Colony {
 
 
     private String status;
+
+    private ColonyInvMap invMap = new ColonyInvMap();
     private GameMap map;
     private Resources resources;
 
@@ -91,6 +94,10 @@ public class Colony {
 
     public List<Colonist> getColonists() {
         return colonists;
+    }
+
+    public ColonyInvMap getInvMap(){
+        return invMap;
     }
 
 
@@ -210,5 +217,14 @@ public class Colony {
             fooddemand += c.getFoodConsumption();
         }
         return fooddemand;
+    }
+
+    public boolean addProject(BuildingProject project, EngineeringHub activeHub) {
+        if (invMap.canAfford(project.getReqRes())){
+            activeHub.addProject(project);
+            return true;
+
+        }
+        return false;
     }
 }

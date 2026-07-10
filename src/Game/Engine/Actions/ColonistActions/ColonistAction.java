@@ -22,6 +22,10 @@ public abstract class ColonistAction {
         return name;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
     /**
      * Executes the action in the context of the colony.
      * Returns true if successful.
