@@ -1,0 +1,19 @@
+Fetching: Macro action using both search and deliver macros, all packaged under one action to help keep better track of
+destinations
+
+how will search and deliver macros work?
+
+Search: only called when memory isn't aware of place to collect, if colonist already knows where item could be
+move micro is queued.
+Deliver: makes delivery and takes it back, theoretically more straightforward
+
+
+Fetch:
+
+parameters
+
+Tile origin: where the search as assigned, useful to construct deliveries back, why a fetch macro was made to avoid juggling destinations around the generic colonist actions, containing all logic in fetch class
+
+Tile deliverydest (optional): if the colonist is supposed to take the item to somewhere other than where the search was assigned, this is saved
+
+first 2 parameters are important for making it easier to construct the delivery once items are found

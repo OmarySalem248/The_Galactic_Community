@@ -17,7 +17,8 @@ public class GameMap {
     public final int    cols, rows;
     private List<ColonistAvatar> avatars;
     private final Tile[][] grid;   // grid[row][col]
-    private List<Building> buildings;
+    private ArrayList<Building> buildings;
+
 
     /** Create a blank map filled with PLAINS. */
     public GameMap(int cols, int rows) {
@@ -65,8 +66,10 @@ public class GameMap {
 
     public void placeBuilding(Building building, int col, int row){
         this.buildings.add(building);
+
         getTile(col, row).placeBuilding(building);
     }
+
     public void addAvatar(ColonistAvatar avatar)    { avatars.add(avatar); }
     public void removeAvatar(ColonistAvatar avatar) { avatars.remove(avatar); }
     public List<ColonistAvatar> getAvatars()        { return avatars; }
@@ -93,7 +96,9 @@ public class GameMap {
         return null;
     }
 
-    public List<Building> getBuildings() {
+    public ArrayList<Building> getBuildings() {
         return buildings;
     }
+
+
 }

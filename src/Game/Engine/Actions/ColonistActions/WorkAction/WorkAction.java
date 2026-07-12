@@ -1,16 +1,10 @@
 package Game.Engine.Actions.ColonistActions.WorkAction;
 
-import Game.Engine.Actions.ColonistActions.ColonistAction;
+import Game.Engine.Actions.ColonistActions.GenericMacroActions.MacroAction;
 import Game.Engine.Buildings.Building;
-import Game.Engine.Buildings.Farm;
 import Game.Engine.Colonist.ActionManager;
-import Game.Engine.Event.GameEvent;
-import Game.Engine.Event.GameEventBus;
-import Game.Engine.Event.GameEventType;
-import Game.Engine.Event.ResourceProducedEvent;
-import Game.Engine.Inventory.Resources;
 
-public abstract class WorkAction extends ColonistAction {
+public abstract class WorkAction  extends MacroAction {
     public WorkAction(String name, ActionManager colonist) {
         super(name, colonist);
     }

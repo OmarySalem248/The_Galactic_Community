@@ -1,9 +1,10 @@
-package Game.Engine.Actions.ColonistActions;
+package Game.Engine.Actions.ColonistActions.GenericMicroActions.ConsumeActions;
 
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.MicroAction;
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Inventory.Items.Consumable.Consumable;
 
-public class ConsumeAction extends ColonistAction{
+public class ConsumeAction  extends MicroAction {
     private int timetocon;
 
     private Consumable consumable;

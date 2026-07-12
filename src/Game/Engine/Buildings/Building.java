@@ -38,6 +38,8 @@ public abstract class Building {
 
     private Inventory neededResources;
 
+    private int colony = 0000;
+
 
     public Building(String name, int limit,Class<? extends Profession> compatible,int storage,BuildingType type) {
         this.name = name;
@@ -60,6 +62,14 @@ public abstract class Building {
         setNeededRes();
         getNeededResources().setMaxWeight((int) getNeededResources().getCurrentWeight());
 
+    }
+
+    public void claim(int colony){
+        this.colony = colony;
+    }
+
+    public boolean isClaimed(){
+        return colony != 0000;
     }
 
     public abstract void setNeededRes();

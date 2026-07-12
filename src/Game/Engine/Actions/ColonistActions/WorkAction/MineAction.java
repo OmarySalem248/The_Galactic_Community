@@ -11,4 +11,9 @@ public class MineAction extends WorkAction{
     public boolean execute() {
         return false;
     }
+
+    @Override
+    public void updateQueue() {
+
+    }
 }

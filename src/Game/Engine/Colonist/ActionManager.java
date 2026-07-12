@@ -1,7 +1,10 @@
 package Game.Engine.Colonist;
 
-import Game.Engine.Actions.ColonistActions.*;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.ConsumeActions.ConsumeAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.*;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.DepositDeliveryAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.PickupAction;
 import Game.Engine.Colonist.Memory.ToDo;
 import Game.Engine.Inventory.Delivery;
 import Game.Engine.Actions.Interactions.ChitChatAction;

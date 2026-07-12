@@ -1,10 +1,13 @@
-package Game.Engine.Actions.ColonistActions.WorkAction;
+package Game.Engine.Actions.ColonistActions.WorkAction.Farming;
 
+import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Buildings.Farm;
 import Game.Engine.Buildings.PlantIncubater;
 import Game.Engine.Colonist.ActionManager;
+import Game.Engine.Colonist.Career.Job.BuildJob;
+import Game.Engine.Colonist.Career.Job.FarmJob;
 import Game.Engine.Colonist.Memory.ToDo;
 import Game.Engine.Colonist.Memory.TodoType;
 import Game.Engine.Inventory.Delivery;
@@ -21,31 +24,34 @@ import java.util.List;
 public class FarmAction extends WorkAction {
 
     private static final float NEAR_FULL_RATIO = 0.85f;
-
+    private FarmJob job;
 
 
     public FarmAction(ActionManager colonist) {
         super("Farming", colonist);
+        job = (FarmJob) this.colonist.getJob();
     }
 
+
+
     @Override
-    public boolean execute() {
+    public void updateQueue() {
 
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) {
-            return false;
+            return;
         }
 
 
 
         // No seeds anywhere and no active incubators — go search for seeds
 
-        boolean noSeeds = !colonistam.getColonist().getInventory().hasType(ItemType.SEED)
+        boolean noSeeds = !colonist.getInventory().hasType(ItemType.SEED)
                 && !farm.getInv().hasType(ItemType.SEED)
                 && myIncubators(farm).isEmpty();
         if (noSeeds && !colonistam.getSearching()) {
             colonist.setStatus("Out of seeds, searching for storage...");
             colonistam.searchFor(ItemType.SEED, BuildingType.STORAGE);
-            return false;
+            return;
         }
 
 
@@ -54,40 +60,41 @@ public class FarmAction extends WorkAction {
 
 
             transportGoods(farm);
-            return false;
+            return;
         }
 
         // Normal priority gate — one action per tick
         if (hasSeedsToDeposit() && !canPlant(farm)) {
 
             depositSeeds(farm);
-            return false;
+            return;
         }
         if (hasMyIncubatorsToTend(farm)) {
 
             tendIncubators(farm);
-            return false;
+            return;
         }
         if (hasMyIncubatorsToHarvest(farm)) {
 
             harvest(farm);
-            return false;
+            return;
         }
         if (canPlant(farm)) {
 
             plant(farm);
-            return false;
+            return;
         }
 
         // Last resort — transport excess goods
         if (hasGoodsToTransport(farm)) {
 
             transportGoods(farm);
-            return false;
+            return;
         }
 
-        return false;
+
     }
+
     @Override
     public void setReminder(Building building) {
         Farm farm = (Farm) building;

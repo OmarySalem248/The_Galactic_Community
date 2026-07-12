@@ -1,10 +1,10 @@
-package Game.Engine.Actions.ColonistActions;
+package Game.Engine.Actions.ColonistActions.GenericMicroActions;
 
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Map.GameMap;
 import Game.Engine.Map.Tile;
 
-public class MoveAction extends ColonistAction {
+public class MoveAction extends MicroAction {
 
 
     private final Tile destination;

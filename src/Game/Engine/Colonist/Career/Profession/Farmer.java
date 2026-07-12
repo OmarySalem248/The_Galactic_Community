@@ -1,6 +1,6 @@
 package Game.Engine.Colonist.Career.Profession;
 
-import Game.Engine.Actions.ColonistActions.WorkAction.FarmAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.Farming.FarmAction;
 import Game.Engine.Colonist.Career.Job.FarmJob;
 import Game.Engine.Colonist.Career.Job.Job;
 import Game.Engine.Colonist.Career.Job.JobType;

@@ -23,6 +23,7 @@ public class ActionQueue {
     public void tick() {
         promoteFromPending();
         tickActive();
+
     }
 
     /** Move pending actions into active if slot is available. */

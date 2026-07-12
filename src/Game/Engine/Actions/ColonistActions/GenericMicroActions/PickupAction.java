@@ -1,10 +1,10 @@
-package Game.Engine.Actions.ColonistActions;
+package Game.Engine.Actions.ColonistActions.GenericMicroActions;
 
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 
-public class PickupAction extends ColonistAction {
+public class PickupAction extends MicroAction {
 
     private final Inventory source;
     private final Item item;

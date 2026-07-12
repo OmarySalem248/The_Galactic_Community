@@ -20,6 +20,7 @@ import Game.Engine.Colonist.Colonist;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Colony {
@@ -41,20 +42,25 @@ public class Colony {
     private ColonyInvMap invMap = new ColonyInvMap();
     private GameMap map;
     private Resources resources;
+    private static final AtomicInteger ID_GENERATOR = new AtomicInteger(1);
+    private int id;
 
     private Inventory inv;
 
     public Colony( Resources startingResources, GameMap map) {
-
+        this.id = ID_GENERATOR.incrementAndGet();
         this.map = map;
         this.resources = startingResources;
         this.colonists = new ArrayList<>();
-        this.buildings = map.getBuildings();
+        this.buildings = new ArrayList<>();
+
+
         this.persfact = new PersonalityFactory();
         Colonist Jeff =new Colonist(this,"Jeff", ProfessionRegistry.get("Farmer"),35,1000,1,'M',persfact.futureDictator());
 
         colonists.add(Jeff);
 
+        /*
         colonists.add(new Colonist(this,"Britta",ProfessionRegistry.get("WoodCutter"),28,1000,1,'F',persfact.comedian()));
         Colonist Troy =  new Colonist(this,"Troy",ProfessionRegistry.get("Farmer"), 19,1000,1,'M',persfact.funGuy());
 
@@ -66,6 +72,8 @@ public class Colony {
         colonists.add(new Colonist(this,"Shirley",ProfessionRegistry.get("Miner"),43,1000,1,'F',persfact.caring()));
         colonists.add(new Colonist(this,"Pierce",ProfessionRegistry.get("Unemployed"),75,1000,1,'M',persfact.turd()));
 
+         */
+
 
         fooddemand = colonists.size();
         this.initializeRelationships();
@@ -73,7 +81,11 @@ public class Colony {
         this.leadership = new ColonyLeadership(this);
         this.status ="The crew are lost!";
         ArrayList<BuildingProject> projects= new ArrayList<BuildingProject>();
-
+        for(Building building : map.getBuildings()){
+            if(!building.isClaimed()) {
+                this.addBuilding(building);
+            }
+        }
 
         for (Colonist c : colonists) {
             for(Building b :buildings) {
@@ -191,8 +203,12 @@ public class Colony {
 
 
     public void addBuilding(Building building){
-
+        if(building.getBType() == BuildingType.STORAGE){
+            invMap.register(building);
+        }
+        building.claim(id);
         this.buildings.add(building);
+
     }
 
     public boolean performAction(ColonyAction action) {

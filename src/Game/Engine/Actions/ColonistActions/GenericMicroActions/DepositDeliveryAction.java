@@ -1,4 +1,4 @@
-package Game.Engine.Actions.ColonistActions;
+package Game.Engine.Actions.ColonistActions.GenericMicroActions;
 
 import Game.Engine.Inventory.Delivery;
 import Game.Engine.Colonist.ActionManager;
@@ -11,7 +11,7 @@ import Game.Engine.Inventory.Items.ItemStack;
  * The calling code is responsible for identifying which delivery to deposit
  * (e.g. the one whose destination matches the current building's inventory).
  */
-public class DepositDeliveryAction extends ColonistAction {
+public class DepositDeliveryAction extends MicroAction {
 
     private final Delivery delivery;
 

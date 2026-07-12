@@ -1,6 +1,5 @@
-package Game.Modes;
+package Game.Engine.Modes;
 
-import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.EngineeringHub;
 
 /**

@@ -1,8 +1,8 @@
-package Game.Engine.Actions.ColonistActions;
+package Game.Engine.Actions.ColonistActions.GenericMicroActions;
 
 import Game.Engine.Colonist.ActionManager;
 
-public class SleepAction extends ColonistAction{
+public class SleepAction  extends MicroAction {
     private int tick;
     public SleepAction(ActionManager colonist) {
         super("Sleep", colonist);

@@ -10,7 +10,7 @@ import Game.Engine.Inventory.Resources;
 import Game.Engine.Map.Tile;
 import Game.Engine.Map.GameMap;
 import Game.Engine.Time.GameClock;
-import Game.Modes.BuildMode;
+import Game.Engine.Modes.BuildMode;
 
 public class Game {
 

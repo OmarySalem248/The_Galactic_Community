@@ -1,6 +1,5 @@
 package Game.Engine.Actions.ColonistActions.WorkAction;
 
-import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Buildings.EngineeringHub;
 import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Buildings.Projects.Progress;
@@ -79,6 +78,11 @@ public class EngineerCheckAction extends WorkAction {
         }
 
         return false;
+    }
+
+    @Override
+    public void updateQueue() {
+
     }
 
     /** Returns the EngineeringHub if the colonist is currently standing on it, else null. */

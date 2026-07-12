@@ -1,1 +1,46 @@
 Macro actions have their own queue of micro actions
+
+
+ANOTHER MOVMENT REWORK YAAAAAAAAAAAAAAAAAAAAY
+
+AND IM REWORKING SEEAAARRRCCHHHHHHH
+
+
+THIS BULLSHITTT BETTTERRR GET ME A JOBBBBBB!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+action manager will finally stop being such a mess hopefully
+
+
+
+How will work example with farmers, i shouldn't touch what works but this is a necessary evil in the long term:
+
+Action manager notices that colonist needs to farm, queues up farm action.
+
+farmaction looks at colonists job and current position and determines the ideal microaction to queue up
+
+micrcoactions in question:
+
+deliver actions
+pickup/drop off
+move
+search
+plant
+tend
+harvest
+ect
+
+
+MacroActions in theory do not actually do anything and instead act as multiple micros in a trench coat
+
+this may render movemanager obsolete but oh well it was a fun experiment while it lasted
+
+What does ActionMan do now?
+
+can queue both macros and micros
+executes as usual only difference is when a macro is executed it by extension executes its top micro.
+
+
+colonist gets distracted? aman sets aside macro but macro keeps its own queue so when its queued back up again the colonist can
+get back to business.

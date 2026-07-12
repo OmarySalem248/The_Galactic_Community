@@ -12,5 +12,10 @@ public class WoodCutAction extends WorkAction{
         return false;
     }
 
+    @Override
+    public void updateQueue() {
+
+    }
+
 
 }

@@ -1,11 +1,11 @@
 package Game.Engine.Actions.Interactions;
 
-import Game.Engine.Actions.ColonistActions.ColonistAction;
+import Game.Engine.Actions.ColonistActions.GenericMacroActions.MacroAction;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipSet;
 
-public abstract class InteractAction extends ColonistAction {
+public abstract class InteractAction  extends MacroAction {
 
     protected final Colonist c1;
     protected final Colonist c2;

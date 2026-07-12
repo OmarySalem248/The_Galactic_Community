@@ -17,7 +17,6 @@ public class BuildAction extends ColonyAction {
 
     @Override
     public boolean execute(Colony colony) {
-        Resources res = colony.getResources();
             colony.addBuilding(building);
             tile.placeBuilding(building);
             building.setcoords(tile);
