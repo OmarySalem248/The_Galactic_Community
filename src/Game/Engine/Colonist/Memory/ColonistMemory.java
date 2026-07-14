@@ -22,13 +22,15 @@ public class ColonistMemory {
 
     private GameTime mentalTime = new GameTime(0,0,0,0,0);
     private HashMap<TodoType, ArrayList<ToDo>> todoMap = new HashMap<>();
-
+    public void updateTime(GameTime time){
+        mentalTime = time;
+    }
 
     /** Called when a colonist sees a tile — updates or adds memory entry. */
-    public void observe(Tile tile, GameTime time) {
+    public void observe(Tile tile) {
         BuildingType type = tile.hasBuilding() ? tile.building.getBType() : null;
-        memoryMap.put(tile, new MemoryEntry(type, time.tick()));
-        mentalTime = time;
+        memoryMap.put(tile, new MemoryEntry(type, mentalTime.tick()));
+
     }
 
     /** Returns true if the colonist has ever seen a building of this type. */
@@ -141,5 +143,9 @@ public class ColonistMemory {
 
     public boolean hasSeen(Tile tile) {
         return memoryMap.containsKey(tile);
+    }
+
+    public GameMap getMemoryMap() {
+        return memoryMap;
     }
 }

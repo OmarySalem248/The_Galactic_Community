@@ -8,7 +8,7 @@ move micro is queued.
 Deliver: makes delivery and takes it back, theoretically more straightforward
 
 
-Fetch:
+FetchAction:
 
 parameters
 
@@ -17,3 +17,28 @@ Tile origin: where the search as assigned, useful to construct deliveries back, 
 Tile deliverydest (optional): if the colonist is supposed to take the item to somewhere other than where the search was assigned, this is saved
 
 first 2 parameters are important for making it easier to construct the delivery once items are found
+
+Search: should be the same as the search classes already in place, only change is that searches will also keep track of the quantity of item needed (wouldn't want a colonist taking 100 of something they only need 10 of)
+
+SearchAction:
+
+uses MoveAction to wander around map to look for item, if not found in range search is put on hold, unsuccessful search will be kept in colonist memory but the instance of FetchAction will be scrapped and
+search only saved for colonist to help with future searches, every search, even if for the same item is treated as a new search.
+
+Important Micros:
+
+MoveAction
+CheckAction (not made yet): to check the storage inventory for the needed items
+
+
+DeliverAction:
+
+creates delivery and moves to destination to deposit:
+
+
+uses
+Collect/DepositDeliveryAction
+MoveAction
+
+
+

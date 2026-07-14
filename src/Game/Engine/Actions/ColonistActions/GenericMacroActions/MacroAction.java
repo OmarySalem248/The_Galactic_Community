@@ -2,6 +2,7 @@ package Game.Engine.Actions.ColonistActions.GenericMacroActions;
 
 import Game.Engine.Actions.ColonistActions.ColonistAction;
 import Game.Engine.Actions.Queue.ActionQueue;
+import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Colonist.ActionManager;
 
 public abstract class MacroAction extends ColonistAction {
@@ -25,6 +26,11 @@ public abstract class MacroAction extends ColonistAction {
 
     public void setComplete(boolean complete){
         this.complete = complete;
+    }
+
+    public void queueAction(QueuedAction action){
+        microQueue.add(action);
+
     }
     public abstract void updateQueue();
 }

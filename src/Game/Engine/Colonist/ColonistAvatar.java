@@ -38,7 +38,7 @@ public class ColonistAvatar {
         if(colonist.getName().equals("Annie")){
             System.out.println("letsago");
         }
-        actionManager.run(time,map,getCurrentTile());
+        actionManager.run(time,getCurrentTile());
         status.update(time);
 
 

@@ -9,7 +9,8 @@ public class ClassSearch extends Search {
 
     private final Class<? extends Item> itemClass;
 
-    public ClassSearch(Class<? extends Item> itemClass) {
+    public ClassSearch(int quant, Class<? extends Item> itemClass) {
+        super(quant);
         this.itemClass = itemClass;
     }
 

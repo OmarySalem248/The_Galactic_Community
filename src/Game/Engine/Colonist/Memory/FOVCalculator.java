@@ -2,7 +2,10 @@ package Game.Engine.Colonist.Memory;
 
 
 
-import Game.Engine.Map.GameMap;
+import Game.Engine.Event.ColonistCastRayEvent;
+import Game.Engine.Event.GameEvent;
+import Game.Engine.Event.GameEventBus;
+import Game.Engine.Event.GameEventType;
 import Game.Engine.Map.Tile;
 
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ public class FOVCalculator {
      * Returns all tiles visible from origin within radius.
      * Uses ray casting — stops ray when it hits a vision blocker.
      */
-    public static List<Tile> calculate(Tile origin, int radius, GameMap map) {
+    public static List<Tile> calculate(Tile origin, int radius, GameEventBus eventBus) {
         List<Tile> visible = new ArrayList<>();
         visible.add(origin);
 
@@ -24,8 +27,9 @@ public class FOVCalculator {
                 if (dx == 0 && dy == 0) continue;
                 if (dx * dx + dy * dy > radius * radius) continue; // circular FOV
 
-                List<Tile> ray = castRay(origin, dx, dy, map);
-                visible.addAll(ray);
+
+                eventBus.fire(new GameEvent<>(GameEventType.COLONIST_CASTRAY, new ColonistCastRayEvent(visible,origin,dx,dy)));
+
             }
         }
 
@@ -36,22 +40,5 @@ public class FOVCalculator {
      * Casts a ray from origin toward (dx, dy).
      * Stops when it hits a vision blocker — includes the blocking tile but not beyond.
      */
-    private static List<Tile> castRay(Tile origin, int dx, int dy, GameMap map) {
-        List<Tile> ray = new ArrayList<>();
 
-        int steps = Math.max(Math.abs(dx), Math.abs(dy));
-        for (int i = 1; i <= steps; i++) {
-            int col = origin.col + Math.round((float) dx * i / steps);
-            int row = origin.row + Math.round((float) dy * i / steps);
-
-            Tile tile = map.getTile(col, row);
-            if (tile == null) break;
-
-            ray.add(tile);
-
-            if (tile.blocksVision()) break; // include blocker but stop here
-        }
-
-        return ray;
-    }
 }

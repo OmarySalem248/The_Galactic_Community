@@ -159,7 +159,7 @@ public class EngineerCheckAction extends WorkAction {
             colonist.getInventory().addDelivery(delivery);
         } else {
             // No memory — create a SearchTile to find it
-            SearchTile searchTile = new SearchTile(new ClassSearch(itemClass));
+            SearchTile searchTile = new SearchTile(new ClassSearch(needed.get(0).getQuantity(),itemClass));
             setDes(searchTile);
             colonist.setStatus("Searching for " + item.getName() + " for " + project.getName());
         }

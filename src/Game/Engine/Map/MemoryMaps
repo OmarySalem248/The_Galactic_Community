@@ -1,0 +1,44 @@
+Memory maps
+
+
+
+
+
+
+colonists memory of the game map
+
+
+FogTile:
+
+Extension of Tile, Tile that the colonist knows must exist due to previously observed tiles but has yet to observe
+
+
+MemoryTile:
+
+How a colonist remembers and exact tile: due to observation, memory tiles in colonists immediate vicinity should be identical tp their real equivalents
+
+
+MemoryMap extends GameMap (renamed Map class)
+
+starts off as GameMap with only colonists spawn Tile and bare minimum dimensions , when tile is observed that is out of bounds memory map add dimensions needed:
+
+eg colonist spawns on Tile 3,4  MemoryMap is 3x4 GameMap with all Tiles except spawn Tiles being FogTile
+
+Using EventBus (will do my self) this is sample:
+        eventBus.subscribe(GameEventType.COLONIST_MOVE, event -> {
+            ColonistMoveEvent mov = (ColonistMoveEvent) event.data();
+            game.getMap().moveAvatar( mov.avatar(),mov.to());
+        });
+        eventBus.subscribe(GameEventType.COLONIST_CASTRAY, event -> {
+            ColonistCastRayEvent ray = (ColonistCastRayEvent) event.data();
+            game.getMap().colonistCastRay( ray.visible() , ray.origin(), ray.dx(),ray.dy());
+        });
+
+Colonist calls upon map to cast rays with FOV, this will update the memory map either by replacing FogTiles with MemoryTiles or updating MemoryTiles
+
+
+So when a colonist wants to move or interact with a tile it is not directly calling upon map (bad code arc) it calls upon the colonists memory of the map then using the event bus to tell the map to update whatever:
+
+it would be annoying to have every interaction a colonist has with its environment turned into an even
+
+considering if this is good architecture: as part of action manager just have one event calls upon the real GameMap to give the colonist a 3x3 range of tiles that the colonist can directly interact with in the form of an array

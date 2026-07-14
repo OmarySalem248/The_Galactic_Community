@@ -3,11 +3,19 @@ package Game.Engine.Colonist.Memory.Search;
 /**
  * Abstract base for a resource search query carried by a SearchTile.
  */
+
+
+import Game.Engine.Inventory.Items.Item;
+
 public abstract class Search {
+    private final int quantity;
 
-    /** Check if a given item matches what this search is looking for. */
-    public abstract boolean matches(Game.Engine.Inventory.Items.Item item);
+    public Search(int quantity) {
+        this.quantity = quantity;
+    }
 
-    /** Human-readable description for status display. */
+    public int getQuantity() { return quantity; }
+
+    public abstract boolean matches(Item item);
     public abstract String describe();
 }

@@ -1,0 +1,24 @@
+
+
+todo note for later
+
+
+
+right now actionmanagers just have access to the map itself and move and work using it in a straightforward way
+
+not good for object hierarchy
+
+need something to have colonists move and explore map without just giving all of them access to the map itself
+
+
+
+brainstorm:
+
+event: have it registered on the eventbus, least favourite, dont like working with the event bus and using it for tile discovery is messy imo
+
+i may have do do eventbus method anyway :(((((((((((((((((((((((((
+
+
+relation between colonists, memories and maps:
+
+colonists constantly observe tiles around them to ensure coherence between memory of immediate environment and real map

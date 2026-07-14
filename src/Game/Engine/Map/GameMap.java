@@ -2,6 +2,7 @@ package Game.Engine.Map;
 
 import Game.Engine.Buildings.*;
 import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Colonist.Memory.ColonistMemory;
 import Game.Engine.Inventory.Items.Resources.Stone;
 import Game.Engine.Inventory.Items.Resources.Wood;
 import Game.Engine.Inventory.Items.Seed.UberrySeed;
@@ -9,14 +10,17 @@ import Game.Engine.Inventory.Items.Consumable.Food.UtopiaBar;
 
 import java.util.*;
 
+
+
 public class GameMap {
 
     // -----------------------------------------------------------------------
     // Map data
     // -----------------------------------------------------------------------
-    public final int    cols, rows;
+    public int    cols;
+    public int rows;
     private List<ColonistAvatar> avatars;
-    private final Tile[][] grid;   // grid[row][col]
+    Tile[][] grid;   // grid[row][col]
     private ArrayList<Building> buildings;
 
 
@@ -27,6 +31,11 @@ public class GameMap {
         this.cols = cols;
         this.rows = rows;
         this.grid = new Tile[rows][cols];
+        popMap();
+    }
+
+
+    public void popMap(){
         for (int r = 0; r < rows; r++)
             for (int c = 0; c < cols; c++)
                 grid[r][c] = new Tile(c, r);
@@ -101,4 +110,31 @@ public class GameMap {
     }
 
 
+    public void moveAvatar(ColonistAvatar avatar, Tile tile) {
+        avatar.getCurrentTile().colonistExit(avatar);
+        tile.colonistEnter(avatar);
+    }
+
+    public void colonistCastRay(List<Tile> visible, Tile origin, int dx, int dy) {
+        List<Tile> ray = castRay(origin, dx, dy);
+        visible.addAll(ray);
+    }
+    public List<Tile> castRay(Tile origin, int dx, int dy) {
+        List<Tile> ray = new ArrayList<>();
+
+        int steps = Math.max(Math.abs(dx), Math.abs(dy));
+        for (int i = 1; i <= steps; i++) {
+            int col = origin.col + Math.round((float) dx * i / steps);
+            int row = origin.row + Math.round((float) dy * i / steps);
+
+            Tile tile = getTile(col, row);
+            if (tile == null) break;
+
+            ray.add(tile);
+
+            if (tile.blocksVision()) break; // include blocker but stop here
+        }
+
+        return ray;
+    }
 }

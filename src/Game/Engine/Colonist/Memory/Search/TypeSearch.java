@@ -10,7 +10,8 @@ public class TypeSearch extends Search {
 
     private final ItemType type;
 
-    public TypeSearch(ItemType type) {
+    public TypeSearch(int quant,ItemType type) {
+        super(quant);
         this.type = type;
     }
 

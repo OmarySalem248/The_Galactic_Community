@@ -1,5 +1,6 @@
 package Game.Engine.Event;
 
+import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Colony;
 import Game.Engine.Game;
 
@@ -22,7 +23,14 @@ public class EventManager {
             ScheduleRequest req = (ScheduleRequest) event.data();
             game.getClock().schedule(req.target(), req.delay());
         });
-
+        eventBus.subscribe(GameEventType.COLONIST_MOVE, event -> {
+            ColonistMoveEvent mov = (ColonistMoveEvent) event.data();
+            game.getMap().moveAvatar( mov.avatar(),mov.to());
+        });
+        eventBus.subscribe(GameEventType.COLONIST_CASTRAY, event -> {
+            ColonistCastRayEvent ray = (ColonistCastRayEvent) event.data();
+            game.getMap().colonistCastRay( ray.visible() , ray.origin(), ray.dx(),ray.dy());
+        });
 
     }
 }
