@@ -7,7 +7,7 @@ import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Event.EventManager;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Resources;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Map.GameMap;
 import Game.Engine.Time.GameClock;
 import Game.Engine.Modes.BuildMode;
@@ -40,7 +40,7 @@ public class Game {
             house.addResident(c);
             Tile startingTile = map.getTile(x,y);
             ColonistAvatar avatar = new ColonistAvatar(c,map.getTile(x,y));
-            avatar.setActionManager(new ActionManager(avatar, startingTile, eventBus,map));
+            avatar.setActionManager(new ActionManager(avatar, startingTile, eventBus));
             this.map.placeBuilding(house,x,y);
             map.addAvatar(avatar);
             x++;

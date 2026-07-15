@@ -4,5 +4,4 @@ import Game.Engine.Map.Tiles.Tile;
 
 import java.util.List;
 
-public record ColonistCastRayEvent(List<Tile> visible, Tile origin, int dx, int dy) {
-}
+public record TileGetNeighboursEvent(Tile origin, List<Tile> neighbours){}

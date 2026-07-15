@@ -1,6 +1,6 @@
 package Game.Engine.Colonist.Memory;
 
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Time.GameTime;
 
 public class ToDo {

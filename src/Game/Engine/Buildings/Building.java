@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
-import Game.Engine.Inventory.Items.ItemStack;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Coords;
+import Game.Engine.Map.Tiles.Tile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.imageio.ImageIO;
@@ -27,7 +27,9 @@ public abstract class Building {
 
     private BuildingType type;
 
-    private ArrayList<Tile> coords;
+    private ArrayList<Tile> tileCoords;
+
+    private Coords coords;
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
     private Class<? extends Profession> compatibleProfession;
 
@@ -57,7 +59,7 @@ public abstract class Building {
                 image = null;
             }
         }
-        this.coords = new ArrayList<>();
+        this.tileCoords = new ArrayList<>();
         this.neededResources = new Inventory();
         setNeededRes();
         getNeededResources().setMaxWeight((int) getNeededResources().getCurrentWeight());
@@ -85,10 +87,14 @@ public abstract class Building {
     public void addNeededRes(Item item, int quantity){
         neededResources.add(item,quantity);
     }
-    public void setcoords(Tile tile){
-        this.coords.add(tile);
+    public void setTileCoords(Tile tile){
+        this.tileCoords.add(tile);
     }
     public ArrayList<Tile> getCoords() { return coords; }
+
+    public Coords getRealCoords(){
+        return coords;
+    }
     public String getName() {
         return name+" "+ colonists.size();
     }
@@ -132,6 +138,10 @@ public abstract class Building {
     }
 
     public int getId() { return  id;
+    }
+
+    public void setCoords(Coords coords){
+        this.coords = coords;
     }
 
 

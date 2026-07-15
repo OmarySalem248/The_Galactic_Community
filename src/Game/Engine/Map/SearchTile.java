@@ -1,6 +1,8 @@
 package Game.Engine.Map;
 
 import Game.Engine.Colonist.Memory.Search.*;
+import Game.Engine.Inventory.Inventory;
+import Game.Engine.Map.Tiles.Tile;
 
 /**
  * SearchTile.java
@@ -38,6 +40,8 @@ public class SearchTile extends Tile {
         tilesExplored++;
         return tilesExplored >= MAX_TILES;
     }
+
+
 
     public int getTilesExplored() { return tilesExplored; }
 }

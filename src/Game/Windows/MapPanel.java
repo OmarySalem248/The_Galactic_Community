@@ -4,7 +4,7 @@ import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Game;
 import Game.Engine.Time.GameClock;
 import Game.Engine.Map.GameMap;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 import javax.swing.*;
 import java.awt.*;

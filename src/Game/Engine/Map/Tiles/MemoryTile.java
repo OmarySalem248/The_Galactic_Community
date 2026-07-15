@@ -1,8 +1,12 @@
-package Game.Engine.Map;
+package Game.Engine.Map.Tiles;
 
 
 
 import Game.Engine.Buildings.Building;
+import Game.Engine.Inventory.Items.ItemStack;
+import Game.Engine.Map.Tiles.Tile;
+
+import java.util.List;
 
 /**
  * MemoryTile.java
@@ -15,6 +19,8 @@ public class MemoryTile extends Tile {
     private Building rememberedBuilding;
     private long lastObservedTick;
 
+    private BuildingSnapshot snapshot;
+
     public MemoryTile(Tile realTile, long tick) {
         super(realTile.col, realTile.row);
         update(realTile, tick);
@@ -22,12 +28,21 @@ public class MemoryTile extends Tile {
 
     /** Refresh this memory tile from the current real tile state. */
     public void update(Tile realTile, long tick) {
-        this.rememberedBuilding = realTile.hasBuilding() ? realTile.getBuilding() : null;
+
+
         this.lastObservedTick   = tick;
         // Copy building reference to parent Tile field so existing code still works
         this.building = rememberedBuilding;
     }
 
+    public void setSnap(BuildingSnapshot snapshot) {
+        this.snapshot = snapshot;
+    }
+
     public long getLastObservedTick() { return lastObservedTick; }
     public Building getRememberedBuilding() { return rememberedBuilding; }
+
+    public BuildingSnapshot getSnap() {
+        return snapshot;
+    }
 }

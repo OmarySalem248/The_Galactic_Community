@@ -10,7 +10,7 @@ import Game.Engine.Inventory.Delivery;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 import Game.Engine.Map.SearchTile;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 import java.util.List;
 

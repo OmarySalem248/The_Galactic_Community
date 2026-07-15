@@ -2,7 +2,7 @@ package Game.Engine.Time;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colonist.ColonistAvatar;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 import java.util.*;
 
@@ -71,11 +71,9 @@ public class ConflictGraph {
         Set<Object> keys = new HashSet<>();
 
         Tile current     = avatar.getCurrentTile();
-        Tile destination = avatar.getActionManager().getDestination();
         Building building = avatar.getColonist().getAssignedBuilding();
 
         if (current != null)  keys.add(current);
-        if (destination != null) keys.add(destination);
         if (building != null) keys.add(building);
 
         return keys;

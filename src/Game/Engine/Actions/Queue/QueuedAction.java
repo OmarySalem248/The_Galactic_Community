@@ -2,7 +2,7 @@ package Game.Engine.Actions.Queue;
 
 
 import Game.Engine.Actions.ColonistActions.ColonistAction;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 public class QueuedAction implements Comparable<QueuedAction> {
 

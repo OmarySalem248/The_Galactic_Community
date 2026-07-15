@@ -6,17 +6,19 @@ import Game.Engine.Event.GameEvent;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Event.GameEventType;
 import Game.Engine.Map.GameMap;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Coords;
+import Game.Engine.Map.Tiles.MemoryTile;
+import Game.Engine.Map.Tiles.Tile;
 
 public class MoveAction extends MicroAction {
 
 
-    private final Tile destination;
+    private final Coords destination;
     private GameEventBus eventBus;
 
     private GameMap memoryMap;
 
-    public MoveAction(ActionManager colonist, Tile destination) {
+    public MoveAction(ActionManager colonist, Coords destination) {
         super("Move",colonist);
         this.destination = destination;
         this.eventBus = colonistam.getEventBus();
@@ -28,18 +30,18 @@ public class MoveAction extends MicroAction {
     public boolean execute() {
         Tile current = colonistam.getCurrentTile();
         if (current == null || destination == null) return false;
-        if (current == destination) return false;
+        if (current.same(destination)) return false;
 
         int col = current.col;
         int row = current.row;
 
-        if (col != destination.col) {
-            col += (destination.col > col) ? 1 : -1;
-        } else if (row != destination.row) {
-            row += (destination.row > row) ? 1 : -1;
+        if (col != destination.x()) {
+            col += (destination.x() > col) ? 1 : -1;
+        } else if (row != destination.y()) {
+            row += (destination.y() > row) ? 1 : -1;
         }
 
-        Tile next = memoryMap.getTile(col, row);
+        MemoryTile next = (MemoryTile) memoryMap.getTile(col, row);
         if (next == null) return false;
         eventBus.fire(new GameEvent<>(GameEventType.COLONIST_MOVE, new ColonistMoveEvent(colonistam.getAvatar(),next)));
         colonist.modEnergy(-1);

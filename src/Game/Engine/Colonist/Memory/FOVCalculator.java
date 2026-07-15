@@ -6,7 +6,7 @@ import Game.Engine.Event.ColonistCastRayEvent;
 import Game.Engine.Event.GameEvent;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Event.GameEventType;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.List;

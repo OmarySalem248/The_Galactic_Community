@@ -1,7 +1,6 @@
 package Game.Engine.Colonist;
 
-import Game.Engine.Map.GameMap;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Time.GameTime;
 /*
 Physical representation of colonist, the shell that contains data in Colonist class and decision making in ActionManager
@@ -34,7 +33,7 @@ public class ColonistAvatar {
         return actionManager;
     }
 
-    public void tick(GameTime time, GameMap map) {
+    public void tick(GameTime time) {
         if(colonist.getName().equals("Annie")){
             System.out.println("letsago");
         }

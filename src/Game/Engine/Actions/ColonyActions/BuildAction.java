@@ -2,8 +2,7 @@ package Game.Engine.Actions.ColonyActions;
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Colony;
-import Game.Engine.Inventory.Resources;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 public class BuildAction extends ColonyAction {
     private Building building;

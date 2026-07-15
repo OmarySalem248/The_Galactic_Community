@@ -1,6 +1,6 @@
 package Game.Engine.Colonist.Memory.Search;
 
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 /**
  * Records the outcome of a colonist's search attempt.

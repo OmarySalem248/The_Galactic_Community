@@ -1,11 +1,14 @@
 package Game.Engine.Colonist.Memory;
 
-import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Colonist.Memory.Search.SearchRecord;
 import Game.Engine.Colonist.Memory.Search.SearchResult;
+import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemType;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.MemoryMap;
+import Game.Engine.Map.Tiles.Coords;
+import Game.Engine.Map.Tiles.MemoryTile;
+import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Map.GameMap;
 import Game.Engine.Time.GameTime;
 
@@ -13,8 +16,16 @@ import java.util.*;
 
 public class ColonistMemory {
 
-    // Sparse memory — only tiles the colonist has actually seen
-    private final Map<Tile, MemoryEntry> memoryMap = new HashMap<>();
+
+
+    public ColonistMemory(MemoryMap memoryMap, GameEventBus eventbus){
+
+        this.memoryMap = memoryMap;
+        this.eventBus = eventbus;
+    }
+
+    private  GameEventBus eventBus;
+    private MemoryMap memoryMap;
     private final Map<Class<? extends Item>, SearchRecord> classSearchHistory = new HashMap<>();
     private final Map<ItemType, SearchRecord>              typeSearchHistory  = new HashMap<>();
 
@@ -27,25 +38,9 @@ public class ColonistMemory {
     }
 
     /** Called when a colonist sees a tile — updates or adds memory entry. */
-    public void observe(Tile tile) {
-        BuildingType type = tile.hasBuilding() ? tile.building.getBType() : null;
-        memoryMap.put(tile, new MemoryEntry(type, mentalTime.tick()));
 
-    }
 
-    /** Returns true if the colonist has ever seen a building of this type. */
-    public boolean knowsOf(BuildingType type) {
-        return memoryMap.values().stream()
-                .anyMatch(e -> e.buildingType() == type);
-    }
 
-    /** Returns the most recently seen tile containing a building of the given type. */
-    public Optional<Tile> recall(BuildingType type) {
-        return memoryMap.entrySet().stream()
-                .filter(e -> e.getValue().buildingType() == type)
-                .max(Comparator.comparingInt(e -> e.getValue().tickSeen()))
-                .map(Map.Entry::getKey);
-    }
 
     public void  addToDo(ToDo todo){
 
@@ -79,14 +74,14 @@ public class ColonistMemory {
         }
         return null;
     }
-    public Tile wanderUnexplored(Tile current, GameMap map) {
+    public MemoryTile wanderUnexplored(MemoryTile current) {
         Random rand = new Random();
-        List<Tile> neighbours = current.getNeighbours(map);
+        List<Tile> neighbours = current.getNeighbours(eventBus);
         List<Tile> unexplored = neighbours.stream()
                 .filter(n -> !hasSeen(n)).toList();
         List<Tile> candidates = unexplored.isEmpty() ? neighbours : unexplored;
         if (candidates.isEmpty()) return current;
-        return candidates.get(rand.nextInt(candidates.size()));
+        return (MemoryTile) candidates.get(rand.nextInt(candidates.size()));
     }
 
     public GameTime setTime(GameTime time, int minutes){
@@ -137,15 +132,17 @@ public class ColonistMemory {
 
 
     /** Returns all tiles the colonist has seen — useful for biased wandering. */
-    public java.util.Set<Tile> getExploredTiles() {
-        return memoryMap.keySet();
-    }
 
     public boolean hasSeen(Tile tile) {
-        return memoryMap.containsKey(tile);
+        return !memoryMap.isFog(tile.col,tile.row);
     }
 
-    public GameMap getMemoryMap() {
+    public MemoryMap getMemoryMap() {
         return memoryMap;
+    }
+
+    public void observe(Coords coords) {
+        MemoryTile current = (MemoryTile) memoryMap.getTileFromCoords(coords);
+        FOVCalculator.calculate(current, 12,  eventBus);
     }
 }

@@ -1,6 +1,12 @@
 package Game.Engine.Map;
 
-import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Buildings.Building;
+import Game.Engine.Buildings.BuildingType;
+import Game.Engine.Inventory.Inventory;
+import Game.Engine.Inventory.Items.ItemStack;
+import Game.Engine.Map.Tiles.*;
+
+import java.util.*;
 
 /**
  * MemoryMap.java
@@ -10,6 +16,9 @@ import Game.Engine.Colonist.ColonistAvatar;
  * This is what ActionManager and all actions interact with — never GameMap directly.
  */
 public class MemoryMap extends GameMap {
+
+
+    Map<BuildingType,Map<Integer,BuildingSnapshot>> snaps = new HashMap();
 
     public MemoryMap(Tile spawnTile) {
         // Start with minimum dimensions to contain the spawn tile
@@ -40,20 +49,44 @@ public class MemoryMap extends GameMap {
         } else {
             grid[realTile.row][realTile.col] = new MemoryTile(realTile, tick);
         }
+        MemoryTile updating =  (MemoryTile) grid[realTile.row][realTile.col];
+        if (realTile.hasBuilding()) {
+            Building b = realTile.getBuilding();
+            Inventory inventorycopy = new Inventory();
+            for(ItemStack stack: b.getInv().getStacks()){
+                inventorycopy.add(stack.getItem(),stack.getQuantity());
+            }
+            BuildingSnapshot snapshot = new BuildingSnapshot(b.getName(), b.getBType(), b.getId(), null, tick, b.getRealCoords());
+            updating.setSnap(snapshot);
+            if(existing.getClass() == FogTile.class) {
+                logSnap(snapshot);
+            }else if (((MemoryTile) existing).getSnap() == null || ((MemoryTile) existing).getSnap().id() != realTile.getBuilding().getId() ){
+                removeSnap(((MemoryTile) existing).getSnap());
+                logSnap(snapshot);
+            }
 
-        // Also ensure neighbours exist as FogTile (colonist knows they must exist)
-        for (int[] offset : new int[][]{{1,0},{-1,0},{0,1},{0,-1}}) {
-            int nc = realTile.col + offset[0];
-            int nr = realTile.row + offset[1];
-            if (nc >= 0 && nr >= 0) {
-                ensureCapacity(nc, nr);
-                if (grid[nr][nc] == null) {
-                    grid[nr][nc] = new FogTile(nc, nr);
-                }
+
+        }
+        else{
+            updating.setSnap(null);
+            if (existing instanceof MemoryTile mt && mt.getSnap() != null) {
+                removeSnap(mt.getSnap());
             }
         }
+
     }
 
+    public void logSnap(BuildingSnapshot snap) {
+        snaps.computeIfAbsent(snap.type(), k -> new HashMap<>())
+                .put(snap.id(), snap);
+    }
+
+    public void removeSnap(BuildingSnapshot snap) {
+        Map<Integer, BuildingSnapshot> typeMap = snaps.get(snap.type());
+        if (typeMap != null) {
+            typeMap.remove(snap.id());
+        }
+    }
     /**
      * Called when GameMap returns the 3x3 immediate surroundings.
      * These tiles are treated as freshly observed.
@@ -93,8 +126,35 @@ public class MemoryMap extends GameMap {
         this.rows = newRows;
     }
 
+    @Override
+    public MemoryTile getTile(int col, int row){
+        if (isFog(col,row)) return null;
+        if (col < 0 || col >= cols || row < 0 || row >= rows) return null;
+        return (MemoryTile) grid[row][col];
+    }
+
+    @Override
+
+    public Coords findBuildingCoordsByType(BuildingType type) {
+        if (!snaps.containsKey(type)) return null;
+        Map<Integer, BuildingSnapshot> typeMap = snaps.get(type);
+        if (typeMap.isEmpty()) return null;
+        return typeMap.values().stream()
+                .max(Comparator.comparingLong(BuildingSnapshot::takenAtTick))
+                .map(BuildingSnapshot::coords)
+                .orElse(null);
+    }
+
     public boolean isFog(int col, int row) {
         Tile t = getTile(col, row);
         return t == null || t instanceof FogTile;
+    }
+
+    public Map<BuildingType,Map<Integer, BuildingSnapshot>>  getSnaps() {
+        return snaps;
+    }
+    @Override
+    public void popNeighbours(Tile origin, List<Tile> neighbours) {
+        neighbours = getNeighbours(origin);
     }
 }

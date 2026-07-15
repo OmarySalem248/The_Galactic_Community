@@ -2,7 +2,7 @@ package Game.Engine.Actions.ColonistActions;
 
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.Colonist;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 public abstract class ColonistAction {
     protected String name;

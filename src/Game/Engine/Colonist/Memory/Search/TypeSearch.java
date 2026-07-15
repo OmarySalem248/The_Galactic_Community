@@ -1,5 +1,6 @@
 package Game.Engine.Colonist.Memory.Search;
 
+import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemType;
 
@@ -16,6 +17,15 @@ public class TypeSearch extends Search {
     }
 
     public ItemType getType() { return type; }
+
+    @Override
+    public float getSuitability(Inventory inv) {
+        if(!inv.hasType(type)){
+            return 0;
+        }
+
+        return (float) getQuantity() /inv.getByType(type).size();
+    }
 
     @Override
     public boolean matches(Item item) {

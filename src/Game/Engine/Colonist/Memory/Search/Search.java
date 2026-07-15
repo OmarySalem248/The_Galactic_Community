@@ -5,6 +5,7 @@ package Game.Engine.Colonist.Memory.Search;
  */
 
 
+import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 
 public abstract class Search {
@@ -14,6 +15,7 @@ public abstract class Search {
         this.quantity = quantity;
     }
 
+    public abstract float getSuitability(Inventory inv);
     public int getQuantity() { return quantity; }
 
     public abstract boolean matches(Item item);

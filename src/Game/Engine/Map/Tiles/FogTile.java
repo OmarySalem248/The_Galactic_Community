@@ -1,6 +1,6 @@
-package Game.Engine.Map;
+package Game.Engine.Map.Tiles;
 
-public class FogTile extends MemoryTile{
+public class FogTile extends Tile {
     public FogTile(int col, int row) {
         super(col, row);
     }

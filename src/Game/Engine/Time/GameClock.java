@@ -100,7 +100,7 @@ public class GameClock {
             tasks.add(pool.submit(() -> {
                 for (ColonistAvatar avatar : group) {
                     if(!done.contains(avatar)) {
-                        avatar.tick(time, map);
+                        avatar.tick(time);
                         done.add(avatar);
                     }
                 }

@@ -35,4 +35,9 @@ public class ChitChatAction extends InteractAction {
     public boolean execute() {
         return false;
     }
+
+    @Override
+    public void updateQueue() {
+
+    }
 }

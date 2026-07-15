@@ -3,15 +3,10 @@ package Game.Engine.Colonist;
 
 
 import Game.Engine.Colonist.Memory.ColonistMemory;
-import Game.Engine.Colonist.Memory.FOVCalculator;
-import Game.Engine.Map.GameMap;
-import Game.Engine.Map.SearchTile;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
-import java.util.Random;
 
 /**
  * MoveManager.java

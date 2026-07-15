@@ -1,9 +1,14 @@
-package Game.Engine.Map;
+package Game.Engine.Map.Tiles;
 
 
 import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Colonist.ColonistAvatar;
+import Game.Engine.Event.GameEvent;
+import Game.Engine.Event.GameEventBus;
+import Game.Engine.Event.GameEventType;
+import Game.Engine.Event.TileGetNeighboursEvent;
+import Game.Engine.Map.GameMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Tile {
     private BuildingProject buildProject = null;
 
-
+    private Coords coords;
     public final int col, row;
     public Building building;
     private final List<ColonistAvatar> colonists = new CopyOnWriteArrayList<>();
@@ -25,8 +30,21 @@ public class Tile {
         this.col      = col;
         this.row      = row;
         this.building = null;
+        this.coords = new Coords(col, row);
 
 
+    }
+
+
+    public Coords getCoords() {
+        return coords;
+    }
+
+    public boolean sameCoords(Tile other){
+        return coords.equals(other.getCoords());
+    }
+    public boolean same(Coords other){
+        return coords.equals(other);
     }
 
     public boolean hasBuilding() {
@@ -43,7 +61,8 @@ public class Tile {
 
 
     public void placeBuilding(Building building){
-        building.setcoords(this);
+        building.setTileCoords(this);
+        building.setCoords(this.coords);
         this.building = building;
     }
 
@@ -66,13 +85,10 @@ public class Tile {
     public BuildingProject getBuildProject() { return buildProject; }
     public void setBuildProject(BuildingProject p) { this.buildProject = p; }
 
-    public List<Tile> getNeighbours(GameMap map) {
+    public List<Tile> getNeighbours(GameEventBus eventBus) {
+
         List<Tile> neighbours = new ArrayList<>();
-        int[][] offsets = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        for (int[] offset : offsets) {
-            Tile t = map.getTile(col + offset[0], row + offset[1]);
-            if (t != null) neighbours.add(t);
-        }
+        eventBus.fire(new GameEvent<>(GameEventType.TILE_NEIGHBOURS,new TileGetNeighboursEvent(this, neighbours)));
         return neighbours;
     }
 

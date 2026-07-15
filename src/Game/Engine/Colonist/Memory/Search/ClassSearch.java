@@ -1,5 +1,6 @@
 package Game.Engine.Colonist.Memory.Search;
 
+import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 
 /**
@@ -13,6 +14,15 @@ public class ClassSearch extends Search {
         super(quant);
         this.itemClass = itemClass;
     }
+    @Override
+    public float getSuitability(Inventory inv) {
+        if(!inv.hasClass(itemClass)){
+            return 0;
+        }
+
+        return (float) getQuantity() /inv.getByClass(itemClass).size();
+    }
+
 
     public Class<? extends Item> getItemClass() { return itemClass; }
 

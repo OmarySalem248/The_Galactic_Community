@@ -3,7 +3,7 @@ package Game.Windows;
 import Game.Engine.Buildings.*;
 import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Game;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Modes.BuildMode;
 import Game.Windows.BuildingPanels.BuildingStatPanel;
 import Game.Windows.BuildingPanels.DefaultBuildingStatPanel;

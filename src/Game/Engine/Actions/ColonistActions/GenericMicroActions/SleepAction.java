@@ -1,6 +1,7 @@
 package Game.Engine.Actions.ColonistActions.GenericMicroActions;
 
 import Game.Engine.Colonist.ActionManager;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.MicroAction;
 
 public class SleepAction  extends MicroAction {
     private int tick;

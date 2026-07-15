@@ -86,6 +86,9 @@ public class Inventory {
     public boolean hasType(ItemType type) {
         return stacks.stream().anyMatch(s -> s.getItem().getType() == type && !s.isEmpty());
     }
+    public boolean hasClass(Class<? extends Item> itemclass) {
+        return stacks.stream().anyMatch(s -> s.getItem().getClass() == itemclass && !s.isEmpty());
+    }
 
     public List<ItemStack> getByType(ItemType type) {
         return stacks.stream()

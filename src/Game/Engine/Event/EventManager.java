@@ -31,6 +31,15 @@ public class EventManager {
             ColonistCastRayEvent ray = (ColonistCastRayEvent) event.data();
             game.getMap().colonistCastRay( ray.visible() , ray.origin(), ray.dx(),ray.dy());
         });
+        eventBus.subscribe(GameEventType.COLONIST_OBSERVE, event -> {
+            ColonistObserveEvent ob = (ColonistObserveEvent) event.data();
+            game.getMap().giveInteractTiles(ob.actionManager(),ob.origin());
+        });
+        eventBus.subscribe(GameEventType.TILE_NEIGHBOURS, event -> {
+            TileGetNeighboursEvent tilen= (TileGetNeighboursEvent) event.data();
+            game.getMap().popNeighbours(tilen.origin(), tilen.neighbours());
+        });
+
 
     }
 }

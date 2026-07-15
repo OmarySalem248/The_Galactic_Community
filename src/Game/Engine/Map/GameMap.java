@@ -1,14 +1,19 @@
 package Game.Engine.Map;
 
 import Game.Engine.Buildings.*;
+import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.ColonistAvatar;
-import Game.Engine.Colonist.Memory.ColonistMemory;
 import Game.Engine.Inventory.Items.Resources.Stone;
 import Game.Engine.Inventory.Items.Resources.Wood;
 import Game.Engine.Inventory.Items.Seed.UberrySeed;
 import Game.Engine.Inventory.Items.Consumable.Food.UtopiaBar;
+import Game.Engine.Map.Tiles.Coords;
+import Game.Engine.Map.Tiles.MemoryTile;
+import Game.Engine.Map.Tiles.Tile;
 
+import javax.swing.plaf.PanelUI;
 import java.util.*;
+
 
 
 
@@ -98,11 +103,21 @@ public class GameMap {
         while (!queue.isEmpty()) {
             Tile current = queue.poll();
             if (current.isEmpty()) return current;
-            for (Tile n : current.getNeighbours(this)) {
+            for (Tile n : getNeighbours(current)) {
                 if (visited.add(n)) queue.add(n);
             }
         }
         return null;
+    }
+
+    public List<Tile> getNeighbours(Tile tile) {
+        List<Tile> neighbours = new ArrayList<>();
+        int[][] offsets = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        for (int[] offset : offsets) {
+            Tile t = this.getTile(tile.col + offset[0], tile.row + offset[1]);
+            if (t != null) neighbours.add(t);
+        }
+        return neighbours;
     }
 
     public ArrayList<Building> getBuildings() {
@@ -110,9 +125,11 @@ public class GameMap {
     }
 
 
-    public void moveAvatar(ColonistAvatar avatar, Tile tile) {
+    public void moveAvatar(ColonistAvatar avatar, MemoryTile tile) {
+        Tile realTile = locate(tile);
         avatar.getCurrentTile().colonistExit(avatar);
         tile.colonistEnter(avatar);
+        avatar.setCurrentTile(tile);
     }
 
     public void colonistCastRay(List<Tile> visible, Tile origin, int dx, int dy) {
@@ -136,5 +153,49 @@ public class GameMap {
         }
 
         return ray;
+    }
+
+    public void giveInteractTiles(ActionManager actionManager, Tile origin) {
+
+        ArrayList<Tile> tiles = new ArrayList();
+        for (int x = -1; x <= 1; x++) {
+            for(int y = -1; y <= 1; y++){
+                int col = origin.col + x;
+                int row = origin.row + y;
+
+                Tile tile = getTile(col, row);
+                if (tile == null) break;
+
+                tiles.add(tile);
+
+                if (tile.blocksVision()) break; // include blocker but stop here
+            }
+
+        }
+        actionManager.setInteractable(tiles);
+
+    }
+
+    public Tile getTileFromCoords(Coords coords){
+        return getTile(coords.x(), coords.y());
+    }
+    public Coords findBuildingCoordsByType(BuildingType type){
+        for(Building building: buildings){
+            if(building.getBType() == type){
+                return building.getRealCoords();
+            }
+        }
+        return null;
+    }
+    public Tile locate(MemoryTile memoryTile){
+        return getTile(memoryTile.col,memoryTile.row);
+    }
+
+    public void popNeighbours(Tile origin, List<Tile> neighbours) {
+        neighbours = getNeighbours(origin);
+    }
+
+    public Tile getTileByCoords(Coords coords) {
+        return getTile(coords.x(),coords.y());
     }
 }

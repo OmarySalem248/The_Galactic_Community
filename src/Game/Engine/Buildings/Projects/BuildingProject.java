@@ -5,12 +5,9 @@ import Game.Engine.Colonist.Colonist;
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
-import Game.Engine.Inventory.Items.ItemType;
-import Game.Engine.Inventory.Resources;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class BuildingProject {

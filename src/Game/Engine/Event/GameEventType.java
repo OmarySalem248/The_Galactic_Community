@@ -8,6 +8,9 @@ public enum GameEventType {
 
     COLONIST_MOVE,
 
-    COLONIST_CASTRAY
+    COLONIST_CASTRAY,
+    COLONIST_OBSERVE,
+
+    TILE_NEIGHBOURS
 
 }

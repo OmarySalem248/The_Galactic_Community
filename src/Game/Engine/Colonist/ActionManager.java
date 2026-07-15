@@ -1,33 +1,29 @@
 package Game.Engine.Colonist;
-
-import Game.Engine.Actions.ColonistActions.GenericMicroActions.ConsumeActions.ConsumeAction;
 import Game.Engine.Actions.ColonistActions.GenericMicroActions.*;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.ConsumeActions.ConsumeAction;
 
-import Game.Engine.Actions.ColonistActions.SleepAction;
+
+
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
-import Game.Engine.Actions.ColonistActions.GenericMicroActions.DepositDeliveryAction;
-import Game.Engine.Actions.ColonistActions.GenericMicroActions.PickupAction;
-import Game.Engine.Colonist.Memory.ToDo;
-import Game.Engine.Inventory.Delivery;
+import Game.Engine.Event.ColonistObserveEvent;
+import Game.Engine.Event.GameEvent;
+import Game.Engine.Event.GameEventType;
 import Game.Engine.Actions.Interactions.ChitChatAction;
 import Game.Engine.Actions.Queue.ActionQueue;
 import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Colonist.Memory.ColonistMemory;
-import Game.Engine.Colonist.Memory.FOVCalculator;
 import Game.Engine.Event.GameEventBus;
-import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.*;
 import Game.Engine.Inventory.Items.Consumable.Consumable;
 import Game.Engine.Map.GameMap;
 import Game.Engine.Map.MemoryMap;
-import Game.Engine.Map.Tile;
+import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Time.GameTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ActionManager {
 
@@ -37,7 +33,7 @@ public class ActionManager {
     private final GameEventBus eventBus;
     private final ColonistMemory memory;
     private final ActionQueue queue = new ActionQueue();
-    private final MoveManager moveManager;
+
 
     private static final int PRIORITY_SEARCH = 15;
     private static final int PRIORITY_MOVE   = 10;
@@ -46,6 +42,8 @@ public class ActionManager {
 
     private boolean workDone = false;
     private GameTime mentaltime = null;
+
+    private ArrayList<Tile> interactable;
 
     private MemoryMap memoryMap;
 
@@ -57,9 +55,8 @@ public class ActionManager {
         this.colonistav  = avatar;
         this.colonist    = avatar.getColonist();
         this.eventBus    = eventBus;
-        this.memory      = new ColonistMemory();
-        this.moveManager = new MoveManager(avatar, memory);
         memoryMap = new MemoryMap(startingTile);
+        this.memory      = new ColonistMemory(memoryMap,eventBus);
     }
 
     // -------------------------------------------------------------------------
@@ -70,18 +67,20 @@ public class ActionManager {
     public ColonistStatus status()      { return colonistav.getStatus(); }
     public GameEventBus getEventBus()   { return eventBus; }
     public Tile getCurrentTile()        { return colonistav.getCurrentTile(); }
-    public Tile getDestination()        { return moveManager.getDestination(); }
+
     public ColonistMemory getMemory()   { return memory; }
     public boolean getSearching()       { return status().getisSearching(); }
     public GameTime getTime()           { return mentaltime; }
     public ActionQueue getQueue()       { return queue; }
     public boolean getWorkDone()        { return workDone; }
-    public MoveManager getMoveManager() { return moveManager; }
+
 
     // -------------------------------------------------------------------------
     // Main run loop
     // -------------------------------------------------------------------------
     public void run(GameTime time, Tile location) {
+        memory.observe(location.getCoords());
+        eventBus.fire(new GameEvent<>(GameEventType.COLONIST_OBSERVE, new ColonistObserveEvent(this,location)));
         if(colonist.getName().equals("Annie")){
             System.out.println("Sfdf");
         }
@@ -89,17 +88,14 @@ public class ActionManager {
         memory.updateTime(mentaltime);
 
         if (!status().getIsAsleep()) {
-            for (Tile tile : FOVCalculator.calculate(location, 12, eventBus)) {
-                memory.observe(tile);
-            }
             evaluatePriorities(time);
 
             // Top queued action drives destination
             var top = queue.peek();
             if (top != null && top.getDestination() != null) {
-                moveManager.changeDes(top.getDestination());
+
             }
-            moveManager.move();
+
         }
         if(queue.peek() != null){
             colonist.setStatus(queue.peek().toString());
@@ -127,8 +123,6 @@ public class ActionManager {
         }
 
 
-        // 3. Destination management
-        updateDestination();
 
         // 4. Early leave check
         if (status().getshouldWork() && !getSearching() && !workDone) {
@@ -137,7 +131,6 @@ public class ActionManager {
                 currentWork.setReminder(colonist.getAssignedBuilding());
                 Tile homeTile = getFirstTile(colonist.getDwelling());
                 workDone = true;
-                if (homeTile != null) moveManager.changeDes(homeTile);
             }
         }
 
@@ -188,35 +181,9 @@ public class ActionManager {
     // -------------------------------------------------------------------------
     // Destination management
     // -------------------------------------------------------------------------
-    private void updateDestination() {
-        if (status().getisSearching()) return;
 
-        // Check mental
-        ToDo remember = memory.anyWorkToDo();
-        if (remember != null) {
-            workDone = false;
-            moveManager.changeDes(remember.getDes());
-            return;
-        }
 
-        if (status().getshouldWork() && !workDone) {
-            Tile workTile = getFirstTile(colonist.getAssignedBuilding());
-            if (workTile != null) moveManager.changeDes(workTile);
-        } else {
-            Tile homeTile = getFirstTile(colonist.getDwelling());
-            if (homeTile != null) moveManager.changeDes(homeTile);
-        }
 
-    }
-
-    public void setDeliveryTarget(Building storage) {
-        Tile target = getFirstTile(storage);
-        if (target != null) moveManager.changeDes(target);
-    }
-
-    public void setTileDestination(Tile tile) {
-        if (tile != null) moveManager.changeDes(tile);
-    }
 
     // -------------------------------------------------------------------------
     // Social
@@ -264,7 +231,13 @@ public class ActionManager {
         return building.getCoords().get(0);
     }
 
-    public GameMap getMemoryMap() {
+    public MemoryMap getMemoryMap() {
         return memory.getMemoryMap();
     }
+
+    public void setInteractable(ArrayList<Tile> tiles) {
+        this.interactable = tiles;
+    }
+
+
 }
