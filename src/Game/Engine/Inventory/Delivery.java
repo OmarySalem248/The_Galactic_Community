@@ -1,6 +1,7 @@
 package Game.Engine.Inventory;
 
 import Game.Engine.Inventory.Inventory;
+import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 
 import java.util.List;
@@ -26,4 +27,13 @@ public class Delivery {
     public List<ItemStack> getItems()  { return items; }
     public Inventory getSource()       { return source; }
     public Inventory getDestination()  { return destination; }
+    public void addItems(Item item, int quantity) {
+        items.stream()
+                .filter(s -> s.getItem().getClass() == item.getClass())
+                .findFirst()
+                .ifPresentOrElse(
+                        s -> s.add(quantity),
+                        () -> items.add(new ItemStack(item, quantity))
+                );
+    }
 }

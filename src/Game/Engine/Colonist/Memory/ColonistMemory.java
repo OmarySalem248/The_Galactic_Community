@@ -143,6 +143,7 @@ public class ColonistMemory {
 
     public void observe(Coords coords) {
         MemoryTile current = (MemoryTile) memoryMap.getTileFromCoords(coords);
-        FOVCalculator.calculate(current, 12,  eventBus);
+        FOVCalculator.calculate(current, 12,  eventBus, memoryMap);
+
     }
 }

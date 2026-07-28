@@ -32,7 +32,7 @@ public class MemoryMap extends GameMap {
         }
 
         // Spawn tile is known — replace with a basic known tile
-        grid[spawnTile.row][spawnTile.col] = spawnTile;
+        grid[spawnTile.row][spawnTile.col] = new MemoryTile(spawnTile, 0);
     }
 
     /**
@@ -56,7 +56,7 @@ public class MemoryMap extends GameMap {
             for(ItemStack stack: b.getInv().getStacks()){
                 inventorycopy.add(stack.getItem(),stack.getQuantity());
             }
-            BuildingSnapshot snapshot = new BuildingSnapshot(b.getName(), b.getBType(), b.getId(), null, tick, b.getRealCoords());
+            BuildingSnapshot snapshot = new BuildingSnapshot(b.getName(), b.getBType(), b.getId(),  b.getRealCoords(), tick);
             updating.setSnap(snapshot);
             if(existing.getClass() == FogTile.class) {
                 logSnap(snapshot);
@@ -128,9 +128,16 @@ public class MemoryMap extends GameMap {
 
     @Override
     public MemoryTile getTile(int col, int row){
-        if (isFog(col,row)) return null;
+        Tile tile = grid[row][col];
+        if ( tile instanceof FogTile) return null;
+
         if (col < 0 || col >= cols || row < 0 || row >= rows) return null;
-        return (MemoryTile) grid[row][col];
+
+        if (tile == null) {
+            return  null;
+        }
+
+        return (MemoryTile) tile;
     }
 
     @Override
@@ -140,13 +147,13 @@ public class MemoryMap extends GameMap {
         Map<Integer, BuildingSnapshot> typeMap = snaps.get(type);
         if (typeMap.isEmpty()) return null;
         return typeMap.values().stream()
-                .max(Comparator.comparingLong(BuildingSnapshot::takenAtTick))
+                .max(Comparator.comparingLong(BuildingSnapshot::getFirstObservedTick))
                 .map(BuildingSnapshot::coords)
                 .orElse(null);
     }
 
     public boolean isFog(int col, int row) {
-        Tile t = getTile(col, row);
+        Tile t = grid[row][col];
         return t == null || t instanceof FogTile;
     }
 

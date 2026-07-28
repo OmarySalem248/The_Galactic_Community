@@ -11,7 +11,9 @@ import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.Memory.Search.ClassSearch;
 import Game.Engine.Colonist.Memory.Search.Search;
 import Game.Engine.Colonist.Memory.Search.SearchResult;
+import Game.Engine.Inventory.Delivery;
 import Game.Engine.Inventory.Inventory;
+import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 import Game.Engine.Map.MemoryMap;
 import Game.Engine.Map.Tiles.BuildingSnapshot;
@@ -21,9 +23,7 @@ import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Colonist.Memory.FOVCalculator;
 
 import javax.print.attribute.standard.Destination;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static Game.Engine.Buildings.BuildingType.STORAGE;
 
@@ -33,6 +33,10 @@ import static Game.Engine.Buildings.BuildingType.STORAGE;
  * Returns true (done) when found or when search radius exhausted.
  */
 public class SearchAction extends MacroAction {
+
+    private Delivery delivery;
+    private int totalCollected = 0;
+    private final Map<Class<? extends Item>, Integer> collectedPerClass = new HashMap<>();
 
     private final Search search;
     private Tile foundTile = null;
@@ -63,10 +67,17 @@ public class SearchAction extends MacroAction {
             if (memoryMap.getSnaps().containsKey(STORAGE)) {
                 Collection<BuildingSnapshot> potentialStor = memoryMap.getSnaps().get(STORAGE).values();
                 if (!potentialStor.isEmpty()) {
-                    target = potentialStor.stream()
-                            .filter(snap -> betterResources(snap.inventory()))
-                            .max(Comparator.comparingLong(BuildingSnapshot::takenAtTick))
-                            .orElse(null);
+                    for(BuildingSnapshot snap: potentialStor){
+                        if(target == null){
+                            target = snap;
+                        }else{
+                            if(snap.hasInventoryData()){
+                                if(betterResources(snap.getInventory())){
+                                    target = snap;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             if (target != null && !getMicroQueue().isQueued(MoveAction.class)) {
@@ -81,8 +92,22 @@ public class SearchAction extends MacroAction {
             if(current.same(target.coords())){
                 if(current.hasBuilding()){
                     if(current.getBuilding().getBType() == STORAGE){
-                        Building building = current.getBuilding();
-                        check(building,memoryMap);
+                            var inv = current.getBuilding().getInv();
+                            List<ItemStack> matching = inv.getStacks().stream()
+                                    .filter(s -> search.matches(s.getItem()) && s.getQuantity() > 0)
+                                    .toList();
+
+                            for (ItemStack stack : matching) {
+                                int toTake = Math.min(stack.getQuantity(), search.getQuantity() - totalCollected);
+                                if (toTake <= 0) break;
+                                inv.remove(stack.getItem(), toTake);
+                                delivery.addItems(stack.getItem(), toTake);
+                                totalCollected += toTake;
+                                collectedPerClass.merge(stack.getItem().getClass(), toTake, Integer::sum);
+                            }
+
+                            if (totalCollected >= search.getQuantity()) setComplete(true);
+
                     }
                 }
             }
@@ -102,26 +127,7 @@ public class SearchAction extends MacroAction {
 
 
 
-        if(memoryMap.findBuildingCoordsByType(STORAGE)!= null){
 
-        }
-        if(memoryMap.findBuildingCoordsByType(STORAGE) !=)
-        for (MemoryTile tile : memoryMap.) {
-            if (!tile.hasBuilding()) continue;
-            if(tile.getBuilding().getBType() == STORAGE){
-                queueAction(new QueuedAction(new MoveAction(colonistam,tile.getCoords()),10,true,true));
-            }
-            var stacks = tile.getBuilding().getInv().getStacks();
-            int total = stacks.stream()
-                    .filter(s -> search.matches(s.getItem()))
-                    .mapToInt(ItemStack::getQuantity)
-                    .sum();
-            if (total >= search.getQuantity()) {
-                foundTile = tile;
-                recordSuccess();
-                setComplete(true);
-            }
-        }
 
         // Not found — wander one tile toward unexplored
         tilesExplored++;
@@ -130,22 +136,9 @@ public class SearchAction extends MacroAction {
             setComplete(true);
         }
 
-        MemoryTile next = colonistam.getMemory().wanderUnexplored((MemoryTile) memoryMap.getTileByCoords(current.getCoords()));
-        if (next != null) {
-            queueAction(new QueuedAction(new MoveAction(colonistam,next.getCoords()),30,false,true));
-        }
 
     }
 
-    public void check(Building b,MemoryMap memoryMap){
-        Inventory inv = b.getInv();
-        Inventory inventorycopy = new Inventory();
-        for(ItemStack stack: b.getInv().getStacks()){
-            inventorycopy.add(stack.getItem(),stack.getQuantity());
-        }
-        BuildingSnapshot snapshot = new BuildingSnapshot(b.getName(), b.getBType(), b.getId(), inventorycopy, colonistam.getTime().tick(), b.getRealCoords());
-        memoryMap.logSnap(snapshot);
-    }
 
 
     private void updateTargetMemory(MemoryMap memoryMap) {
@@ -170,7 +163,11 @@ public class SearchAction extends MacroAction {
         if(target == null){
             return true;
         }
-        Inventory targetinv = target.inventory();
+        if(!target.hasInventoryData()){
+            return true;
+        }
+        Inventory targetinv = target.getInventory();
+
         float currentsuit = search.getSuitability(targetinv);
         float newsuit = search.getSuitability(inventory);
         return newsuit > currentsuit;
@@ -180,7 +177,7 @@ public class SearchAction extends MacroAction {
         long tick = colonistam.getTime().tick();
         if (search instanceof ClassSearch cs) {
             colonistam.getMemory().recordClassSearch(cs.getItemClass(), SearchResult.SUCCESS, tick, foundTile);
-        } else if (search instanceof Game.Engine.Colonist.Memory.TypeSearch ts) {
+        } else if (search instanceof Game.Engine.Colonist.Memory.Search.TypeSearch ts) {
             colonistam.getMemory().recordTypeSearch(ts.getType(), SearchResult.SUCCESS, tick, foundTile);
         }
     }
@@ -189,7 +186,7 @@ public class SearchAction extends MacroAction {
         long tick = colonistam.getTime().tick();
         if (search instanceof ClassSearch cs) {
             colonistam.getMemory().recordClassSearch(cs.getItemClass(), SearchResult.FAILED, tick, null);
-        } else if (search instanceof Game.Engine.Colonist.Memory.TypeSearch ts) {
+        } else if (search instanceof Game.Engine.Colonist.Memory.Search.TypeSearch ts) {
             colonistam.getMemory().recordTypeSearch(ts.getType(), SearchResult.FAILED, tick, null);
         }
     }

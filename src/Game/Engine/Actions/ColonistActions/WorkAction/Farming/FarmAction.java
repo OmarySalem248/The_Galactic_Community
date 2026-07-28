@@ -1,6 +1,9 @@
 package Game.Engine.Actions.ColonistActions.WorkAction.Farming;
 
+import Game.Engine.Actions.ColonistActions.GenericMacroActions.SearchAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.MoveAction;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
+import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
 import Game.Engine.Buildings.BuildingType;
 import Game.Engine.Buildings.Farm;
@@ -8,6 +11,8 @@ import Game.Engine.Buildings.PlantIncubater;
 import Game.Engine.Colonist.ActionManager;
 import Game.Engine.Colonist.Career.Job.BuildJob;
 import Game.Engine.Colonist.Career.Job.FarmJob;
+import Game.Engine.Colonist.Memory.Search.Search;
+import Game.Engine.Colonist.Memory.Search.TypeSearch;
 import Game.Engine.Colonist.Memory.ToDo;
 import Game.Engine.Colonist.Memory.TodoType;
 import Game.Engine.Inventory.Delivery;
@@ -36,8 +41,16 @@ public class FarmAction extends WorkAction {
 
     @Override
     public void updateQueue() {
-
+        System.out.println(getMicroQueue().print());
+        if(job.getLoc() == null){
+            System.out.println(colonist.getAssignedBuilding().getCoords().get(0));
+            job.setLocation(colonist.getAssignedBuilding().getCoords().get(0));
+        }
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) {
+            if(!getMicroQueue().isQueued(MoveAction.class)) {
+                System.out.println("sd");
+                queueAction(new QueuedAction(new MoveAction(colonistam, job.getLocCoords()), 10, true, true));
+            }
             return;
         }
 
@@ -50,7 +63,8 @@ public class FarmAction extends WorkAction {
                 && myIncubators(farm).isEmpty();
         if (noSeeds && !colonistam.getSearching()) {
             colonist.setStatus("Out of seeds, searching for storage...");
-            colonistam.searchFor(ItemType.SEED, BuildingType.STORAGE);
+            Search seedSearch = new TypeSearch(50, ItemType.SEED);
+            getMicroQueue().add(new QueuedAction(new SearchAction(colonistam, seedSearch),100,true,true));
             return;
         }
 
@@ -262,7 +276,6 @@ public class FarmAction extends WorkAction {
         // Already have a pending delivery — just head to storage
         if (colonistam.getColonist().getInventory().hasDeliveries()) {
 
-            deliverToStorage(farm);
             return;
         }
 
@@ -297,21 +310,13 @@ public class FarmAction extends WorkAction {
             Delivery delivery = new Delivery(collected, farm.getInv(), storageInv);
             colonistam.getColonist().getInventory().addDelivery(delivery);
             colonist.setStatus("Transporting goods to storage...");
-            deliverToStorage(farm);
+
         } else {
             farm.getInv().releaseTransportClaim();
         }
     }
 
-    private void deliverToStorage(Farm farm) {
-        var preferred = farm.getPreferredStorage();
-        if (preferred != null) {
-            colonistam.setDeliveryTarget(preferred);
-        } else if (!colonistam.getSearching()) {
-            colonist.setStatus("Carrying goods, looking for storage...");
-            colonistam.searchFor(null, BuildingType.STORAGE); // null = delivery mode
-        }
-    }
+
 
 
 

@@ -90,7 +90,7 @@ public abstract class Building {
     public void setTileCoords(Tile tile){
         this.tileCoords.add(tile);
     }
-    public ArrayList<Tile> getCoords() { return coords; }
+    public ArrayList<Tile> getCoords() { return tileCoords; }
 
     public Coords getRealCoords(){
         return coords;
@@ -164,5 +164,9 @@ public abstract class Building {
 
     public float getNeededResourcesWeight() {
         return neededResources.getMaxWeight();
+    }
+
+    public void setcoords(Tile tile) {
+        this.tileCoords.add(tile);
     }
 }

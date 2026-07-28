@@ -1,6 +1,7 @@
 package Game.Engine.Actions.Queue;
 
 import Game.Engine.Actions.ColonistActions.ColonistAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.MoveAction;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Actions.Interactions.InteractAction;
 
@@ -17,6 +18,9 @@ public class ActionQueue {
     private final PriorityQueue<QueuedAction> pending = new PriorityQueue<>();
 
     public void add(QueuedAction action) {
+        if(action.getAction().getClass().isInstance(MoveAction.class)){
+            System.out.println("sdasadwew");
+        }
         pending.add(action);
     }
 

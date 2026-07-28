@@ -82,6 +82,7 @@ public class GameClock {
         if(minute == 0){
             System.out.println(time);
         }
+        game.getMap().updateTime(time);
 
         // Only run scheduled Tickables that are actually due this tick
         scheduler.runDue(tick, time);

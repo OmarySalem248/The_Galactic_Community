@@ -6,6 +6,7 @@ import Game.Engine.Event.GameEvent;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Event.GameEventType;
 import Game.Engine.Map.GameMap;
+import Game.Engine.Map.MemoryMap;
 import Game.Engine.Map.Tiles.Coords;
 import Game.Engine.Map.Tiles.MemoryTile;
 import Game.Engine.Map.Tiles.Tile;
@@ -16,7 +17,7 @@ public class MoveAction extends MicroAction {
     private final Coords destination;
     private GameEventBus eventBus;
 
-    private GameMap memoryMap;
+    private MemoryMap memoryMap;
 
     public MoveAction(ActionManager colonist, Coords destination) {
         super("Move",colonist);
@@ -28,7 +29,9 @@ public class MoveAction extends MicroAction {
 
     @Override
     public boolean execute() {
+
         Tile current = colonistam.getCurrentTile();
+        this.memoryMap = colonistam.getMemoryMap();
         if (current == null || destination == null) return false;
         if (current.same(destination)) return false;
 
@@ -41,7 +44,8 @@ public class MoveAction extends MicroAction {
             row += (destination.y() > row) ? 1 : -1;
         }
 
-        MemoryTile next = (MemoryTile) memoryMap.getTile(col, row);
+        MemoryTile next =  memoryMap.getTile(col, row);
+
         if (next == null) return false;
         eventBus.fire(new GameEvent<>(GameEventType.COLONIST_MOVE, new ColonistMoveEvent(colonistam.getAvatar(),next)));
         colonist.modEnergy(-1);

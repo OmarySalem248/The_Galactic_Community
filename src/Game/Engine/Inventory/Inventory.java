@@ -164,4 +164,12 @@ public class Inventory {
         return false;
 
     }
+
+    public Inventory snapshot() {
+        Inventory inventorycopy = new Inventory();
+        for(ItemStack stack: getStacks()){
+            inventorycopy.add(stack.getItem(),stack.getQuantity());
+        }
+        return inventorycopy;
+    }
 }

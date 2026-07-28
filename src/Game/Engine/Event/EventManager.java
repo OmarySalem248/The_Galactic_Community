@@ -29,7 +29,7 @@ public class EventManager {
         });
         eventBus.subscribe(GameEventType.COLONIST_CASTRAY, event -> {
             ColonistCastRayEvent ray = (ColonistCastRayEvent) event.data();
-            game.getMap().colonistCastRay( ray.visible() , ray.origin(), ray.dx(),ray.dy());
+            game.getMap().colonistCastRay( ray.visible() , ray.origin(), ray.dx(),ray.dy(),ray.memoryMap());
         });
         eventBus.subscribe(GameEventType.COLONIST_OBSERVE, event -> {
             ColonistObserveEvent ob = (ColonistObserveEvent) event.data();

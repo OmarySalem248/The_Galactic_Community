@@ -7,6 +7,7 @@ package Game.Engine.Colonist.Memory.Search;
 
 import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
+import Game.Engine.Inventory.Items.ItemStack;
 
 public abstract class Search {
     private final int quantity;
@@ -20,4 +21,6 @@ public abstract class Search {
 
     public abstract boolean matches(Item item);
     public abstract String describe();
+
+
 }

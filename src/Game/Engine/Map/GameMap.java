@@ -10,6 +10,7 @@ import Game.Engine.Inventory.Items.Consumable.Food.UtopiaBar;
 import Game.Engine.Map.Tiles.Coords;
 import Game.Engine.Map.Tiles.MemoryTile;
 import Game.Engine.Map.Tiles.Tile;
+import Game.Engine.Time.GameTime;
 
 import javax.swing.plaf.PanelUI;
 import java.util.*;
@@ -25,6 +26,8 @@ public class GameMap {
     public int    cols;
     public int rows;
     private List<ColonistAvatar> avatars;
+
+    private GameTime time;
     Tile[][] grid;   // grid[row][col]
     private ArrayList<Building> buildings;
 
@@ -36,7 +39,12 @@ public class GameMap {
         this.cols = cols;
         this.rows = rows;
         this.grid = new Tile[rows][cols];
+        this.time = new GameTime(0,0,0,0,0);
         popMap();
+    }
+
+    public void updateTime(GameTime time){
+        this.time = time;
     }
 
 
@@ -132,8 +140,22 @@ public class GameMap {
         avatar.setCurrentTile(tile);
     }
 
-    public void colonistCastRay(List<Tile> visible, Tile origin, int dx, int dy) {
-        List<Tile> ray = castRay(origin, dx, dy);
+    public void colonistCastRay(List<Tile> visible, Tile origin, int dx, int dy,MemoryMap memoryMap) {
+
+        List<Tile> ray = new ArrayList<>();
+
+        int steps = Math.max(Math.abs(dx), Math.abs(dy));
+        for (int i = 1; i <= steps; i++) {
+            int col = origin.col + Math.round((float) dx * i / steps);
+            int row = origin.row + Math.round((float) dy * i / steps);
+
+            Tile tile = getTile(col, row);
+            if (tile == null) break;
+            memoryMap.observe(tile, time.tick());
+            ray.add(tile);
+
+            if (tile.blocksVision()) break; // include blocker but stop here
+        }
         visible.addAll(ray);
     }
     public List<Tile> castRay(Tile origin, int dx, int dy) {

@@ -20,6 +20,7 @@ public abstract class MacroAction extends ColonistAction {
     @Override
     public boolean execute(){
         updateQueue();
+
         microQueue.tick();
         return complete;
     }
