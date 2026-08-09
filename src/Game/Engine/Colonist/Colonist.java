@@ -13,14 +13,13 @@ import Game.Engine.Inventory.Inventory;
 import Game.Engine.Relationships.Relationship;
 import Game.Engine.Relationships.RelationshipSet;
 import Game.Engine.Relationships.RelationshipType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@JsonIgnoreProperties({"assignedBuilding", "relationships","colony"})
 public class Colonist {
     private String name;
 

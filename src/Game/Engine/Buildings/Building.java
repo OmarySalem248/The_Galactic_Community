@@ -12,11 +12,9 @@ import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Map.Tiles.Coords;
 import Game.Engine.Map.Tiles.Tile;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.imageio.ImageIO;
 
-@JsonIgnoreProperties({"colonists"})
 public abstract class Building {
     private Inventory inv;
     protected String name;

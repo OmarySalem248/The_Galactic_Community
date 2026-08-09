@@ -136,8 +136,8 @@ public class GameMap {
     public void moveAvatar(ColonistAvatar avatar, MemoryTile tile) {
         Tile realTile = locate(tile);
         avatar.getCurrentTile().colonistExit(avatar);
-        tile.colonistEnter(avatar);
-        avatar.setCurrentTile(tile);
+        realTile.colonistEnter(avatar);
+        avatar.setCurrentTile(realTile);
     }
 
     public void colonistCastRay(List<Tile> visible, Tile origin, int dx, int dy,MemoryMap memoryMap) {
