@@ -68,7 +68,7 @@ public class GameMap {
         basicMap.placeBuilding(new Mine(),8,3);
         basicMap.placeBuilding(new EngineeringHub(),12,3);
         Storage beginnerSt = new Storage();
-        beginnerSt.getInv().add(new UberrySeed(),100);
+        beginnerSt.getInv().add(new UberrySeed(),10);
         beginnerSt.getInv().add(new UtopiaBar(),7);
         beginnerSt.getInv().add(new Wood(),10000);
         beginnerSt.getInv().add(new Stone(),10000);

@@ -1,5 +1,6 @@
 package Game.Engine.Buildings;
 
+import Game.Engine.Colonist.Career.Job.FarmJob;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.ColonistAvatar;
 import Game.Engine.Event.GameEvent;
@@ -87,8 +88,16 @@ public class PlantIncubater implements Tickable {
     }
 
     // Assignment
-    public void assign(Colonist farmer)  { this.assignedFarmer = farmer; }
-    public void unassign()                     { this.assignedFarmer = null; }
+    public void assign(Colonist farmer)  {
+        this.assignedFarmer = farmer;
+        FarmJob job = (FarmJob) farmer.getJob();
+        job.assignInc(this);
+    }
+    public void unassign()                     {
+        FarmJob job = (FarmJob) assignedFarmer.getJob();
+        job.unassignInc(this);
+        this.assignedFarmer = null;
+    }
     public Colonist getAssignedFarmer()  { return assignedFarmer; }
     public boolean isAssigned()                { return assignedFarmer != null; }
     public boolean isAssignedTo(Colonist farmer) { return assignedFarmer == farmer; }

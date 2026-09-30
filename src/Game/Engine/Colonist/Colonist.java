@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Colonist {
     private String name;
 
+
     private ColonistCareer career = new ColonistCareer();
     private int id;
     private int energy;

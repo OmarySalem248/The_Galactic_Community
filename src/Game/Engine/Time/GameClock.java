@@ -21,7 +21,7 @@ import java.util.concurrent.Future;
  */
 public class GameClock {
 
-    private static final int TICK_MS = 200; // real ms per in-game tick — tweak freely
+    private static final int TICK_MS = 1000; // real ms per in-game tick — tweak freely
 
     private final GameMap map;
     private WorldEventManager eman;

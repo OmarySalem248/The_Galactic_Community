@@ -153,7 +153,7 @@ public class TileWindow {
     private BuildingStatPanel resolveStatPanel(Building building) {
         // Add specific panel types here as you build them
         // e.g. if (building instanceof Farm f) return new FarmStatPanel(f);
-        return new DefaultBuildingStatPanel(building);
+        return building.getPanel();
     }
 
     // -------------------------------------------------------------------------

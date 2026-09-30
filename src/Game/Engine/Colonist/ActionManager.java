@@ -47,6 +47,8 @@ public class ActionManager {
 
     private MemoryMap memoryMap;
 
+    private int handfull;
+
     // Search state
     private ItemType searchingFor = null;
     private BuildingType searchSource = null;
@@ -57,6 +59,7 @@ public class ActionManager {
         this.eventBus    = eventBus;
         memoryMap = new MemoryMap(startingTile);
         this.memory      = new ColonistMemory(memoryMap,eventBus);
+        this.handfull = (100 - colonist.getAge())*2;
     }
 
     // -------------------------------------------------------------------------
@@ -67,6 +70,7 @@ public class ActionManager {
     public ColonistStatus status()      { return colonistav.getStatus(); }
     public GameEventBus getEventBus()   { return eventBus; }
     public Tile getCurrentTile()        { return colonistav.getCurrentTile(); }
+    public int getHandfull() {return handfull;}
 
     public ColonistMemory getMemory()   { return memory; }
     public boolean getSearching()       { return status().getisSearching(); }

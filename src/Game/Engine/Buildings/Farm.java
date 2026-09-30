@@ -1,11 +1,14 @@
 package Game.Engine.Buildings;
 
+import Game.Engine.Colonist.Career.Job.FarmJob;
 import Game.Engine.Colonist.Colonist;
 import Game.Engine.Colonist.Career.Profession.Farmer;
 import Game.Engine.Event.GameEventBus;
 import Game.Engine.Inventory.Items.Resources.Stone;
 import Game.Engine.Inventory.Items.Resources.Wood;
 import Game.Engine.Inventory.Items.Seed.Seed;
+import Game.Windows.BuildingPanels.BuildingStatPanel;
+import Game.Windows.BuildingPanels.FarmPanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,7 @@ public class Farm extends Building {
         super("Farm", 2, Farmer.class, 500, BuildingType.WORKPLACE);
         addNeededRes(new Wood(),5);
         addNeededRes(new Stone(),2);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             PlantIncubater inc = new PlantIncubater();
             incubaters.add(inc);
             freeIncubaters.add(inc);
@@ -38,7 +41,9 @@ public class Farm extends Building {
     public ArrayList<PlantIncubater> getAllInc()     { return incubaters; }
     public ArrayList<PlantIncubater> getFreeInc()   { return freeIncubaters; }
 
-    public boolean hasAvailableIncubator() { return !freeIncubaters.isEmpty(); }
+    public boolean hasAvailableIncubator(FarmJob jab) {
+        return !freeIncubaters.isEmpty();
+    }
 
     public void plant(Seed seed, GameEventBus bus, Colonist farmer) {
         if (!freeIncubaters.isEmpty()) {
@@ -77,5 +82,9 @@ public class Farm extends Building {
         return activeIncubaters.stream()
                 .filter(PlantIncubater::canHarvest)
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+    @Override
+    public BuildingStatPanel buildPanel() {
+        return new FarmPanel(this);
     }
 }

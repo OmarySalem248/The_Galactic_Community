@@ -10,6 +10,7 @@ import Game.Engine.Inventory.Delivery;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 import Game.Engine.Map.SearchTile;
+import Game.Engine.Map.Tiles.Coords;
 import Game.Engine.Map.Tiles.Tile;
 
 import java.util.List;
@@ -153,13 +154,12 @@ public class EngineerCheckAction extends WorkAction {
             // We remember where this resource was — go straight there
             setDes(known);
             Delivery delivery = new Delivery(
-                    List.of(new ItemStack(item, claimed.getQuantity())),
-                    null, project.getPartition()
+
             );
             colonist.getInventory().addDelivery(delivery);
         } else {
             // No memory — create a SearchTile to find it
-            SearchTile searchTile = new SearchTile(new ClassSearch(needed.get(0).getQuantity(),itemClass));
+            SearchTile searchTile = new SearchTile(new ClassSearch(needed.get(0).getQuantity(),new Coords(2,2), new Coords(2,3),itemClass));
             setDes(searchTile);
             colonist.setStatus("Searching for " + item.getName() + " for " + project.getName());
         }

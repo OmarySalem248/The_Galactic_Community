@@ -12,18 +12,21 @@ import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Map.Tiles.Coords;
 import Game.Engine.Map.Tiles.Tile;
+import Game.Windows.BuildingPanels.BuildingStatPanel;
+import Game.Windows.BuildingPanels.DefaultBuildingStatPanel;
 
 import javax.imageio.ImageIO;
 
 public abstract class Building {
     private Inventory inv;
     protected String name;
-
+    private BuildingStatPanel panel;
     private int id;
     private Building prefStor;
     private Image image;
 
     private BuildingType type;
+
 
     private ArrayList<Tile> tileCoords;
 
@@ -61,6 +64,7 @@ public abstract class Building {
         this.neededResources = new Inventory();
         setNeededRes();
         getNeededResources().setMaxWeight((int) getNeededResources().getCurrentWeight());
+        this.panel = null;
 
     }
 
@@ -167,4 +171,17 @@ public abstract class Building {
     public void setcoords(Tile tile) {
         this.tileCoords.add(tile);
     }
+
+    public BuildingStatPanel getPanel() {
+        if(panel == null){
+            panel = buildPanel();
+        }
+        return panel;
+    }
+
+    public BuildingStatPanel buildPanel() {
+        return new DefaultBuildingStatPanel(this);
+    }
+
+
 }

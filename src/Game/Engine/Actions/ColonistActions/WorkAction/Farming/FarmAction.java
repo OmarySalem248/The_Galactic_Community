@@ -2,6 +2,7 @@ package Game.Engine.Actions.ColonistActions.WorkAction.Farming;
 
 import Game.Engine.Actions.ColonistActions.GenericMacroActions.SearchAction;
 import Game.Engine.Actions.ColonistActions.GenericMicroActions.MoveAction;
+import Game.Engine.Actions.ColonistActions.WorkAction.Farming.FarmMicros.PlantAction;
 import Game.Engine.Actions.ColonistActions.WorkAction.WorkAction;
 import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
@@ -41,13 +42,13 @@ public class FarmAction extends WorkAction {
 
     @Override
     public void updateQueue() {
-        System.out.println(getMicroQueue().print());
+
         if(job.getLoc() == null){
             System.out.println(colonist.getAssignedBuilding().getCoords().get(0));
             job.setLocation(colonist.getAssignedBuilding().getCoords().get(0));
         }
         if (!(colonistam.getCurrentTile().getBuilding() instanceof Farm farm)) {
-            if(!getMicroQueue().isQueued(MoveAction.class)) {
+            if(!getMicroQueue().isQueued(MoveAction.class) && !getMicroQueue().isQueued(SearchAction.class)) {
                 System.out.println("sd");
                 queueAction(new QueuedAction(new MoveAction(colonistam, job.getLocCoords()), 10, true, true));
             }
@@ -61,11 +62,14 @@ public class FarmAction extends WorkAction {
         boolean noSeeds = !colonist.getInventory().hasType(ItemType.SEED)
                 && !farm.getInv().hasType(ItemType.SEED)
                 && myIncubators(farm).isEmpty();
-        if (noSeeds && !colonistam.getSearching()) {
+        if (noSeeds && !colonistam.getSearching() && !getMicroQueue().isQueued(SearchAction.class)) {
             colonist.setStatus("Out of seeds, searching for storage...");
-            Search seedSearch = new TypeSearch(50, ItemType.SEED);
+            Search seedSearch = new TypeSearch(50, farm.getRealCoords(), farm.getRealCoords(),ItemType.SEED);
             getMicroQueue().add(new QueuedAction(new SearchAction(colonistam, seedSearch),100,true,true));
             return;
+        }
+        if(job.anyIncs()&& !getMicroQueue().isQueued(PlantAction.class)){
+            queueAction(new QueuedAction(new PlantAction(colonistam,farm),50,true,false));
         }
 
 
@@ -77,12 +81,7 @@ public class FarmAction extends WorkAction {
             return;
         }
 
-        // Normal priority gate — one action per tick
-        if (hasSeedsToDeposit() && !canPlant(farm)) {
 
-            depositSeeds(farm);
-            return;
-        }
         if (hasMyIncubatorsToTend(farm)) {
 
             tendIncubators(farm);
@@ -93,11 +92,7 @@ public class FarmAction extends WorkAction {
             harvest(farm);
             return;
         }
-        if (canPlant(farm)) {
 
-            plant(farm);
-            return;
-        }
 
         // Last resort — transport excess goods
         if (hasGoodsToTransport(farm)) {
@@ -230,12 +225,7 @@ public class FarmAction extends WorkAction {
     }
 
     // -------------------------------------------------------------------------
-    // Plant — new incubators are automatically assigned to this farmer
-    // -------------------------------------------------------------------------
-    private boolean canPlant(Farm farm) {
-        return (farm.getInv().hasType(ItemType.SEED)|| colonist.getInventory().hasType(ItemType.SEED))
-                && farm.hasAvailableIncubator();
-    }
+
     private Seed getSeed(Farm farm){
         Inventory target;
         if(farm.getInv().hasType(ItemType.SEED)){
@@ -307,7 +297,7 @@ public class FarmAction extends WorkAction {
             Inventory storageInv = farm.getPreferredStorage() != null
                     ? farm.getPreferredStorage().getInv()
                     : null; // null destination means search is needed
-            Delivery delivery = new Delivery(collected, farm.getInv(), storageInv);
+            Delivery delivery = new Delivery();
             colonistam.getColonist().getInventory().addDelivery(delivery);
             colonist.setStatus("Transporting goods to storage...");
 

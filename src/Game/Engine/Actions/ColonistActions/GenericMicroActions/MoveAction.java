@@ -33,7 +33,7 @@ public class MoveAction extends MicroAction {
         Tile current = colonistam.getCurrentTile();
         this.memoryMap = colonistam.getMemoryMap();
         if (current == null || destination == null) return false;
-        if (current.same(destination)) return false;
+        if (current.same(destination)) return true;
 
         int col = current.col;
         int row = current.row;
@@ -46,10 +46,11 @@ public class MoveAction extends MicroAction {
 
         MemoryTile next =  memoryMap.getTile(col, row);
 
+
         if (next == null) return false;
         eventBus.fire(new GameEvent<>(GameEventType.COLONIST_MOVE, new ColonistMoveEvent(colonistam.getAvatar(),next)));
         colonist.modEnergy(-1);
 
-        return true;
+        return false;
     }
 }

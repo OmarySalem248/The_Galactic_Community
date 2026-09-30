@@ -1,6 +1,8 @@
 package Game.Engine.Actions.ColonistActions.GenericMacroActions;
 
 import Game.Engine.Actions.ColonistActions.GenericMicroActions.CheckAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.CollectDeliveryAction;
+import Game.Engine.Actions.ColonistActions.GenericMicroActions.DepositDeliveryAction;
 import Game.Engine.Actions.ColonistActions.GenericMicroActions.MoveAction;
 import Game.Engine.Actions.Queue.QueuedAction;
 import Game.Engine.Buildings.Building;
@@ -25,13 +27,10 @@ import Game.Engine.Colonist.Memory.FOVCalculator;
 import javax.print.attribute.standard.Destination;
 import java.util.*;
 
+import static Game.Engine.Actions.ColonistActions.GenericMacroActions.SearchStage.DELIVERING;
 import static Game.Engine.Buildings.BuildingType.STORAGE;
 
-/**
- * Wanders the map looking for a building that contains items matching the search.
- * Does NOT pick up anything — just finds and reports.
- * Returns true (done) when found or when search radius exhausted.
- */
+
 public class SearchAction extends MacroAction {
 
     private Delivery delivery;
@@ -41,6 +40,7 @@ public class SearchAction extends MacroAction {
     private final Search search;
     private Tile foundTile = null;
     private int tilesExplored = 0;
+    private SearchStage stage = SearchStage.COLLECTING;
 
 
     private BuildingSnapshot target;
@@ -49,91 +49,110 @@ public class SearchAction extends MacroAction {
     public SearchAction(ActionManager colonist, Search search) {
         super("Search", colonist);
         this.search = search;
+        this.delivery = new Delivery();
     }
 
     public Tile getFoundTile() { return foundTile; }
     public boolean wasSuccessful() { return foundTile != null; }
     public Search getSearch() { return search; }
 
-
+    public void setStage(SearchStage stage){
+        this.stage = stage;
+    }
 
     @Override
     public void updateQueue() {
-        Tile current = colonistam.getCurrentTile();
-        MemoryMap memoryMap = colonistam.getMemoryMap();
-        updateTargetMemory(memoryMap);
-        if(notAtTarget(current)) {
+        System.out.println(stage);
+        switch (stage) {
+            case COLLECTING:
+                Tile current = colonistam.getCurrentTile();
+                MemoryMap memoryMap = colonistam.getMemoryMap();
+                updateTargetMemory(memoryMap);
+                if (notAtTarget(current)) {
 
-            if (memoryMap.getSnaps().containsKey(STORAGE)) {
-                Collection<BuildingSnapshot> potentialStor = memoryMap.getSnaps().get(STORAGE).values();
-                if (!potentialStor.isEmpty()) {
-                    for(BuildingSnapshot snap: potentialStor){
-                        if(target == null){
-                            target = snap;
-                        }else{
-                            if(snap.hasInventoryData()){
-                                if(betterResources(snap.getInventory())){
+                    if (memoryMap.getSnaps().containsKey(STORAGE)) {
+                        Collection<BuildingSnapshot> potentialStor = memoryMap.getSnaps().get(STORAGE).values();
+                        if (!potentialStor.isEmpty()) {
+                            for (BuildingSnapshot snap : potentialStor) {
+                                if (target == null) {
                                     target = snap;
+                                } else {
+                                    if (snap.hasInventoryData()) {
+                                        if (betterResources(snap.getInventory())) {
+                                            target = snap;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
-            if (target != null && !getMicroQueue().isQueued(MoveAction.class)) {
-                queueAction(new QueuedAction(new MoveAction(colonistam, target.coords()), 10, true, true));
-            } else {
-                MemoryTile next = colonistam.getMemory().wanderUnexplored((MemoryTile) memoryMap.getTileByCoords(current.getCoords()));
-                if (next != null && !getMicroQueue().isQueued(MoveAction.class)) {
-                    queueAction(new QueuedAction(new MoveAction(colonistam, next.getCoords()), 30, false, true));
-                }
-            }
-        }else{
-            if(current.same(target.coords())){
-                if(current.hasBuilding()){
-                    if(current.getBuilding().getBType() == STORAGE){
-                            var inv = current.getBuilding().getInv();
-                            List<ItemStack> matching = inv.getStacks().stream()
-                                    .filter(s -> search.matches(s.getItem()) && s.getQuantity() > 0)
-                                    .toList();
+                    if (target != null && !getMicroQueue().isQueued(MoveAction.class)) {
+                        queueAction(new QueuedAction(new MoveAction(colonistam, target.coords()), 10, true, true));
+                    } else {
+                        MemoryTile next = colonistam.getMemory().wanderUnexplored((MemoryTile) memoryMap.getTileByCoords(current.getCoords()));
+                        if (next != null && !getMicroQueue().isQueued(MoveAction.class)) {
+                            queueAction(new QueuedAction(new MoveAction(colonistam, next.getCoords()), 30, false, true));
+                        }
+                    }
+                } else {
+                    if (current.same(target.coords())) {
+                        if (current.hasBuilding()) {
+                            if (current.getBuilding().getBType() == STORAGE) {
+                                var inv = current.getBuilding().getInv();
 
-                            for (ItemStack stack : matching) {
-                                int toTake = Math.min(stack.getQuantity(), search.getQuantity() - totalCollected);
-                                if (toTake <= 0) break;
-                                inv.remove(stack.getItem(), toTake);
-                                delivery.addItems(stack.getItem(), toTake);
-                                totalCollected += toTake;
-                                collectedPerClass.merge(stack.getItem().getClass(), toTake, Integer::sum);
+                                if(search.invMatches(inv) && !getMicroQueue().isQueued(CollectDeliveryAction.class)){
+                                    queueAction(new QueuedAction(new CollectDeliveryAction(colonistam, delivery, inv, search),30,true,false));
+
+                                }
+                                List<ItemStack> matching = inv.getStacks().stream()
+                                        .filter(s -> search.matches(s.getItem()) && s.getQuantity() > 0)
+                                        .toList();
+
+                                for (ItemStack stack : matching) {
+                                    int toTake = Math.min(stack.getQuantity(), search.getQuantity() - totalCollected);
+                                    if (toTake <= 0) break;
+                                    inv.remove(stack.getItem(), toTake);
+                                    delivery.addItems(stack.getItem(), toTake);
+                                    totalCollected += toTake;
+                                    collectedPerClass.merge(stack.getItem().getClass(), toTake, Integer::sum);
+                                }
+
+                                if (totalCollected >= search.getQuantity()){
+                                    setStage(DELIVERING);
+                                }
+
+
                             }
-
-                            if (totalCollected >= search.getQuantity()) setComplete(true);
-
+                        }
                     }
                 }
-            }
-        }
 
 
+                // Not found — wander one tile toward unexplored
+                tilesExplored++;
+                if (tilesExplored >= MAX_TILES) {
+                    recordFailure();
+                    setComplete(true);
+                }
+                break;
+            case DELIVERING:
+                if(delivery.getItems().isEmpty()){
+                    System.out.println("done!");
+                    setComplete(true);
+                    return;
+                }
+                if (!colonistam.getCurrentTile().getCoords().equals(search.getDest()) ) {
+                    if(!getMicroQueue().isQueued(MoveAction.class)) {
+                        queueAction(new QueuedAction(new MoveAction(colonistam, search.getDest()), 30, false, true));
+                    }
+                }else{
+                    Building build = colonistam.getCurrentTile().getBuilding();
+                    if(build != null && !getMicroQueue().isQueued(DepositDeliveryAction.class)) {
+                        queueAction(new QueuedAction(new DepositDeliveryAction(colonistam, delivery, build.getInv()),30,true,false));
+                    }
+                }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Not found — wander one tile toward unexplored
-        tilesExplored++;
-        if (tilesExplored >= MAX_TILES) {
-            recordFailure();
-            setComplete(true);
         }
 
 
@@ -141,14 +160,20 @@ public class SearchAction extends MacroAction {
 
 
 
+
+
+
     private void updateTargetMemory(MemoryMap memoryMap) {
-        if(!memoryMap.getSnaps().containsKey(target.type())){
-            target = null;
+        if(target != null) {
+            if (!memoryMap.getSnaps().containsKey(target.type())) {
+                target = null;
+            }
+            if (!memoryMap.getSnaps().get(target.type()).containsKey(target.id())) {
+                target = null;
+            }
+            target = memoryMap.getSnaps().get(target.type()).get(target.id());
         }
-        if(!memoryMap.getSnaps().get(target.type()).containsKey(target.id())){
-            target = null;
-        }
-        target = memoryMap.getSnaps().get(target.type()).get(target.id());
+
     }
 
     private boolean notAtTarget(Tile current) {

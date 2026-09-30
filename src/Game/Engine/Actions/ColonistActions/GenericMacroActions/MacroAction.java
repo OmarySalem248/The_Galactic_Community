@@ -24,6 +24,9 @@ public abstract class MacroAction extends ColonistAction {
         microQueue.tick();
         return complete;
     }
+    public boolean getComplete() {
+        return complete;
+    }
 
     public ActionQueue getMicroQueue(){
         return microQueue;

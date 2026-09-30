@@ -4,6 +4,7 @@ import Game.Engine.Inventory.Inventory;
 import Game.Engine.Inventory.Items.Item;
 import Game.Engine.Inventory.Items.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,11 +18,14 @@ public class Delivery {
     private final Inventory source;
     private Inventory destination;
 
-    public Delivery(List<ItemStack> items, Inventory source, Inventory destination) {
-        this.items       = items;
-        this.source      = source;
-        this.destination = destination;
+    public Delivery() {
+        this.items       =  new ArrayList<>();
+        this.source      = null;
+        this.destination = null;
     }
+
+
+
     public void setDestination(Inventory destination) { this.destination = destination; }
 
     public List<ItemStack> getItems()  { return items; }
@@ -35,5 +39,14 @@ public class Delivery {
                         s -> s.add(quantity),
                         () -> items.add(new ItemStack(item, quantity))
                 );
+    }
+
+    public boolean isEmpty() {
+        for(ItemStack stack: items){
+            if(!stack.isEmpty()){
+                return  false;
+            }
+        }
+        return true;
     }
 }
