@@ -31,14 +31,14 @@ public class PlantIncubater implements Tickable {
 
     public PlantIncubater() {}
 
-    public void plantSeed(Seed seed, GameEventBus eventBus, Colonist farmer) {
+    public void plantSeed(Seed seed, GameEventBus eventBus) {
         this.plant = seed.createPlant();
+        System.out.println(plant);
         this.plant.beginGrowth();
         this.ticksSinceLastTend = 0;
         this.ticksSinceDayStart = 0;
         this.tendsDue = plant.getDailyMain();
         this.dead = false;
-        this.assignedFarmer = farmer;
         eventBus.fire(new GameEvent<>(GameEventType.SCHEDULE_TICKABLE,
                 new ScheduleRequest(this, plant.getDelay())));
     }

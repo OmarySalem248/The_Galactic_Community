@@ -22,6 +22,7 @@ public class DepositDeliveryAction extends MicroAction {
     private Inventory inventory;
 
     public DepositDeliveryAction(ActionManager am, Delivery delivery, Inventory inv) {
+        System.out.println("dwd");
         super("DepositDelivery", am);
         this.delivery = delivery;
         this.inventory = inv;
@@ -31,9 +32,11 @@ public class DepositDeliveryAction extends MicroAction {
     public boolean execute() {
 
         if(!delivery.isEmpty()){
+
             ItemStack stack = delivery.getItems().getFirst();
             Item item = stack.getItem();
             int quant = (int) min(floor(colonistam.getHandfull()/ item.getWeight()), stack.getQuantity());
+            System.out.println(quant);
             stack.remove(quant);
             inventory.add(item,quant);
             return false;

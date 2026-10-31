@@ -4,30 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Made colonists be able to move with new queue system.">
-      <change afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/SearchStage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/IncPanel.java" afterDir="false" />
+    <list default="true" id="90175cbe-6fbe-4284-bee5-58485ce2f09c" name="Changes" comment="Rworked how farming works and made new ui panels for buildings. will need to keep working on farming process">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/MacroAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/MacroAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/SearchAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/SearchAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMicroActions/CollectDeliveryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMicroActions/CollectDeliveryAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMicroActions/DepositDeliveryAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMicroActions/DepositDeliveryAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMicroActions/MoveAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMicroActions/MoveAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/EngineerCheckAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/EngineerCheckAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/Farming/FarmAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/Farming/FarmAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/Farming/FarmMicros/PlantAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/WorkAction/Farming/FarmMicros/PlantAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Actions/Queue/ActionQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Actions/Queue/ActionQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Buildings/PlantIncubater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Buildings/PlantIncubater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/ActionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Colonist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/Search/ClassSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/Search/ClassSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/Search/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/Search/Search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/Search/TypeSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Memory/Search/TypeSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Delivery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Delivery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Map/GameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Map/GameMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/FarmJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Colonist/Career/Job/FarmJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Inventory/Items/Plant/Plant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Engine/Time/GameClock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/FarmPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/FarmPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/IncPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/BuildingPanels/IncPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game/Windows/TileWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,35 +79,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GalacticCommunityApplication.executor": "Run",
-    "Application.GameLauncher.executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Ambitious-rework",
-    "jdk.selected.JAVA_MODULE": "corretto-15",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/omary/Downloads/Cancer-master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propCompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GalacticCommunityApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GameLauncher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Ambitious-rework&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-15&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/omary/Downloads/Cancer-master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\omary\Documents\The Galactic Community\src" />
@@ -464,7 +454,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="after complications it was decided to leave this project as a trial and a good practice example, elements of this project will be adapted and used in future project built from the ground up to be hosted online" />
     <MESSAGE value="added some advancements to interactions including leadership" />
     <MESSAGE value="fixed but job assignment and made it so random clolonists can join in certain events" />
     <MESSAGE value="Created a map that physically displays buildings, added new building type, houses for colonists to live in, going to work further on visual aspects and making expereince more accessable and gamelike before adding new features" />
@@ -489,7 +478,8 @@
     <MESSAGE value="Decided to finally fix how colonists interact with the map before continuing to modify actions, now colonists only interact with either their memory of the map or a set of interactable tiles, all accessed with events theough the bus" />
     <MESSAGE value="Completly changed how colonists rememebr buildings and begun coding ghe loop of how searching maintains a queue" />
     <MESSAGE value="Made colonists be able to move with new queue system." />
-    <option name="LAST_COMMIT_MESSAGE" value="Made colonists be able to move with new queue system." />
+    <MESSAGE value="Rworked how farming works and made new ui panels for buildings. will need to keep working on farming process" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rworked how farming works and made new ui panels for buildings. will need to keep working on farming process" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -516,7 +506,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java</url>
-          <line>56</line>
+          <line>55</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -536,13 +526,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/SearchAction.java</url>
-          <line>127</line>
+          <line>126</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Game/Engine/Buildings/Farm.java</url>
-          <line>82</line>
+          <line>81</line>
           <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Game/Engine/Actions/ColonistActions/GenericMacroActions/SearchAction.java</url>
+          <line>151</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

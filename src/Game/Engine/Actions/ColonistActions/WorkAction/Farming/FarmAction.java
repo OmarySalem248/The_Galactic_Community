@@ -43,6 +43,7 @@ public class FarmAction extends WorkAction {
     @Override
     public void updateQueue() {
 
+
         if(job.getLoc() == null){
             System.out.println(colonist.getAssignedBuilding().getCoords().get(0));
             job.setLocation(colonist.getAssignedBuilding().getCoords().get(0));
@@ -58,18 +59,30 @@ public class FarmAction extends WorkAction {
 
 
         // No seeds anywhere and no active incubators — go search for seeds
-
+        System.out.println(farm.getInv().getCurrentWeight());
         boolean noSeeds = !colonist.getInventory().hasType(ItemType.SEED)
-                && !farm.getInv().hasType(ItemType.SEED)
+                &&!farm.getInv().hasType(ItemType.SEED)
                 && myIncubators(farm).isEmpty();
-        if (noSeeds && !colonistam.getSearching() && !getMicroQueue().isQueued(SearchAction.class)) {
-            colonist.setStatus("Out of seeds, searching for storage...");
-            Search seedSearch = new TypeSearch(50, farm.getRealCoords(), farm.getRealCoords(),ItemType.SEED);
-            getMicroQueue().add(new QueuedAction(new SearchAction(colonistam, seedSearch),100,true,true));
+        if(noSeeds && getMicroQueue().isEmpty()){
             return;
         }
-        if(job.anyIncs()&& !getMicroQueue().isQueued(PlantAction.class)){
-            queueAction(new QueuedAction(new PlantAction(colonistam,farm),50,true,false));
+        if(noSeeds) {
+            if (!colonistam.getSearching() && !getMicroQueue().isQueued(SearchAction.class)) {
+                colonist.setStatus("Out of seeds, searching for storage...");
+                System.out.println("where seeds?");
+                Search seedSearch = new TypeSearch(10, farm.getRealCoords(), farm.getRealCoords(), ItemType.SEED);
+                getMicroQueue().add(new QueuedAction(new SearchAction(colonistam, seedSearch), 100, true, true));
+                return;
+            }
+        }else {
+            if (job.anyFreeIncs() && !getMicroQueue().isQueued(PlantAction.class)) {
+                Seed seed = (Seed) farm.getInv().getByType(ItemType.SEED).get(0).getItem();
+                farm.getInv().remove(seed, 1);
+                PlantIncubater inc = job.getFreeInc();
+                farm.getFreeInc().remove(inc);
+                farm.getActiveInc().add(inc);
+                queueAction(new QueuedAction(new PlantAction(colonistam, inc, seed), 50, true, false));
+            }
         }
 
 

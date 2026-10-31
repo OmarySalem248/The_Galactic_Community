@@ -68,6 +68,8 @@ public class GameClock {
 
     public void addTickListener(TickListener l) { listeners.add(l); }
 
+    public void removeTickListener(TickListener l) { listeners.remove(l); }
+
     public void schedule(Tickable target, long delay) {
         scheduler.schedule(target, tick, delay);
     }

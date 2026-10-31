@@ -48,7 +48,6 @@ public class Farm extends Building {
     public void plant(Seed seed, GameEventBus bus, Colonist farmer) {
         if (!freeIncubaters.isEmpty()) {
             PlantIncubater inc = freeIncubaters.get(0);
-            inc.plantSeed(seed, bus, farmer);
             freeIncubaters.remove(inc);
             activeIncubaters.add(inc);
         }

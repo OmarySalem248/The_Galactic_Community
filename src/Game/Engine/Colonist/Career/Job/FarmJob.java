@@ -18,4 +18,23 @@ public class FarmJob extends Job{
     public boolean anyIncs(){
         return !incs.isEmpty();
     }
+
+
+    public boolean anyFreeIncs(){
+        for(PlantIncubater inc: incs){
+            if (inc.isEmpty()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public PlantIncubater getFreeInc() {
+        for(PlantIncubater inc: incs){
+            if (inc.isEmpty()){
+                return inc;
+            }
+        }
+        return null;
+    }
 }

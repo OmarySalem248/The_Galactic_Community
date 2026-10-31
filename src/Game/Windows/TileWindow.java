@@ -5,12 +5,15 @@ import Game.Engine.Buildings.Projects.BuildingProject;
 import Game.Engine.Game;
 import Game.Engine.Map.Tiles.Tile;
 import Game.Engine.Modes.BuildMode;
+import Game.Engine.Time.TickListener;
 import Game.Windows.BuildingPanels.BuildingStatPanel;
 import Game.Windows.BuildingPanels.DefaultBuildingStatPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TileWindow {
 
@@ -66,6 +69,16 @@ public class TileWindow {
 
             // Show building stat panel
             BuildingStatPanel statPanel = resolveStatPanel(building);
+
+            TickListener refresher = time -> SwingUtilities.invokeLater(statPanel::refresh);
+            game.getClock().addTickListener(refresher);
+
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.addWindowListener(new WindowAdapter() {
+                @Override public void windowClosed(WindowEvent e) {
+                    game.getClock().removeTickListener(refresher);
+                }
+            });
             frame.add(new JScrollPane(statPanel), BorderLayout.CENTER);
 
         } else {

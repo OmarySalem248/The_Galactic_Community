@@ -21,6 +21,8 @@ public abstract class Plant {
 
     private final String name;
 
+    private boolean alive;
+
     private int dailyMain;
     private boolean growing = false;
 
@@ -31,12 +33,17 @@ public abstract class Plant {
         this.delay2 = delay2;
         this.dailyMain = dailyMain;
         this.progress = 0;
+        this.alive = true;
     }
 
 
     public void beginGrowth() {
         growing = true;
         onBeginGrowth();
+    }
+
+    public boolean isDead(){
+        return  !alive;
     }
 
     /** Called every minute while growing — advance growth however you like. */

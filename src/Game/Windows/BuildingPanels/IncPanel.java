@@ -2,93 +2,108 @@ package Game.Windows.BuildingPanels;
 
 import Game.Engine.Buildings.PlantIncubater;
 import Game.Engine.Colonist.Colonist;
+import Game.Engine.Inventory.Items.Plant.*;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * One incubator slot on the farm panel, bound to one incubator for its whole life.
+ * refresh() only updates the labels and colour — the farmer dropdown is never
+ * touched by code after construction, it belongs to the player.
+ */
 public class IncPanel extends JPanel {
 
+    private static final String UNASSIGNED = "Unassigned";
+
+    private static final Color READY   = new Color(0x2E7D32); // green
+    private static final Color TEND    = new Color(0xB7791F); // amber
+    private static final Color GROWING = new Color(0x1F3A5F); // dark blue
+    private static final Color DEAD    = new Color(0x7F1D1D); // dark red
+    private static final Color EMPTY   = new Color(0x2A2A45);
+
     private final PlantIncubater inc;
+
     private final JLabel nameLabel;
     private final JLabel progressLabel;
     private final JLabel statusLabel;
-    private final JComboBox<String> farmerDropdown;
-    private ArrayList<Colonist> farmers;
-    private boolean updatingDropdown = false;
+    private final JComboBox<Object> farmerBox;
 
-    public IncPanel(PlantIncubater inc, int index, ArrayList<Colonist> farmers) {
-        this.inc     = inc;
-        this.farmers = farmers;
-        setLayout(new GridLayout(4, 1, 2, 2));
-        setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY), "Inc " + index,
-                TitledBorder.LEFT, TitledBorder.TOP,
-                new Font("Monospaced", Font.PLAIN, 9)));
-        setPreferredSize(new Dimension(90, 75));
+    public IncPanel(PlantIncubater inc, int index, List<Colonist> farmers) {
+        this.inc = inc;
 
-        nameLabel     = new JLabel("", SwingConstants.CENTER);
-        progressLabel = new JLabel("", SwingConstants.CENTER);
-        statusLabel   = new JLabel("", SwingConstants.CENTER);
-        farmerDropdown = new JComboBox<>();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createTitledBorder("#" + index));
+        setOpaque(true);
 
-        nameLabel.setFont(new Font("Monospaced", Font.BOLD, 9));
-        progressLabel.setFont(new Font("Monospaced", Font.PLAIN, 8));
-        statusLabel.setFont(new Font("Monospaced", Font.PLAIN, 8));
-        farmerDropdown.setFont(new Font("Monospaced", Font.PLAIN, 8));
+        nameLabel     = new JLabel("Empty");
+        progressLabel = new JLabel(" ");
+        statusLabel   = new JLabel(" ");
+        for (JLabel l : new JLabel[]{nameLabel, progressLabel, statusLabel}) {
+            l.setForeground(Color.WHITE);
+            l.setAlignmentX(CENTER_ALIGNMENT);
+            add(l);
+        }
 
-        // Populate dropdown
-        farmerDropdown.addItem("Unassigned");
-        for (Colonist c : farmers) farmerDropdown.addItem(c.getName());
-
-        farmerDropdown.addActionListener(e -> {
-            if (updatingDropdown) return;
-            int selected = farmerDropdown.getSelectedIndex();
-            if (selected == 0) {
-                inc.unassign();
-            } else {
-                inc.assign(farmers.get(selected - 1));
+        // Dropdown: filled once, starts on the current assignment, then left alone
+        farmerBox = new JComboBox<>();
+        farmerBox.addItem(UNASSIGNED);
+        for (Colonist c : farmers) farmerBox.addItem(c);
+        farmerBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int i,
+                                                          boolean sel, boolean focus) {
+                Object shown = (value instanceof Colonist c) ? c.getName() : value;
+                return super.getListCellRendererComponent(list, shown, i, sel, focus);
             }
         });
+        Colonist assigned = inc.getAssignedFarmer();
+        farmerBox.setSelectedItem(assigned != null ? assigned : UNASSIGNED);
+        farmerBox.addActionListener(e -> onFarmerChosen()); // added after setup so setup doesn't fire it
+        farmerBox.setAlignmentX(CENTER_ALIGNMENT);
 
-        add(nameLabel);
-        add(progressLabel);
-        add(statusLabel);
-        add(farmerDropdown);
+        add(Box.createVerticalStrut(4));
+        add(farmerBox);
 
         refresh();
     }
 
+    /** Called every tick by FarmPanel. Updates labels and colour only. */
     public void refresh() {
-        if (inc.isEmpty()) {
+        Plant plant = inc.getPlant();
+        if (plant == null) {
+            setBackground(EMPTY);
             nameLabel.setText("Empty");
-            progressLabel.setText("");
-            statusLabel.setText("");
-            setBackground(new Color(0x2A2A45));
-        } else if (inc.isDead()) {
-            nameLabel.setText("Dead");
-            progressLabel.setText("");
-            statusLabel.setText("");
-            setBackground(new Color(0x5A1A1A));
-        } else {
-            nameLabel.setText(inc.getPlant().getName());
-            progressLabel.setText("Progress: " + inc.getPlant().getProgress());
-            statusLabel.setText(inc.needsTending() ? "⚠ Needs tend" :
-                    inc.canHarvest()   ? "✓ Ready"      : "Growing");
-            setBackground(inc.canHarvest()   ? new Color(0x1A5A1A) :
-                    inc.needsTending() ? new Color(0x5A4A1A) :
-                            new Color(0x1A2A3A));
+            progressLabel.setText(" ");
+            statusLabel.setText(" ");
+            return;
         }
 
-        // Sync dropdown to current assigned farmer without triggering listener
-        updatingDropdown = true;
-        Colonist assigned = inc.getAssignedFarmer();
-        if (assigned == null) {
-            farmerDropdown.setSelectedIndex(0);
+        nameLabel.setText(plant.getName());
+        progressLabel.setText(String.valueOf(plant.getProgress()));
+
+        if (plant.isDead()) {
+            setBackground(DEAD);
+            statusLabel.setText("Dead");
+        } else if (plant.isMatured()) {
+            setBackground(READY);
+            statusLabel.setText("Ready");
+        } else if (inc.needsTending()) {
+            setBackground(TEND);
+            statusLabel.setText("Needs tending");
         } else {
-            farmerDropdown.setSelectedItem(assigned.getName());
+            setBackground(GROWING);
+            statusLabel.setText("Growing");
         }
-        updatingDropdown = false;
+    }
+
+    private void onFarmerChosen() {
+        Object chosen = farmerBox.getSelectedItem();
+        if (chosen instanceof Colonist farmer) {
+            inc.assign(farmer);
+        } else {
+            inc.unassign();
+        }
     }
 }

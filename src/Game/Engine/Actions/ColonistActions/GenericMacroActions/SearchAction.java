@@ -62,7 +62,6 @@ public class SearchAction extends MacroAction {
 
     @Override
     public void updateQueue() {
-        System.out.println(stage);
         switch (stage) {
             case COLLECTING:
                 Tile current = colonistam.getCurrentTile();
@@ -136,17 +135,19 @@ public class SearchAction extends MacroAction {
                 }
                 break;
             case DELIVERING:
-                if(delivery.getItems().isEmpty()){
+                if(delivery.isEmpty()){
                     System.out.println("done!");
                     setComplete(true);
                     return;
                 }
                 if (!colonistam.getCurrentTile().getCoords().equals(search.getDest()) ) {
+                    System.out.println("goin");
                     if(!getMicroQueue().isQueued(MoveAction.class)) {
                         queueAction(new QueuedAction(new MoveAction(colonistam, search.getDest()), 30, false, true));
                     }
                 }else{
                     Building build = colonistam.getCurrentTile().getBuilding();
+                    System.out.println(build);
                     if(build != null && !getMicroQueue().isQueued(DepositDeliveryAction.class)) {
                         queueAction(new QueuedAction(new DepositDeliveryAction(colonistam, delivery, build.getInv()),30,true,false));
                     }

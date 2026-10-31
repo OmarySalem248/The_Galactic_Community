@@ -94,4 +94,8 @@ public class ActionQueue {
         }
         return actions;
     }
+
+    public boolean isEmpty() {
+        return active.isEmpty() && pending.isEmpty();
+    }
 }
